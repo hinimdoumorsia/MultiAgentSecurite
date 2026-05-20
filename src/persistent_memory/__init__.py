@@ -1,1 +1,0 @@
-# Initialisation du module persistent_memory

@@ -1,6 +1,0 @@
-# Dépendances nécessaires pour SecureCodeAgent
-
-langchain==0.0.1
-bandit==1.7.4
-semgrep==0.92.0
-chromadb==0.3.26
