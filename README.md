@@ -87,59 +87,69 @@ Notre système est constitué de plusieurs agents spécialisés, chacun posséda
 Découvrez ci-joint l’architecture complète de notre projet avant de commencer à le lancer et à l’utiliser.
 
 ```
-MultiAgentSecurite/
+MAS-ENSAM-2026/
+├── src/
+│   ├── api.py                  # Application FastAPI (20+ endpoints)
+│   ├── mcp_server.py           # Serveur MCP JSON-RPC 2.0
+│   ├── github_client.py        # Clone / nettoyage dépôts GitHub
+│   ├── agents/                 # 8 agents IA
+│   │   ├── base.py
+│   │   ├── triage.py
+│   │   ├── scanner.py
+│   │   ├── memory_safety.py
+│   │   ├── semantic.py
+│   │   ├── exploit_scorer.py
+│   │   ├── patcher.py
+│   │   ├── validator.py
+│   │   └── report.py
+│   ├── graph/                  # Orchestrateur LangGraph
+│   │   ├── state.py            # AgentState, Vulnerability, ScanTarget
+│   │   ├── workflow.py         # build_workflow()
+│   │   └── router.py           # Routage conditionnel
+│   ├── memory/                 # Mémoire persistante
+│   │   ├── persistent.py       # Qdrant + Sentence Transformers
+│   │   ├── session.py          # Mémoire RAM par run
+│   │   └── sqlite_memory.py    # Backend SQLite alternatif
+│   ├── llm/
+│   │   └── client.py           # Groq (8B) + NVIDIA (70B)
+│   ├── tools/                  # Wrappers outils sécurité
+│   │   ├── semgrep_tool.py
+│   │   ├── bandit_tool.py
+│   │   ├── gosec_tool.py
+│   │   ├── spotbugs_tool.py
+│   │   └── phpcs_tool.py
+│   └── rules/
+│       └── custom.yml          # Règles Semgrep personnalisées
 │
-├── run.py                      # Point d'entrée (optionnel)
-├── start.bat                   # Script démarrage Windows
-├── start.sh                    # Script démarrage Linux/Mac
-├── requirements.txt            # Dépendances Python
-├── .env                        # Variables d'environnement (clés API)
-├── .memory_cache.db            # Base SQLite (mémoire persistante)
-├── .scan_cache/                # Cache des scans
+├── memory-engine/              # Moteur d'analyse mémoire (Rust)
+│   ├── Cargo.toml
+│   ├── build.ps1               # Build Windows
+│   ├── build.sh                # Build Linux/macOS
+│   └── src/
+│       ├── main.rs             # CLI + JSON output
+│       ├── models.rs           # Finding, ScanOutput, Severity
+│       ├── rules.rs            # 20 règles de sécurité mémoire
+│       └── analyzer.rs         # Walkdir + regex engine
 │
-├── env_travail/                # Environnement virtuel
+├── docs/                       # Documentation Mintlify
+│   ├── index.mdx
+│   ├── getting-started.mdx
+│   ├── architecture.mdx
+│   ├── workflow.mdx
+│   ├── models.mdx
+│   ├── agents.mdx
+│   ├── llm.mdx
+│   ├── tools.mdx
+│   ├── memory.mdx
+│   ├── api.mdx
+│   └── mcp.mdx
 │
-└── src/
-    │
-    ├── api.py                 # API FastAPI (REST + MCP)
-    ├── mcp_server.py          # Serveur MCP
-    ├── github_client.py       # Client GitHub
-    │
-    ├── agents/                #  Agents IA
-    │   ├── base.py
-    │   ├── triage.py
-    │   ├── scanner.py
-    │   ├── memory_safety.py
-    │   ├── semantic.py
-    │   ├── exploit_scorer.py
-    │   ├── patcher.py
-    │   ├── validator.py
-    │   └── report.py
-    │
-    ├── graph/                 #  Orchestrateur (workflow)
-    │   ├── state.py
-    │   ├── workflow.py
-    │   └── router.py
-    │
-    ├── memory/               #  Mémoire persistante
-    │   ├── persistent.py
-    │   └── sqlite_memory.py
-    │
-    ├── llm/                  #  Clients LLM
-    │   └── client.py
-    │
-    ├── tools/                #  Outils de sécurité
-    │   ├── semgrep_tool.py
-    │   ├── bandit_tool.py
-    │   ├── gosec_tool.py
-    │   ├── spotbugs_tool.py
-    │   └── phpcs_tool.py
-    │
-    ├── rules/
-    │   └── custom.yml       # Règles Semgrep personnalisées
-    │
-    └── static/
-        └── index.html       # Interface web minimale
+├── image/                      # Diagrammes
+├── logo/                       # Logos SVG (light/dark)
+├── styles/custom.css           # CSS Mintlify
+├── docs.json                   # Config Mintlify
+├── requirements.txt
+└── .env                        # (non versionné) Clés API
 ```
 
 # **Lancement du projet - Explication claire**
