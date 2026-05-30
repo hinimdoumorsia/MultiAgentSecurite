@@ -59,6 +59,44 @@ Notre système est constitué de plusieurs agents spécialisés, chacun posséda
 
 ---
 
+
+## Memory Safety Engine (Rust)
+
+Le moteur d'analyse mémoire est un binaire Rust indépendant qui analyse les fichiers C, C++ et Rust avec **20 règles** :
+
+| Catégorie | Règles | Exemples |
+|-----------|--------|---------|
+| Buffer Overflow | MEM-001 à MEM-005 | `strcpy`, `strcat`, `gets`, `sprintf`, `scanf` |
+| Use-After-Free | MEM-010, MEM-011 | `free()` sans NULL, double-free |
+| Memory Leaks | MEM-020, MEM-021 | `malloc` non vérifié, `new` sans `delete` |
+| Null Pointer | MEM-030 | Déréférencement sans vérification |
+| Integer Overflow | MEM-040 | `malloc(n * m)` sans guard |
+| Format String | MEM-050 | `printf(user_input)` direct |
+| Stack Overflow | MEM-060 | VLA taille non contrôlée |
+| Unsafe Rust | MEM-070 à MEM-074 | `unsafe{}`, `transmute`, `ptr::read`, `Box::from_raw` |
+| C++ spécifique | MEM-080, MEM-081 | `delete[]` mismatch, `memcpy` overlap |
+
+Usage CLI direct :
+
+```bash
+./memory-engine/target/release/memory-engine --json /path/to/repo
+./memory-engine/target/release/memory-engine --json --min-severity high /path/to/repo
+./memory-engine/target/release/memory-engine --json --verbose /path/to/repo
+```
+
+---
+
+## Mémoire persistante (Qdrant — optionnel)
+
+```bash
+docker run -d -p 6333:6333 qdrant/qdrant
+```
+
+Sans Qdrant, le scanner fonctionne en mode dégradé : analyse statique et LLM restent actifs, sans réutilisation des patterns passés.
+
+---
+
+
 ## **Orchestrateur central**
 
 | Propriété | Valeur |
