@@ -34,24 +34,9 @@ Les agents IA autonomes capables de comprendre, réviser et réparer du code en 
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────────────┐
-│              FastAPI REST API / MCP                 │
-└──────────────────────┬──────────────────────────────┘
-                       │
-┌──────────────────────▼──────────────────────────────┐
-│           LangGraph Workflow (8 agents)             │
-│                                                     │
-│  Triage → Scanner → ┌─ MemorySafety (Rust)         │
-│                     └─ SemanticAnalyst (LLM 70B)   │
-│                          │                         │
-│                    ExploitScorer (LLM 8B)          │
-│                          │                         │
-│                    Patcher (LLM 70B)               │
-│                          │                         │
-│                    Validator → Report              │
-└─────────────────────────────────────────────────────┘
-```
+<div align="center">
+  <img src="image/secure_code_agent_architecture.svg" alt="Architecture Multi-Agent Security Scanner" width="100%" />
+</div>
 
 ### Les 8 agents
 
