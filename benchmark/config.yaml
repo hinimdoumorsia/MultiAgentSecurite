@@ -1,0 +1,59 @@
+# Configuration du harness de benchmark MultiAgentSecurite
+# Tous les chemins sont relatifs a la racine du repo (MultiAgentSecurite/).
+
+# --- Invocation de l'agent ---
+agent:
+  max_iterations: 3        # max_patch_iterations passe a l'AgentState
+  runs_per_case: 1         # k : nb de repetitions par cas (LLM stochastiques). Mettre 3 pour mean +/- std.
+  timeout_sec: 600         # garde-fou par cas
+  scan_cache: true         # reutilise .scan_cache de l'agent (rate limits free-tier)
+  detection_only: true     # true = saute patcher/validator (rapide). Mettre true pour benchmarker SEULEMENT la detection sur gros datasets.
+
+# --- Regles de matching detection ---
+matching:
+  line_tolerance: 5        # +/- N lignes de chevauchement pour compter un TP
+  cwe_mode: family         # exact | family  (family = parent/enfant accepte via cwe_map)
+
+# --- Datasets actives (mettre enabled: false pour ignorer) ---
+datasets:
+  synthetic:
+    enabled: true
+    adapter: synthetic
+    path: benchmark/datasets/synthetic
+    track: detection        # detection | repair | both
+
+  owasp:
+    enabled: false
+    adapter: owasp
+    path: benchmark/datasets/owasp/benchmark        # dossier clone de OWASP/BenchmarkJava
+    expected_results: expectedresults-1.2.csv
+    track: detection
+    scoring: category   # methode officielle OWASP : un finding compte par CWE de categorie
+    limit: 50           # N cas (equilibre vuln/sain) pour un 1er run rapide ; 0 = dataset complet (~2740)
+
+  juliet:
+    enabled: false
+    adapter: juliet
+    path: benchmark/datasets/juliet
+    track: detection
+
+  vul4j:
+    enabled: false
+    adapter: vul4j
+    path: benchmark/datasets/vul4j
+    track: repair
+
+  cvefixes:
+    enabled: false
+    adapter: cvefixes
+    path: benchmark/datasets/cvefixes
+    track: detection
+    scoring: presence          # matching fichier (le code est au niveau region, pas de ligne)
+    per_language_limit: 10     # 10 vuln + 10 sains = 20 cas / langage (~160) - agent COMPLET avec LLM
+    include_negatives: true
+    max_scan: 20000            # garde-fou streaming HF
+
+# --- Sortie ---
+output:
+  dir: benchmark/results
+  bootstrap_samples: 1000   # pour IC 95% sur le F1
