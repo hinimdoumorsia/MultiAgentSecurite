@@ -20,6 +20,10 @@ from agents.semantic import SemanticAnalystAgent
 from agents.triage import TriageAgent
 from agents.validator import ValidatorAgent
 
+import time
+from datetime import datetime
+from typing import Dict, List
+
 # Changement : enlever "orchestrator."
 from graph.router import (
     route_after_analysis,
@@ -88,3 +92,25 @@ def build_workflow() -> StateGraph:
     graph.add_edge("report", END)
 
     return graph.compile()
+
+
+
+# Ajouter dans workflow.py
+
+async def run_workflow_with_tracing(state: AgentState, agents: List[BaseAgent]) -> tuple[AgentState, Dict[str, dict]]:
+    """Exécute tous les agents avec traçabilité complète."""
+    traces = {}
+    current_state = state
+    
+    for agent in agents:
+        # Exécuter l'agent avec trace
+        result_state, trace = agent.run_with_trace(current_state)
+        traces[agent.name] = trace.to_dict()
+        current_state = result_state
+        
+        # Logging
+        print(f"[WORKFLOW] {agent.name}: {trace.status} - {trace.findings_count} findings in {trace.execution_time_ms:.2f}ms")
+        if trace.tools_used:
+            print(f"         Tools: {', '.join(trace.tools_used)}")
+    
+    return current_state, traces

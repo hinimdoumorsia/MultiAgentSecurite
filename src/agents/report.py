@@ -96,3 +96,20 @@ def _vuln_to_dict(v: Vulnerability) -> dict:
         "patch_diff": v.patch_diff,
         "attack_vector": v.extra.get("attack_vector", ""),
     }
+
+
+
+
+# Ajouter ces méthodes à la fin de la classe ReportAgent
+
+    def _get_available_methods(self) -> list[str]:
+        return ["json", "markdown"]
+    
+    def _get_called_methods(self, state: AgentState) -> list[str]:
+        called = []
+        if hasattr(state, 'report') and state.report:
+            called.append("json")
+            # Si on ajoute le support Markdown plus tard
+            if state.report.get("format") == "markdown":
+                called.append("markdown")
+        return called

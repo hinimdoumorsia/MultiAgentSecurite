@@ -25,6 +25,7 @@ from graph.state import AgentState
 from graph.workflow import build_workflow
 from memory.persistent import PersistentMemory
 from llm.client import LLMClient
+from graph.workflow import run_workflow_with_tracing 
 
 # ============================================
 # PYDANTIC MODELS
@@ -76,6 +77,36 @@ class UserScanRequest(BaseModel):
 class LocalScanRequest(BaseModel):
     repo_path: str = Field(..., description="Path to local repository")
     max_iterations: int = Field(3, ge=1, le=5)
+
+
+
+# ============================================
+# MODÈLES POUR LA TRACE DES AGENTS
+# ============================================
+
+class AgentExecutionTrace(BaseModel):
+    agent_name: str
+    status: str  # "running", "completed", "failed", "skipped"
+    tools_used: list[str]
+    methods_called: list[str]
+    findings_count: int
+    execution_time_ms: float
+    started_at: str | None = None
+    completed_at: str | None = None
+    error: str | None = None
+
+class ScanTrace(BaseModel):
+    scan_id: str
+    repo_path: str
+    total_agents: int
+    agents_execution: dict[str, AgentExecutionTrace]
+    total_findings: int
+    overall_status: str
+    started_at: str
+    completed_at: str | None = None
+
+
+
 
 # ============================================
 # FONCTIONS UTILITAIRES
@@ -185,6 +216,7 @@ async def lifespan(app: FastAPI):
     app.state.memory = PersistentMemory()
     app.state.llm = LLMClient()
     app.state.scans = {}
+    app.state.scan_traces = {}
     
     yield
     
@@ -570,6 +602,135 @@ async def get_user_projects(user_id: str):
     return {"user_id": user_id, "total_projects": len(projects), "projects": projects}
 
 # ============================================
+# TRACES DES AGENTS (NOUVEAUX ENDPOINTS)
+# ============================================
+
+@app.get("/scan/{scan_id}/trace", response_model=ScanTrace)
+async def get_scan_trace(scan_id: str):
+    """Retourne la trace détaillée de l'exécution de tous les agents."""
+    if scan_id not in app.state.scan_traces:
+        raise HTTPException(status_code=404, detail="Scan trace not found")
+    return app.state.scan_traces[scan_id]
+
+@app.get("/scan/{scan_id}/agents")
+async def get_agents_execution(scan_id: str):
+    """Retourne quel agent a exécuté quel tool."""
+    if scan_id not in app.state.scan_traces:
+        raise HTTPException(status_code=404, detail="Scan not found")
+    
+    trace = app.state.scan_traces[scan_id]
+    result = []
+    for agent_name, exec_trace in trace.agents_execution.items():
+        result.append({
+            "agent": agent_name,
+            "status": exec_trace.status,
+            "tools": exec_trace.tools_used,
+            "methods_called": exec_trace.methods_called,
+            "findings": exec_trace.findings_count,
+            "duration_ms": exec_trace.execution_time_ms,
+            "error": exec_trace.error
+        })
+    return {
+        "scan_id": scan_id,
+        "agents": result,
+        "total_agents": len(result),
+        "total_findings": trace.total_findings
+    }
+
+@app.get("/scan/{scan_id}/timeline")
+async def get_agent_timeline(scan_id: str):
+    """Timeline chronologique de l'exécution des agents."""
+    if scan_id not in app.state.scan_traces:
+        raise HTTPException(status_code=404, detail="Scan not found")
+    
+    trace = app.state.scan_traces[scan_id]
+    timeline = []
+    for agent_name, exec_trace in trace.agents_execution.items():
+        if exec_trace.started_at:
+            timeline.append({
+                "agent": agent_name,
+                "status": exec_trace.status,
+                "tools": exec_trace.tools_used,
+                "started": exec_trace.started_at,
+                "completed": exec_trace.completed_at,
+                "duration_ms": exec_trace.execution_time_ms,
+                "findings": exec_trace.findings_count
+            })
+    
+    timeline.sort(key=lambda x: x["started"] if x["started"] else "")
+    
+    total_duration = None
+    if trace.completed_at and trace.started_at:
+        start = datetime.fromisoformat(trace.started_at)
+        end = datetime.fromisoformat(trace.completed_at)
+        total_duration = (end - start).total_seconds() * 1000
+    
+    return {
+        "scan_id": scan_id,
+        "timeline": timeline,
+        "total_duration_ms": total_duration
+    }
+
+@app.get("/scans/latest")
+async def get_latest_scans(limit: int = 10):
+    """Retourne les derniers scans avec leur résumé."""
+    scans = []
+    for scan_id, trace in list(app.state.scan_traces.items())[-limit:]:
+        scans.append({
+            "scan_id": scan_id,
+            "repo_path": trace.repo_path,
+            "total_findings": trace.total_findings,
+            "overall_status": trace.overall_status,
+            "started_at": trace.started_at,
+            "completed_at": trace.completed_at,
+            "agents_summary": {
+                agent: {
+                    "status": exec_trace.status,
+                    "findings": exec_trace.findings_count,
+                    "tools": exec_trace.tools_used[:3]
+                }
+                for agent, exec_trace in trace.agents_execution.items()
+            }
+        })
+    return {"scans": scans, "total": len(scans)}
+
+@app.get("/diagnostic/scan/{scan_id}")
+async def diagnostic_scan(scan_id: str):
+    """Diagnostic rapide - montre l'état de tous les agents."""
+    if scan_id not in app.state.scans:
+        raise HTTPException(status_code=404, detail="Scan not found")
+    
+    scan_data = app.state.scans[scan_id]
+    trace = app.state.scan_traces.get(scan_id)
+    
+    if not trace:
+        return {
+            "scan_id": scan_id,
+            "status": scan_data["status"],
+            "message": "Trace not yet available (scan may be running)",
+            "agents": []
+        }
+    
+    status_counts = {}
+    agents_list = []
+    for agent_name, exec_trace in trace.agents_execution.items():
+        status_counts[exec_trace.status] = status_counts.get(exec_trace.status, 0) + 1
+        agents_list.append({
+            "name": agent_name,
+            "status": exec_trace.status,
+            "tools": exec_trace.tools_used[:3],
+            "findings": exec_trace.findings_count
+        })
+    
+    return {
+        "scan_id": scan_id,
+        "status": scan_data["status"],
+        "agents_status": status_counts,
+        "total_findings": trace.total_findings,
+        "agents": agents_list,
+        "trace_complete": trace.completed_at is not None
+    }
+# ============================================
 # MÉMOIRE PERSISTANTE
 # ============================================
 
@@ -603,22 +764,77 @@ async def memory_stats():
 # ============================================
 
 async def run_local_scan(scan_id: str, state: AgentState):
-    """Exécute un scan local en arrière-plan."""
+    """Exécute un scan local en arrière-plan avec traçabilité."""
+    from agents.triage import TriageAgent
+    from agents.scanner import ScannerAgent
+    from agents.memory_safety import MemorySafetyAgent
+    from agents.semantic import SemanticAnalystAgent
+    from agents.exploit_scorer import ExploitScorerAgent
+    from agents.patcher import PatcherAgent
+    from agents.validator import ValidatorAgent
+    from agents.report import ReportAgent
+    
     app.state.scans[scan_id]["status"] = "running"
     
     try:
-        workflow = app.state.workflow
-        final_state = await workflow.ainvoke(state)
+        # Créer la liste des agents
+        agents = [
+            TriageAgent(),
+            ScannerAgent(),
+            MemorySafetyAgent(),
+            SemanticAnalystAgent(),
+            ExploitScorerAgent(),
+            PatcherAgent(),
+            ValidatorAgent(),
+            ReportAgent()
+        ]
+        
+        # Exécuter avec tracing
+        final_state, traces = await run_workflow_with_tracing(state, agents)
         
         from graph.state import AgentState as StateClass
         if isinstance(final_state, dict):
             final_state = StateClass.from_dict(final_state)
         
+        # Créer la trace
+        now_iso = datetime.now().isoformat()
+        
+        # Convertir les traces au format ScanTrace
+        agents_execution = {}
+        for agent_name, trace_data in traces.items():
+            agents_execution[agent_name] = AgentExecutionTrace(
+                agent_name=agent_name,
+                status=trace_data.get("status", "unknown"),
+                tools_used=trace_data.get("tools_used", []),
+                methods_called=trace_data.get("methods_called", []),
+                findings_count=trace_data.get("findings_count", 0),
+                execution_time_ms=trace_data.get("execution_time_ms", 0),
+                started_at=trace_data.get("started_at"),
+                completed_at=trace_data.get("completed_at"),
+                error=trace_data.get("error")
+            )
+        
+        scan_trace = ScanTrace(
+            scan_id=scan_id,
+            repo_path=app.state.scans[scan_id]["repo_path"],
+            total_agents=len(agents),
+            agents_execution=agents_execution,
+            total_findings=len(final_state.vulnerabilities),
+            overall_status="completed",
+            started_at=app.state.scans[scan_id]["started_at"],
+            completed_at=now_iso
+        )
+        
+        app.state.scan_traces[scan_id] = scan_trace
         app.state.scans[scan_id]["state"] = final_state
         app.state.scans[scan_id]["status"] = "completed"
-        app.state.scans[scan_id]["completed_at"] = datetime.now().isoformat()
+        app.state.scans[scan_id]["completed_at"] = now_iso
         
         logger.info(f"Local scan {scan_id} completed: {len(final_state.vulnerabilities)} findings")
+        
+        # Afficher résumé
+        for agent_name, trace_data in traces.items():
+            logger.info(f"  📊 {agent_name}: {trace_data.get('status')} - {trace_data.get('findings_count', 0)} findings in {trace_data.get('execution_time_ms', 0):.2f}ms")
         
     except Exception as e:
         logger.error(f"Local scan {scan_id} failed: {e}", exc_info=True)

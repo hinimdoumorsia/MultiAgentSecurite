@@ -68,3 +68,17 @@ class TriageAgent(BaseAgent):
             state.detected_languages & MEMORY_UNSAFE_LANGUAGES
         )
         return state
+    
+
+# Ajouter ces méthodes à la fin de la classe TriageAgent
+
+    def _get_available_methods(self) -> list[str]:
+        return ["detect_languages", "classify_targets"]
+    
+    def _get_called_methods(self, state: AgentState) -> list[str]:
+        called = []
+        if state.detected_languages:
+            called.append("detect_languages")
+        if state.targets:
+            called.append("classify_targets")
+        return called

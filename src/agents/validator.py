@@ -112,3 +112,18 @@ class ValidatorAgent(BaseAgent):
             logger.warning("[validator] patch apply failed: %s", exc)
             # Fallback: return None to reject
             return None
+
+
+
+# Ajouter ces méthodes à la fin de la classe ValidatorAgent
+
+    def _get_available_methods(self) -> list[str]:
+        return ["validate", "regression_test"]
+    
+    def _get_called_methods(self, state: AgentState) -> list[str]:
+        called = []
+        if state.patches_validated:
+            called.append("validate")
+        if getattr(state, 'patches_rejected', []):
+            called.append("regression_test")
+        return called

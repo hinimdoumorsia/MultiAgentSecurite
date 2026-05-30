@@ -336,3 +336,37 @@ class ScannerAgent(BaseAgent):
         logger.info(f"[scanner] Severity breakdown: {severity_counts}")
 
         return state
+    
+
+# Ajouter ces méthodes à la fin de la classe ScannerAgent
+
+    def _get_available_methods(self) -> list[str]:
+        """Retourne les outils disponibles pour cet agent."""
+        tools = ["semgrep"]
+        if hasattr(self._scanner, '_bandit'):
+            tools.append("bandit")
+        if hasattr(self._scanner, '_gosec'):
+            tools.append("gosec")
+        if hasattr(self._scanner, '_spotbugs'):
+            tools.append("spotbugs")
+        if hasattr(self._scanner, '_phpcs'):
+            tools.append("phpcs")
+        return tools
+    
+    def _get_called_methods(self, state: AgentState) -> list[str]:
+        """Retourne quels outils ont été exécutés."""
+        called = []
+        # Vérifier quels types de fichiers ont été scannés
+        for vuln in state.vulnerabilities:
+            if vuln.file_path.endswith(('.py')):
+                called.append("bandit")
+            if vuln.file_path.endswith(('.go')):
+                called.append("gosec")
+            if vuln.file_path.endswith(('.java')):
+                called.append("spotbugs")
+            if vuln.file_path.endswith(('.php')):
+                called.append("phpcs")
+        # Semgrep est toujours appelé
+        if state.vulnerabilities:
+            called.append("semgrep")
+        return list(set(called))

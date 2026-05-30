@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import logging
 import uuid
+import re
 
 from agents.base import BaseAgent
 from graph.state import AgentState, Severity, Vulnerability
@@ -24,7 +25,21 @@ You are an expert security code reviewer. Analyze the provided code for:
 
 For each finding, respond with a JSON array of objects with keys:
 title, severity (critical/high/medium/low), cwe_id, description, line_start, line_end, code_snippet.
-Return ONLY valid JSON."""
+
+Example response format:
+[
+  {
+    "title": "SQL Injection vulnerability",
+    "severity": "high",
+    "cwe_id": "CWE-89",
+    "description": "User input is concatenated directly into SQL query",
+    "line_start": 15,
+    "line_end": 15,
+    "code_snippet": "query = \"SELECT * FROM users WHERE id = \" + user_input"
+  }
+]
+
+Return ONLY valid JSON, no other text."""
 
 
 class SemanticAnalystAgent(BaseAgent):
@@ -59,15 +74,25 @@ class SemanticAnalystAgent(BaseAgent):
                 model="strong"
             )
 
+            # 🔧 CORRECTION: Nettoyer la réponse JSON
+            raw = self._clean_json_response(raw)
+            
             try:
                 items = json.loads(raw)
                 if not isinstance(items, list):
-                    items = items.get("findings", [])
-            except json.JSONDecodeError:
-                logger.warning("[semantic] failed to parse LLM response for %s", target.path)
+                    # Si c'est un objet avec une clé 'findings'
+                    if isinstance(items, dict) and 'findings' in items:
+                        items = items.get('findings', [])
+                    else:
+                        items = []
+            except json.JSONDecodeError as e:
+                logger.warning("[semantic] failed to parse LLM response for %s: %s", target.path, e)
+                logger.debug(f"[semantic] Raw response (first 200 chars): {raw[:200]}")
                 continue
 
             for item in items:
+                if not isinstance(item, dict):
+                    continue
                 findings.append(
                     Vulnerability(
                         id=str(uuid.uuid4()),
@@ -86,6 +111,48 @@ class SemanticAnalystAgent(BaseAgent):
         state.semantic_findings = findings
         logger.info("[semantic] found %d semantic vulnerabilities", len(findings))
         return state
+
+    def _clean_json_response(self, raw: str) -> str:
+        """Nettoie la réponse LLM pour extraire le JSON valide."""
+        raw = raw.strip()
+        
+        # Enlever les balises markdown
+        if raw.startswith('```json'):
+            raw = raw[7:]
+        elif raw.startswith('```'):
+            raw = raw[3:]
+        if raw.endswith('```'):
+            raw = raw[:-3]
+        
+        raw = raw.strip()
+        
+        # Si la réponse ne commence pas par [ ou {, essayer de trouver un JSON
+        if not raw.startswith(('[', '{')):
+            # Chercher un pattern JSON
+            json_pattern = r'(\[.*\]|\{.*\})'
+            match = re.search(json_pattern, raw, re.DOTALL)
+            if match:
+                raw = match.group(1)
+        
+        return raw
+
+    # ============================================
+    # Méthodes pour la traçabilité
+    # ============================================
+
+    def _get_available_methods(self) -> list[str]:
+        return ["logic_analysis", "auth_bypass"]
+    
+    def _get_called_methods(self, state: AgentState) -> list[str]:
+        called = []
+        findings = getattr(state, 'semantic_findings', [])
+        for finding in findings:
+            title = finding.title.lower()
+            if "auth" in title or "bypass" in title or "privilege" in title:
+                called.append("auth_bypass")
+            else:
+                called.append("logic_analysis")
+        return list(set(called))
 
 
 def _build_context(content: str, similar_patterns: list[str]) -> str:

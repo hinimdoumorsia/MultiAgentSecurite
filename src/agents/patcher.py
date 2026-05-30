@@ -98,3 +98,21 @@ class PatcherAgent(BaseAgent):
         if full.exists():
             return full.read_text(errors="replace")
         return None
+
+
+
+
+# Ajouter ces méthodes à la fin de la classe PatcherAgent
+
+    def _get_available_methods(self) -> list[str]:
+        return ["generate_patch", "apply_diff"]
+    
+    def _get_called_methods(self, state: AgentState) -> list[str]:
+        called = []
+        if hasattr(state, 'patches_pending') and state.patches_pending:
+            for vuln in state.patches_pending:
+                if vuln.patch_diff:
+                    called.append("generate_patch")
+                    called.append("apply_diff")
+                    break
+        return list(set(called))

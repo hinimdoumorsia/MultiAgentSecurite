@@ -108,3 +108,29 @@ class MemorySafetyAgent(BaseAgent):
             bin_path.relative_to(_PROJECT_ROOT),
         )
         return state
+    
+
+
+    # Ajouter ces méthodes à la fin de la classe MemorySafetyAgent
+
+    def _get_available_methods(self) -> list[str]:
+        """Retourne les méthodes disponibles pour cet agent."""
+        return ["buffer_overflow", "memory_leak", "use_after_free", "double_free", "null_dereference", "out_of_bounds"]
+    
+    def _get_called_methods(self, state: AgentState) -> list[str]:
+        """Retourne quelles méthodes ont été appelées."""
+        called = []
+        # Vérifier quels types de vulnérabilités ont été trouvés
+        for finding in getattr(state, 'memory_safety_findings', []):
+            title = finding.title.lower()
+            if "buffer" in title or "overflow" in title:
+                called.append("buffer_overflow")
+            if "use after free" in title or "use-after-free" in title:
+                called.append("use_after_free")
+            if "double free" in title:
+                called.append("double_free")
+            if "leak" in title:
+                called.append("memory_leak")
+            if "null" in title:
+                called.append("null_dereference")
+        return list(set(called))  # Éliminer les doublons
