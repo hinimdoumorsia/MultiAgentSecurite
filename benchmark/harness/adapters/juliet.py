@@ -1,35 +1,21 @@
-"""Adapter Juliet Test Suite (NIST SARD) -> liste[GroundTruthLabel].
+"""Adapter Juliet Test Suite (NIST SARD) C/C++ -> liste[GroundTruthLabel].
 
-Juliet fournit des cas de test SYNTHETIQUES a negatifs PROPRES (chaque cas a une
-version vulnerable "bad" et une version saine "good"), avec le CWE dans le nom de
-fichier. C'est la reference detection pour C/C++ (et Java).
+Dans Juliet, CHAQUE fichier testcase contient a la fois le code vulnerable et le
+code corrige, separes par des gardes preprocesseur :
 
-Layout attendu (telecharger Juliet C/C++ depuis https://samate.nist.gov/SARD/) :
+    #ifndef OMITBAD   ... #endif /* OMITBAD */    <- code VULNERABLE (fonction bad)
+    #ifndef OMITGOOD  ... #endif /* OMITGOOD */    <- code SAIN (fonctions good)
+    #ifdef  INCLUDEMAIN ...                         <- main() de test (ignore)
 
-    datasets/juliet/
-      C/testcases/CWE121_Stack_Based_Buffer_Overflow/.../CWE121_..._01.c
-      ...
+On exploite ces gardes pour materialiser DEUX fichiers PROPRES par cas :
+  - <id>_bad  : fichier sans le bloc OMITGOOD  -> is_vulnerable=True
+  - <id>_good : fichier sans le bloc OMITBAD   -> is_vulnerable=False (negatif PROPRE)
 
-STRATEGIE DE LABELLISATION (robuste et testable au niveau fichier) :
+C'est ce qui donne a Juliet sa valeur : des negatifs construits (precision/FPR
+fiables). Le CWE vient du nom (CWEnnn). Scoring 'presence' (fichier + CWE famille).
 
-  Juliet package souvent "bad" et "good" dans le MEME fichier (fonctions bad() /
-  goodG2B()). Ce melange casse un matching au niveau fichier. Cet adapter gere
-  donc DEUX cas :
-
-  1. Si un `manifest.xml` (format SARD) est present a la racine : on le lit comme
-     verite terrain (fichier + ligne + flaw). Source autoritaire.
-
-  2. Sinon (fallback marqueurs) : on materialise, par cas de test, DEUX fichiers
-     isoles dans `_cases/` :
-        - <id>_bad  : le fichier original (contient le defaut) -> is_vulnerable=True
-                      ligne = 1ere ligne marquee `POTENTIAL FLAW` / `FLAW`.
-        - <id>_good : variante où les blocs marques sont neutralises -> is_vulnerable=False
-     Si aucun marqueur n'est trouve, le cas est ignore (on ne devine pas).
-
-ATTENTION : a VALIDER contre le vrai telechargement (la structure Juliet varie
-selon l'edition). Tant que ce n'est pas verifie, garder `enabled: false` dans
-config.yaml et lancer d'abord `--dataset juliet --mock` pour inspecter les cas
-materialises.
+Seuls les fichiers AUTONOMES (contenant les deux gardes) sont traites ; les
+variantes multi-fichiers (_01a.c/_01b.c, _51a.c...) sont ignorees.
 """
 
 from __future__ import annotations
@@ -39,28 +25,29 @@ from pathlib import Path
 
 from MultiAgentSecurite.benchmark.harness.schema import GroundTruthLabel
 
-# Extension -> langage de l'agent.
-_EXT_LANG = {
-    ".c": "c",
-    ".cpp": "cpp", ".cc": "cpp", ".cxx": "cpp",
-    ".java": "java",
-}
-
+_EXT_LANG = {".c": "c", ".cpp": "cpp", ".cc": "cpp", ".cxx": "cpp"}
 _CWE_RE = re.compile(r"CWE[-_]?(\d+)", re.IGNORECASE)
-_FLAW_RE = re.compile(r"/\*\s*(?:POTENTIAL\s+)?FLAW", re.IGNORECASE)
+_FLAW_RE = re.compile(r"/\*\s*POTENTIAL\s+FLAW", re.IGNORECASE)
 
 
 def _cwe_of(path: Path) -> str:
-    """Extrait le CWE depuis le chemin/nom (CWE121_...) -> 'CWE-121'."""
     m = _CWE_RE.search(str(path))
     return f"CWE-{m.group(1)}" if m else "CWE-Unknown"
 
 
-def _flaw_line(lines: list[str]) -> int | None:
-    """1ere ligne marquee comme defaut potentiel (1-indexee)."""
-    for i, ln in enumerate(lines, 1):
-        if _FLAW_RE.search(ln):
-            return i
+def _guard_region(lines: list[str], guard: str) -> tuple[int, int] | None:
+    """Indices (debut, fin) inclusifs de la 1ere region `#ifndef <guard> .. #endif /* <guard> */`.
+
+    On matche le #endif ETIQUETE (commentaire contenant le nom du guard) -> robuste
+    a l'imbrication (#ifndef _WIN32, etc.).
+    """
+    start = None
+    for i, ln in enumerate(lines):
+        if start is None:
+            if f"#ifndef {guard}" in ln:
+                start = i
+        elif "#endif" in ln and guard in ln:
+            return (start, i)
     return None
 
 
@@ -69,7 +56,7 @@ def load(cfg: dict) -> list[GroundTruthLabel]:
     if not base.exists():
         raise FileNotFoundError(
             f"Dataset Juliet introuvable : {base}\n"
-            f"Telecharger Juliet C/C++ depuis https://samate.nist.gov/SARD/ d'abord."
+            f"Telecharger Juliet C/C++ (NIST SARD) et l'extraire la d'abord."
         )
 
     per_lang = int(cfg.get("per_language_limit", 50) or 50)
@@ -78,40 +65,48 @@ def load(cfg: dict) -> list[GroundTruthLabel]:
 
     counts: dict[str, int] = {}
     labels: list[GroundTruthLabel] = []
+    target_langs = set(_EXT_LANG.values())
 
-    # Parcours deterministe (tri par chemin) -> reproductible.
     for src in sorted(base.rglob("*")):
-        if not src.is_file():
-            continue
-        if "_cases" in src.parts:
+        if not src.is_file() or "_cases" in src.parts:
             continue
         lang = _EXT_LANG.get(src.suffix.lower())
         if lang is None:
             continue
         if counts.get(lang, 0) >= per_lang:
-            if all(counts.get(l, 0) >= per_lang for l in set(_EXT_LANG.values())):
+            if all(counts.get(l, 0) >= per_lang for l in target_langs):
                 break
             continue
 
         try:
-            content = src.read_text(encoding="utf-8", errors="replace")
+            lines = src.read_text(encoding="utf-8", errors="replace").splitlines()
         except Exception:
             continue
-        src_lines = content.splitlines()
-        flaw = _flaw_line(src_lines)
-        if flaw is None:
-            continue  # pas de marqueur -> on ne devine pas le label
+
+        bad_r = _guard_region(lines, "OMITBAD")
+        good_r = _guard_region(lines, "OMITGOOD")
+        if bad_r is None or good_r is None:
+            continue  # fichier non autonome (variante multi-fichiers) -> ignore
+
+        # On coupe la zone INCLUDEMAIN (main de test) jusqu'a la fin.
+        main_i = next((i for i, ln in enumerate(lines) if "#ifdef INCLUDEMAIN" in ln), len(lines))
+        core = range(0, main_i)
+        bad_set = set(range(bad_r[0], bad_r[1] + 1))
+        good_set = set(range(good_r[0], good_r[1] + 1))
+
+        bad_lines = [lines[i] for i in core if i not in good_set]   # vulnerable (sans le good)
+        good_lines = [lines[i] for i in core if i not in bad_set]   # sain (sans le bad)
 
         cwe = _cwe_of(src)
         counts[lang] = counts.get(lang, 0) + 1
-        idx = counts[lang]
-        cid = f"{cwe}_{src.stem}_{idx}"
+        cid = f"{cwe}_{src.stem}_{counts[lang]}"
         fname = src.name
 
-        # --- cas VULNERABLE (fichier tel quel) ---
+        flaw = next((n for n, ln in enumerate(bad_lines, 1) if _FLAW_RE.search(ln)), None)
+
         d_bad = cases_dir / f"{cid}_bad"
         d_bad.mkdir(parents=True, exist_ok=True)
-        (d_bad / fname).write_text(content, encoding="utf-8", errors="replace")
+        (d_bad / fname).write_text("\n".join(bad_lines), encoding="utf-8", errors="replace")
         labels.append(GroundTruthLabel(
             case_id=f"{cid}_bad", dataset="juliet", language=lang,
             repo_path=str(d_bad), is_vulnerable=True,
@@ -119,11 +114,6 @@ def load(cfg: dict) -> list[GroundTruthLabel]:
             extra={"source": str(src)},
         ))
 
-        # --- cas SAIN (lignes marquees FLAW commentees -> defaut neutralise) ---
-        good_lines = [
-            ("// " + ln) if _FLAW_RE.search(ln) else ln
-            for ln in src_lines
-        ]
         d_good = cases_dir / f"{cid}_good"
         d_good.mkdir(parents=True, exist_ok=True)
         (d_good / fname).write_text("\n".join(good_lines), encoding="utf-8", errors="replace")

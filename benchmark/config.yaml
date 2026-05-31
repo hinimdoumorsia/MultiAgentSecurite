@@ -50,7 +50,7 @@ datasets:
   # Prerequis : telecharger Juliet C/C++ dans benchmark/datasets/juliet/
   #             ET implementer l'adapter juliet (voir adapters/__init__.py).
   juliet:
-    enabled: false             # ADAPTER NON IMPLEMENTE -> garder false pour l'instant
+    enabled: true              # adapter OMIT-split valide (run de controle OK)
     adapter: juliet
     path: benchmark/datasets/juliet
     track: detection
