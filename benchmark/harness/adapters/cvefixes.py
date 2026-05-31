@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from harness.schema import GroundTruthLabel
+from MultiAgentSecurite.benchmark.harness.schema import GroundTruthLabel
 
 # language HF -> (valeur Language de l'agent, extension)
 _LANG_MAP = {

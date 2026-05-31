@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from harness.schema import CaseResult
+from MultiAgentSecurite.benchmark.harness.schema import CaseResult
 
 
 @dataclass

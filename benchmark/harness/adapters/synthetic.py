@@ -14,7 +14,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from harness.schema import GroundTruthLabel
+from MultiAgentSecurite.benchmark.harness.schema import GroundTruthLabel
 
 
 def load(cfg: dict) -> list[GroundTruthLabel]:

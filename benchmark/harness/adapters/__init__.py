@@ -6,7 +6,8 @@ et l'enregistrer dans ADAPTERS ci-dessous (clef = champ `adapter` du config.yaml
 
 from __future__ import annotations
 
-from harness.adapters import synthetic, owasp, cvefixes
+from MultiAgentSecurite.benchmark.harness.adapters import cvefixes, owasp
+from MultiAgentSecurite.benchmark.harness.adapters import synthetic
 
 ADAPTERS = {
     "synthetic": synthetic.load,

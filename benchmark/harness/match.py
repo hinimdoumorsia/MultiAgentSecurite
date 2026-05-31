@@ -14,8 +14,8 @@ from __future__ import annotations
 
 from pathlib import PurePosixPath, PureWindowsPath
 
-from harness.schema import AgentFinding, GroundTruthLabel
-from harness.cwe_map import cwe_matches
+from MultiAgentSecurite.benchmark.harness.schema import AgentFinding, GroundTruthLabel
+from MultiAgentSecurite.benchmark.harness.cwe_map import cwe_matches
 
 
 def _norm_path(p: str | None) -> str:

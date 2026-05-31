@@ -18,7 +18,7 @@ import sys
 import time
 from pathlib import Path
 
-from harness.schema import AgentFinding, CaseResult, GroundTruthLabel
+from MultiAgentSecurite.benchmark.harness.schema import AgentFinding, CaseResult, GroundTruthLabel
 
 # Racine du repo = parent de benchmark/
 _REPO_ROOT = Path(__file__).resolve().parents[2]

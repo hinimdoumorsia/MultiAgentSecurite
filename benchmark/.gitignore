@@ -1,0 +1,14 @@
+# Datasets volumineux telecharges (ne pas committer)
+datasets/owasp/
+datasets/juliet/
+datasets/vul4j/
+datasets/cvefixes/
+
+# Resultats generes
+results/*.json
+results/*.csv
+results/*.md
+results/raw/
+
+# On GARDE le mini-dataset synthetique (datasets/synthetic/) : il sert de test.
+!datasets/synthetic/

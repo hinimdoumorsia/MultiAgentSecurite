@@ -17,7 +17,7 @@ import subprocess
 import tempfile
 from pathlib import Path
 
-from harness.schema import AgentFinding, CaseResult, GroundTruthLabel
+from MultiAgentSecurite.benchmark.harness.schema import AgentFinding, CaseResult, GroundTruthLabel
 
 
 def _run_cmd(cmd: str, cwd: str, timeout: int = 600) -> bool:

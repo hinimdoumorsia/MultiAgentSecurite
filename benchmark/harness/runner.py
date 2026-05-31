@@ -29,13 +29,13 @@ _REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(_REPO_ROOT / "benchmark") not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT / "benchmark"))
 
-from harness.adapters import get_adapter
-from harness.detection_metrics import DetectionReport
-from harness.match import classify_case, _same_file
-from harness.repair_metrics import RepairReport
-from harness.repair_verify import verify_repair
-from harness.run_agent import AgentRunner, MockRunner
-from harness.schema import CaseResult, GroundTruthLabel
+from MultiAgentSecurite.benchmark.harness.adapters import get_adapter
+from MultiAgentSecurite.benchmark.harness.detection_metrics import DetectionReport
+from MultiAgentSecurite.benchmark.harness.match import classify_case, _same_file
+from MultiAgentSecurite.benchmark.harness.repair_metrics import RepairReport
+from MultiAgentSecurite.benchmark.harness.repair_verify import verify_repair
+from MultiAgentSecurite.benchmark.harness.run_agent import AgentRunner, MockRunner
+from MultiAgentSecurite.benchmark.harness.schema import CaseResult, GroundTruthLabel
 
 
 def load_config(path: str) -> dict:
