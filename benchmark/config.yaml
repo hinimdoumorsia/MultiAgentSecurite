@@ -55,6 +55,7 @@ datasets:
     path: benchmark/datasets/juliet
     track: detection
     quality: high
+    scoring: category          # negatifs propres par-CWE : un FP ne compte que si meme CWE (comme OWASP, equitable)
     per_language_limit: 50     # 50 C + 50 C++
 
 # --- Sortie ---

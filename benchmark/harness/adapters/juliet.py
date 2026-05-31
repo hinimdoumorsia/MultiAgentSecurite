@@ -21,6 +21,7 @@ variantes multi-fichiers (_01a.c/_01b.c, _51a.c...) sont ignorees.
 from __future__ import annotations
 
 import re
+from collections import defaultdict
 from pathlib import Path
 
 from MultiAgentSecurite.benchmark.harness.schema import GroundTruthLabel
@@ -65,17 +66,40 @@ def load(cfg: dict) -> list[GroundTruthLabel]:
 
     counts: dict[str, int] = {}
     labels: list[GroundTruthLabel] = []
-    target_langs = set(_EXT_LANG.values())
 
+    # --- Selection DIVERSIFIEE par CWE ---------------------------------------
+    # rglob trie -> tous les 1ers fichiers sont du meme CWE (ex. CWE114). On
+    # regroupe par (langage, CWE) puis on entrelace (round-robin) pour couvrir
+    # un maximum de categories CWE dans l'echantillon.
+    by_lang_cwe: dict[str, dict[str, list[Path]]] = defaultdict(lambda: defaultdict(list))
     for src in sorted(base.rglob("*")):
         if not src.is_file() or "_cases" in src.parts:
             continue
         lang = _EXT_LANG.get(src.suffix.lower())
         if lang is None:
             continue
+        by_lang_cwe[lang][_cwe_of(src)].append(src)
+
+    def _interleave(cwe_map: dict[str, list[Path]]) -> list[Path]:
+        iters = [iter(v) for v in cwe_map.values()]
+        out: list[Path] = []
+        active = True
+        while active:
+            active = False
+            for it in iters:
+                nxt = next(it, None)
+                if nxt is not None:
+                    out.append(nxt)
+                    active = True
+        return out
+
+    ordered = [(lang, src) for lang, cwe_map in by_lang_cwe.items()
+               for src in _interleave(cwe_map)]
+
+    for lang, src in ordered:
+        if all(counts.get(l, 0) >= per_lang for l in by_lang_cwe):
+            break
         if counts.get(lang, 0) >= per_lang:
-            if all(counts.get(l, 0) >= per_lang for l in target_langs):
-                break
             continue
 
         try:
@@ -110,8 +134,10 @@ def load(cfg: dict) -> list[GroundTruthLabel]:
         labels.append(GroundTruthLabel(
             case_id=f"{cid}_bad", dataset="juliet", language=lang,
             repo_path=str(d_bad), is_vulnerable=True,
-            file=fname, line_start=flaw, line_end=flaw, cwe_id=cwe,
-            extra={"source": str(src)},
+            # line_start=None -> matching FICHIER (coherent avec OWASP, scoring category).
+            # La ligne de defaut est conservee dans extra pour usage futur (line-level).
+            file=fname, line_start=None, line_end=None, cwe_id=cwe,
+            extra={"source": str(src), "flaw_line": flaw},
         ))
 
         d_good = cases_dir / f"{cid}_good"
