@@ -2,11 +2,14 @@
 
     python -m benchmark.harness.runner --config benchmark/config.yaml
     python -m benchmark.harness.runner --mock          # sans API, runner factice
-    python -m benchmark.harness.runner --dataset synthetic --mock
+    python -m benchmark.harness.runner --dataset cvefixes --mock
 
 Pipeline : config -> adapters (labels) -> runner agent (findings, cache par
-repo_path) -> matching (detection) + verify (repair) -> metriques par langage
-et globales -> ecriture CSV + Markdown + JSON brut.
+repo_path) -> matching (detection) + verify (repair) -> metriques par dataset,
+par langage et globales -> ecriture d'un dossier de run horodate (CSV + Markdown
++ JSON brut) + mise a jour de results/INDEX.md.
+
+Chaque sortie est tracable : on sait quel chiffre vient de quel dataset.
 """
 
 from __future__ import annotations
@@ -57,6 +60,7 @@ def collect_labels(cfg: dict, only: str | None) -> list[GroundTruthLabel]:
         for lab in loaded:
             lab.extra["_track"] = dcfg.get("track", "detection")
             lab.extra["_scoring"] = dcfg.get("scoring", "presence")
+            lab.extra["_quality"] = dcfg.get("quality", "indicative")
         print(f"  [{name}] {len(loaded)} cas charges")
         labels.extend(loaded)
     return labels
@@ -80,8 +84,19 @@ def run(cfg: dict, runner, only: str | None) -> dict:
     # (essentiel pour OWASP : 2740 labels partagent 1 repo_path = 1 seul scan).
     findings_cache: dict[tuple[str, int], CaseResult] = {}
 
+    # Meta par dataset (nb de cas, piste, qualite) pour la tracabilite des sorties.
+    dataset_meta: dict[str, dict] = {}
+
     for i, label in enumerate(labels, 1):
         track = label.extra.get("_track", "detection")
+        meta = dataset_meta.setdefault(label.dataset, {
+            "count": 0, "track": track,
+            "quality": label.extra.get("_quality", "indicative"),
+            "languages": set(),
+        })
+        meta["count"] += 1
+        meta["languages"].add(label.language)
+
         for run_idx in range(k):
             key = (label.repo_path, run_idx)
             cached = findings_cache.get(key)
@@ -102,7 +117,7 @@ def run(cfg: dict, runner, only: str | None) -> dict:
                     label, result.findings, line_tol, cwe_mode,
                     scoring=label.extra.get("_scoring", "presence"),
                 )
-                detection.record(label.language, outcome)
+                detection.record(label.language, outcome, dataset=label.dataset)
                 result.flagged = len(result.findings) > 0
                 result.is_true_positive = (outcome == "TP")
             else:
@@ -137,11 +152,17 @@ def run(cfg: dict, runner, only: str | None) -> dict:
         if i % 50 == 0:
             print(f"  ... {i}/{len(labels)} cas traites")
 
+    # Sets -> listes triees (serialisable JSON).
+    for m in dataset_meta.values():
+        m["languages"] = sorted(m["languages"])
+
     summary = {
         "generated_at": _utcnow().isoformat(),
         "runner": runner.name,
         "n_cases": len(labels),
         "runs_per_case": k,
+        "matching": {"line_tolerance": line_tol, "cwe_mode": cwe_mode},
+        "datasets": dataset_meta,
         "detection": detection.summary(cfg["output"].get("bootstrap_samples", 1000)),
         "repair": repair.summary(),
     }
@@ -149,30 +170,50 @@ def run(cfg: dict, runner, only: str | None) -> dict:
     return summary
 
 
+# ---------------------------------------------------------------------------
+# Ecriture des sorties : un dossier par run + index historique
+# ---------------------------------------------------------------------------
+
+_CSV_HEADER = ["tp", "fp", "fn", "tn", "precision", "recall", "f1", "fpr", "youden_j"]
+
+
+def _row(m: dict) -> list:
+    return [m["tp"], m["fp"], m["fn"], m["tn"],
+            m["precision"], m["recall"], m["f1"], m["fpr"], m["youden_j"]]
+
+
 def _write_outputs(cfg: dict, summary: dict, raw: list[dict]) -> None:
-    out_dir = _REPO_ROOT / cfg["output"]["dir"]
-    (out_dir / "raw").mkdir(parents=True, exist_ok=True)
+    out_root = _REPO_ROOT / cfg["output"]["dir"]
     stamp = _utcnow().strftime("%Y%m%d-%H%M%S")
+    run_dir = out_root / f"run_{stamp}"
+    run_dir.mkdir(parents=True, exist_ok=True)
 
-    (out_dir / "raw" / f"records_{stamp}.json").write_text(
-        json.dumps(raw, indent=2), encoding="utf-8")
-    (out_dir / f"summary_{stamp}.json").write_text(
-        json.dumps(summary, indent=2), encoding="utf-8")
+    # JSON
+    (run_dir / "raw_records.json").write_text(json.dumps(raw, indent=2), encoding="utf-8")
+    (run_dir / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
 
-    # CSV detection : une ligne par langue + GLOBAL.
     det = summary["detection"]
-    with (out_dir / f"detection_{stamp}.csv").open("w", newline="", encoding="utf-8") as fh:
-        w = csv.writer(fh)
-        w.writerow(["language", "tp", "fp", "fn", "tn", "precision", "recall", "f1", "fpr", "youden_j"])
-        for lang, m in det["by_language"].items():
-            w.writerow([lang, m["tp"], m["fp"], m["fn"], m["tn"],
-                        m["precision"], m["recall"], m["f1"], m["fpr"], m["youden_j"]])
-        g = det["global_micro"]
-        w.writerow(["GLOBAL(micro)", g["tp"], g["fp"], g["fn"], g["tn"],
-                    g["precision"], g["recall"], g["f1"], g["fpr"], g["youden_j"]])
 
-    _write_markdown(out_dir / f"summary_{stamp}.md", summary)
-    print(f"\nResultats ecrits dans {out_dir} (stamp {stamp})")
+    # CSV par langage (+ GLOBAL)
+    with (run_dir / "detection_by_language.csv").open("w", newline="", encoding="utf-8") as fh:
+        w = csv.writer(fh)
+        w.writerow(["language"] + _CSV_HEADER)
+        for lang, m in det["by_language"].items():
+            w.writerow([lang] + _row(m))
+        w.writerow(["GLOBAL(micro)"] + _row(det["global_micro"]))
+
+    # CSV par dataset/langage (la tracabilite : quel chiffre vient d'ou)
+    with (run_dir / "detection_by_dataset.csv").open("w", newline="", encoding="utf-8") as fh:
+        w = csv.writer(fh)
+        w.writerow(["dataset/language", "quality"] + _CSV_HEADER)
+        for key, m in det.get("by_dataset", {}).items():
+            ds_name = key.split("/", 1)[0]
+            quality = summary["datasets"].get(ds_name, {}).get("quality", "")
+            w.writerow([key, quality] + _row(m))
+
+    _write_markdown(run_dir / "summary.md", summary)
+    _append_index(out_root / "INDEX.md", stamp, summary)
+    print(f"\nResultats ecrits dans {run_dir}")
 
 
 def _write_markdown(path: Path, summary: dict) -> None:
@@ -182,8 +223,33 @@ def _write_markdown(path: Path, summary: dict) -> None:
         f"# Benchmark MultiAgentSecurite - {summary['generated_at']}",
         "",
         f"- Runner : `{summary['runner']}`  |  cas : {summary['n_cases']}  |  runs/cas : {summary['runs_per_case']}",
+        f"- Matching : tolerance={summary['matching']['line_tolerance']} lignes, CWE `{summary['matching']['cwe_mode']}`",
         "",
-        "## Detection (par langage)",
+        "## Datasets inclus",
+        "",
+        "| Dataset | Cas | Langages | Piste | Qualite metriques |",
+        "|---|---|---|---|---|",
+    ]
+    for name, m in summary["datasets"].items():
+        lines.append(f"| {name} | {m['count']} | {', '.join(m['languages'])} | {m['track']} | {m['quality']} |")
+
+    lines += [
+        "",
+        "## Detection par dataset / langage",
+        "",
+        "> `haute` = negatifs propres (precision/FPR fiables). "
+        "`indicative` = negatifs bruites (rappel surtout, precision a titre indicatif).",
+        "",
+        "| Dataset / Langage | TP | FP | FN | TN | Precision | Rappel | F1 | FPR | Youden J |",
+        "|---|---|---|---|---|---|---|---|---|---|",
+    ]
+    for key, m in det.get("by_dataset", {}).items():
+        lines.append(f"| {key} | {m['tp']} | {m['fp']} | {m['fn']} | {m['tn']} | "
+                     f"{m['precision']} | {m['recall']} | {m['f1']} | {m['fpr']} | {m['youden_j']} |")
+
+    lines += [
+        "",
+        "## Detection par langage (tous datasets confondus)",
         "",
         "| Langage | TP | FP | FN | TN | Precision | Rappel | F1 | FPR | Youden J |",
         "|---|---|---|---|---|---|---|---|---|---|",
@@ -213,6 +279,24 @@ def _write_markdown(path: Path, summary: dict) -> None:
     lines.append(f"| **GLOBAL** | {rg['attempted']} | {rg['valid_diff_rate']} | "
                  f"**{rg['fix_rate']}** | **{rg['regression_rate']}** |")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def _append_index(path: Path, stamp: str, summary: dict) -> None:
+    """Ajoute une ligne a l'historique des runs (cree l'entete si absent)."""
+    g = summary["detection"]["global_micro"]
+    ds = ", ".join(f"{n}({m['count']})" for n, m in summary["datasets"].items())
+    header = (
+        "# Historique des runs de benchmark\n\n"
+        "| Run | Runner | Cas | Datasets | F1 global | Rappel | Precision |\n"
+        "|---|---|---|---|---|---|---|\n"
+    )
+    line = (f"| [run_{stamp}](run_{stamp}/summary.md) | {summary['runner']} | "
+            f"{summary['n_cases']} | {ds} | {g['f1']} | {g['recall']} | {g['precision']} |\n")
+    if not path.exists():
+        path.write_text(header + line, encoding="utf-8")
+    else:
+        with path.open("a", encoding="utf-8") as fh:
+            fh.write(line)
 
 
 def main() -> None:

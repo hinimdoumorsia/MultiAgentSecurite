@@ -6,15 +6,15 @@ et l'enregistrer dans ADAPTERS ci-dessous (clef = champ `adapter` du config.yaml
 
 from __future__ import annotations
 
-from MultiAgentSecurite.benchmark.harness.adapters import cvefixes, owasp
+from MultiAgentSecurite.benchmark.harness.adapters import cvefixes, owasp, juliet
 from MultiAgentSecurite.benchmark.harness.adapters import synthetic
 
 ADAPTERS = {
     "synthetic": synthetic.load,
     "owasp": owasp.load,
     "cvefixes": cvefixes.load,
-    # "juliet": juliet.load,      # a implementer
-    # "vul4j": vul4j.load,        # a implementer
+    "juliet": juliet.load,        # a VALIDER contre le vrai telechargement Juliet
+    # "vul4j": vul4j.load,        # a implementer (repair Java)
 }
 
 

@@ -64,12 +64,16 @@ class Confusion:
 @dataclass
 class DetectionReport:
     by_language: dict[str, Confusion] = field(default_factory=dict)
+    # Ventilation par "dataset/langage" pour savoir d'où vient chaque chiffre.
+    by_dataset: dict[str, Confusion] = field(default_factory=dict)
     # outcomes bruts pour le bootstrap : liste de tuples (langue, outcome)
     _outcomes: list[tuple[str, str]] = field(default_factory=list)
 
-    def record(self, language: str, outcome: str) -> None:
+    def record(self, language: str, outcome: str, dataset: str | None = None) -> None:
         self.by_language.setdefault(language, Confusion()).add(outcome)
         self._outcomes.append((language, outcome))
+        if dataset is not None:
+            self.by_dataset.setdefault(f"{dataset}/{language}", Confusion()).add(outcome)
 
     def global_micro(self) -> Confusion:
         g = Confusion()
@@ -114,6 +118,7 @@ class DetectionReport:
         ci_lo, ci_hi = self.f1_confidence_interval(bootstrap_samples)
         return {
             "by_language": {lang: c.as_dict() for lang, c in self.by_language.items()},
+            "by_dataset": {k: c.as_dict() for k, c in sorted(self.by_dataset.items())},
             "global_micro": micro.as_dict(),
             "global_macro": self.global_macro(),
             "f1_ci95": [ci_lo, ci_hi],

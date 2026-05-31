@@ -14,6 +14,11 @@ from memory.persistent import PersistentMemory
 
 logger = logging.getLogger(__name__)
 
+# Limite de caracteres envoyes au LLM par fichier. Le 8B (llama-3.1-8b-instant)
+# plafonne a 6000 tokens/MINUTE sur free-tier ; on garde la requete bien en dessous.
+# ~8000 caracteres ~= 2600 tokens (+ prompt ~300 + max_tokens 1024 ~= 4000 < 6000).
+MAX_FILE_CHARS = 8000
+
 SYSTEM_PROMPT = """\
 You are an expert security code reviewer. Analyze the provided code for:
 - Logic vulnerabilities (auth bypass, IDOR, business logic flaws)
@@ -67,28 +72,24 @@ class SemanticAnalystAgent(BaseAgent):
             if not target.content:
                 continue
 
-            context = _build_context(target.content, similar_patterns)
+            file_content = target.content[:MAX_FILE_CHARS]
+            if len(target.content) > MAX_FILE_CHARS:
+                logger.debug("[semantic] %s tronque a %d/%d caracteres",
+                             target.path, MAX_FILE_CHARS, len(target.content))
+            context = _build_context(file_content, similar_patterns)
+            # model="fast" (llama-3.1-8b-instant) : limite tokens/jour ~5x plus
+            # haute que le 70B sur free-tier -> beaucoup plus de cas/jour pour le
+            # benchmark. Compromis qualite a documenter dans le memoire.
+            # max_tokens reduit : un tableau JSON de findings tient largement.
             raw = self._llm.query(
                 system=SYSTEM_PROMPT,
                 user=f"File: {target.path}\n\n```\n{context}\n```",
-                model="strong"
+                model="fast",
+                max_tokens=1024,
             )
 
-            # 🔧 CORRECTION: Nettoyer la réponse JSON
-            raw = self._clean_json_response(raw)
-            
-            try:
-                items = json.loads(raw)
-                if not isinstance(items, list):
-                    # Si c'est un objet avec une clé 'findings'
-                    if isinstance(items, dict) and 'findings' in items:
-                        items = items.get('findings', [])
-                    else:
-                        items = []
-            except json.JSONDecodeError as e:
-                logger.warning("[semantic] failed to parse LLM response for %s: %s", target.path, e)
-                logger.debug(f"[semantic] Raw response (first 200 chars): {raw[:200]}")
-                continue
+            # Parsing robuste (le 8B renvoie souvent du JSON mal formé).
+            items = self._parse_findings(raw, target.path)
 
             for item in items:
                 if not isinstance(item, dict):
@@ -133,8 +134,48 @@ class SemanticAnalystAgent(BaseAgent):
             match = re.search(json_pattern, raw, re.DOTALL)
             if match:
                 raw = match.group(1)
-        
+
         return raw
+
+    @staticmethod
+    def _repair_json(s: str) -> str:
+        """Répare les erreurs fréquentes du 8B : échappements invalides, virgule finale."""
+        if not s:
+            return s
+        # Backslash non suivi d'un caractère d'échappement JSON valide -> on l'échappe.
+        s = re.sub(r'\\(?!["\\/bfnrtu])', r'\\\\', s)
+        # Virgule finale avant } ou ]
+        s = re.sub(r",\s*([}\]])", r"\1", s)
+        return s
+
+    def _parse_findings(self, raw: str, path: str) -> list:
+        """Parse robuste de la réponse LLM -> liste de findings.
+
+        Gère le JSON mal formé du 8B : tente le parse direct, puis une réparation
+        (échappements/virgules), puis en dernier recours extrait les objets {...}
+        individuellement. Renvoie [] si rien n'est récupérable (au lieu de tout perdre).
+        """
+        cleaned = self._clean_json_response(raw)
+        for candidate in (cleaned, self._repair_json(cleaned)):
+            try:
+                data = json.loads(candidate)
+            except (json.JSONDecodeError, TypeError):
+                continue
+            if isinstance(data, list):
+                return data
+            if isinstance(data, dict):
+                return data.get("findings", []) if "findings" in data else [data]
+
+        # Secours : récupérer les objets JSON isolés (findings plats, sans imbrication).
+        objs = []
+        for m in re.finditer(r"\{[^{}]*\}", cleaned, re.DOTALL):
+            try:
+                objs.append(json.loads(self._repair_json(m.group(0))))
+            except json.JSONDecodeError:
+                pass
+        if not objs:
+            logger.warning("[semantic] JSON irrécupérable pour %s (%d cars)", path, len(raw))
+        return objs
 
     # ============================================
     # Méthodes pour la traçabilité

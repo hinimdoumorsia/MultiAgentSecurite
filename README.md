@@ -5,9 +5,10 @@
 **Agent IA multi-agent pour la révision de code, la détection de vulnérabilités et la correction automatique**
 
 [![LangGraph](https://img.shields.io/badge/LangGraph-Orchestration-1e3a8a)](https://langchain-ai.github.io/langgraph/)
-[![Gemini](https://img.shields.io/badge/Gemini_API-Gratuit-4285f4)](https://aistudio.google.com/)
-[![SWE-bench](https://img.shields.io/badge/SWE--bench-38.2%25-22c55e)](https://www.swebench.com/)
 [![License](https://img.shields.io/badge/License-MIT-ef4444)](LICENSE)
+
+<!-- Chiffres de performance retirés : à remplacer par les résultats réels du benchmark. -->
+> ⚠️ **README en cours de mise à jour — ne pas considérer comme source de vérité.** Les métriques de performance sont à mesurer via le harness de benchmark.
 
 </div>
 
@@ -28,7 +29,7 @@ L'intégration d’agents d’intelligence artificielle dans les pipelines de d�
 * **Sécurité** : comment éviter l’introduction de nouvelles vulnérabilités ?
 * **Alignement architectural** : comment maintenir la cohérence globale du système logiciel ?
 
-Les agents IA actuels rencontrent encore des difficultés lorsqu’ils doivent traiter des bases de code larges, distribuées et complexes. Plusieurs études montrent également que certains systèmes automatisés peuvent introduire de nouvelles vulnérabilités lors des corrections, avec un taux pouvant atteindre **8.7 % des cas**.
+Les agents IA actuels rencontrent encore des difficultés lorsqu’ils doivent traiter des bases de code larges, distribuées et complexes. Plusieurs études montrent également que certains systèmes automatisés peuvent introduire de nouvelles vulnérabilités lors des corrections (taux à citer depuis une source vérifiée — _chiffre à confirmer_).
 
 C’est dans ce contexte que s’inscrit ce projet de recherche. Notre objectif est de concevoir et d’implémenter, de bout en bout, une architecture complète de système multi-agents inspirée du fonctionnement collaboratif humain.
 
@@ -103,7 +104,7 @@ Sans Qdrant, le scanner fonctionne en mode dégradé : analyse statique et LLM r
 |-----------|--------|
 | **Nom** | LangGraph (`workflow.py`) |
 | **Rôle** | Centralise le flux, décide quel agent lance, gère l'état global |
-| **Type** | Hybride (hiérarchique + distribué) |
+| **Type** | Hiérarchique / centralisé (orchestrateur unique + état partagé) |
 | **État** | `AgentState` (objet partagé entre tous les agents) |
 
 ---

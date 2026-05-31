@@ -18,6 +18,8 @@ class BanditTool:
                 ["bandit", "-r", repo_root, "-f", "json", "-q"],
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
+                errors="replace",
                 timeout=120,
             )
             data = json.loads(result.stdout)

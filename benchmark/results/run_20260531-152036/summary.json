@@ -1,0 +1,260 @@
+{
+  "generated_at": "2026-05-31T15:20:34.897641+00:00",
+  "runner": "agent",
+  "n_cases": 798,
+  "runs_per_case": 1,
+  "matching": {
+    "line_tolerance": 5,
+    "cwe_mode": "family"
+  },
+  "datasets": {
+    "cvefixes": {
+      "count": 798,
+      "track": "detection",
+      "quality": "indicative",
+      "languages": [
+        "c",
+        "cpp",
+        "go",
+        "java",
+        "javascript",
+        "php",
+        "python",
+        "typescript"
+      ]
+    }
+  },
+  "detection": {
+    "by_language": {
+      "c": {
+        "tp": 15,
+        "fp": 45,
+        "fn": 35,
+        "tn": 5,
+        "total": 100,
+        "precision": 0.25,
+        "recall": 0.3,
+        "f1": 0.2727,
+        "fpr": 0.9,
+        "youden_j": -0.6
+      },
+      "javascript": {
+        "tp": 4,
+        "fp": 36,
+        "fn": 46,
+        "tn": 14,
+        "total": 100,
+        "precision": 0.1,
+        "recall": 0.08,
+        "f1": 0.0889,
+        "fpr": 0.72,
+        "youden_j": -0.64
+      },
+      "python": {
+        "tp": 16,
+        "fp": 33,
+        "fn": 34,
+        "tn": 17,
+        "total": 100,
+        "precision": 0.3265,
+        "recall": 0.32,
+        "f1": 0.3232,
+        "fpr": 0.66,
+        "youden_j": -0.34
+      },
+      "cpp": {
+        "tp": 14,
+        "fp": 45,
+        "fn": 36,
+        "tn": 5,
+        "total": 100,
+        "precision": 0.2373,
+        "recall": 0.28,
+        "f1": 0.2569,
+        "fpr": 0.9,
+        "youden_j": -0.62
+      },
+      "php": {
+        "tp": 12,
+        "fp": 39,
+        "fn": 38,
+        "tn": 11,
+        "total": 100,
+        "precision": 0.2353,
+        "recall": 0.24,
+        "f1": 0.2376,
+        "fpr": 0.78,
+        "youden_j": -0.54
+      },
+      "go": {
+        "tp": 14,
+        "fp": 42,
+        "fn": 36,
+        "tn": 7,
+        "total": 99,
+        "precision": 0.25,
+        "recall": 0.28,
+        "f1": 0.2642,
+        "fpr": 0.8571,
+        "youden_j": -0.5771
+      },
+      "java": {
+        "tp": 13,
+        "fp": 40,
+        "fn": 37,
+        "tn": 10,
+        "total": 100,
+        "precision": 0.2453,
+        "recall": 0.26,
+        "f1": 0.2524,
+        "fpr": 0.8,
+        "youden_j": -0.54
+      },
+      "typescript": {
+        "tp": 8,
+        "fp": 36,
+        "fn": 42,
+        "tn": 13,
+        "total": 99,
+        "precision": 0.1818,
+        "recall": 0.16,
+        "f1": 0.1702,
+        "fpr": 0.7347,
+        "youden_j": -0.5747
+      }
+    },
+    "by_dataset": {
+      "cvefixes/c": {
+        "tp": 15,
+        "fp": 45,
+        "fn": 35,
+        "tn": 5,
+        "total": 100,
+        "precision": 0.25,
+        "recall": 0.3,
+        "f1": 0.2727,
+        "fpr": 0.9,
+        "youden_j": -0.6
+      },
+      "cvefixes/cpp": {
+        "tp": 14,
+        "fp": 45,
+        "fn": 36,
+        "tn": 5,
+        "total": 100,
+        "precision": 0.2373,
+        "recall": 0.28,
+        "f1": 0.2569,
+        "fpr": 0.9,
+        "youden_j": -0.62
+      },
+      "cvefixes/go": {
+        "tp": 14,
+        "fp": 42,
+        "fn": 36,
+        "tn": 7,
+        "total": 99,
+        "precision": 0.25,
+        "recall": 0.28,
+        "f1": 0.2642,
+        "fpr": 0.8571,
+        "youden_j": -0.5771
+      },
+      "cvefixes/java": {
+        "tp": 13,
+        "fp": 40,
+        "fn": 37,
+        "tn": 10,
+        "total": 100,
+        "precision": 0.2453,
+        "recall": 0.26,
+        "f1": 0.2524,
+        "fpr": 0.8,
+        "youden_j": -0.54
+      },
+      "cvefixes/javascript": {
+        "tp": 4,
+        "fp": 36,
+        "fn": 46,
+        "tn": 14,
+        "total": 100,
+        "precision": 0.1,
+        "recall": 0.08,
+        "f1": 0.0889,
+        "fpr": 0.72,
+        "youden_j": -0.64
+      },
+      "cvefixes/php": {
+        "tp": 12,
+        "fp": 39,
+        "fn": 38,
+        "tn": 11,
+        "total": 100,
+        "precision": 0.2353,
+        "recall": 0.24,
+        "f1": 0.2376,
+        "fpr": 0.78,
+        "youden_j": -0.54
+      },
+      "cvefixes/python": {
+        "tp": 16,
+        "fp": 33,
+        "fn": 34,
+        "tn": 17,
+        "total": 100,
+        "precision": 0.3265,
+        "recall": 0.32,
+        "f1": 0.3232,
+        "fpr": 0.66,
+        "youden_j": -0.34
+      },
+      "cvefixes/typescript": {
+        "tp": 8,
+        "fp": 36,
+        "fn": 42,
+        "tn": 13,
+        "total": 99,
+        "precision": 0.1818,
+        "recall": 0.16,
+        "f1": 0.1702,
+        "fpr": 0.7347,
+        "youden_j": -0.5747
+      }
+    },
+    "global_micro": {
+      "tp": 96,
+      "fp": 316,
+      "fn": 304,
+      "tn": 82,
+      "total": 798,
+      "precision": 0.233,
+      "recall": 0.24,
+      "f1": 0.2365,
+      "fpr": 0.794,
+      "youden_j": -0.554
+    },
+    "global_macro": {
+      "precision": 0.2283,
+      "recall": 0.24,
+      "f1": 0.2333,
+      "fpr": 0.794,
+      "youden_j": -0.554
+    },
+    "f1_ci95": [
+      0.1982,
+      0.2729
+    ]
+  },
+  "repair": {
+    "by_language": {},
+    "global": {
+      "attempted": 0,
+      "valid_diff_rate": 0.0,
+      "fix_rate": 0.0,
+      "regression_rate": 0.0,
+      "fixed": 0,
+      "fixed_measurable": 0,
+      "regressed": 0
+    }
+  }
+}

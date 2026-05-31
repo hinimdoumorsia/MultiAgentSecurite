@@ -35,7 +35,21 @@ from graph.router import (
 from graph.state import AgentState
 
 
-def build_workflow() -> StateGraph:
+def build_workflow(detection_only: bool = False) -> StateGraph:
+    """Construit le graphe LangGraph.
+
+    detection_only=True : pipeline de DÉTECTION seule (triage -> scanner ->
+        memory_safety -> semantic_analyst -> report). On saute exploit_scorer
+        (scoring LLM coûteux et inutile pour la détection), patcher et validator.
+        Utilisé par le benchmark de détection sur gros volume.
+
+    detection_only=False : pipeline complet avec scoring, génération de patch et
+        validation (boucle de retry jusqu'à max_patch_iterations).
+
+    Note : l'analyse est câblée en SÉQUENTIEL (scanner -> memory_safety ->
+    semantic_analyst) pour garantir que les deux agents tournent réellement.
+    memory_safety se court-circuite seul s'il n'y a pas de C/C++/Rust.
+    """
     graph = StateGraph(AgentState)
 
     # Register agents as nodes
@@ -43,51 +57,44 @@ def build_workflow() -> StateGraph:
     graph.add_node("scanner", ScannerAgent().run)
     graph.add_node("memory_safety", MemorySafetyAgent().run)
     graph.add_node("semantic_analyst", SemanticAnalystAgent().run)
-    graph.add_node("exploit_scorer", ExploitScorerAgent().run)
-    graph.add_node("patcher", PatcherAgent().run)
-    graph.add_node("validator", ValidatorAgent().run)
     graph.add_node("report", ReportAgent().run)
+    if not detection_only:
+        graph.add_node("exploit_scorer", ExploitScorerAgent().run)
+        graph.add_node("patcher", PatcherAgent().run)
+        graph.add_node("validator", ValidatorAgent().run)
 
     # Entry point
     graph.set_entry_point("triage")
 
-    # Edges
     graph.add_conditional_edges(
         "triage",
         route_after_triage,
         {"scanner": "scanner", "report": "report"},
     )
 
-    # After scanner: parallel fan-out to memory_safety + semantic_analyst
-    graph.add_conditional_edges(
-        "scanner",
-        route_after_analysis,
-        {
-            "exploit_scorer": "exploit_scorer",
-            "report": "report",
-        },
-    )
+    # Analyse séquentielle : les deux agents d'analyse tournent toujours.
+    graph.add_edge("scanner", "memory_safety")
+    graph.add_edge("memory_safety", "semantic_analyst")
 
-    graph.add_edge("memory_safety", "exploit_scorer")
-    graph.add_edge("semantic_analyst", "exploit_scorer")
-
-    graph.add_conditional_edges(
-        "exploit_scorer",
-        route_after_exploit_scorer,
-        {"patcher": "patcher", "report": "report"},
-    )
-
-    graph.add_conditional_edges(
-        "patcher",
-        route_after_patcher,
-        {"validator": "validator", "report": "report"},
-    )
-
-    graph.add_conditional_edges(
-        "validator",
-        route_after_validator,
-        {"patcher": "patcher", "report": "report"},
-    )
+    if detection_only:
+        graph.add_edge("semantic_analyst", "report")
+    else:
+        graph.add_edge("semantic_analyst", "exploit_scorer")
+        graph.add_conditional_edges(
+            "exploit_scorer",
+            route_after_exploit_scorer,
+            {"patcher": "patcher", "report": "report"},
+        )
+        graph.add_conditional_edges(
+            "patcher",
+            route_after_patcher,
+            {"validator": "validator", "report": "report"},
+        )
+        graph.add_conditional_edges(
+            "validator",
+            route_after_validator,
+            {"patcher": "patcher", "report": "report"},
+        )
 
     graph.add_edge("report", END)
 

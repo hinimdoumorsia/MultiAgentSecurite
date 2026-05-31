@@ -69,7 +69,8 @@ class SemgrepTool:
         logger.info(f"[semgrep] Running with {len(rulesets)} rulesets on {repo_root}")
         
         try:
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+            result = subprocess.run(cmd, capture_output=True, text=True,
+                                     encoding="utf-8", errors="replace", timeout=300)
             
             if result.returncode not in [0, 1]:
                 logger.error(f"[semgrep] Error (code {result.returncode}): {result.stderr[:500]}")

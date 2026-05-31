@@ -1,5 +1,10 @@
 # Configuration du harness de benchmark MultiAgentSecurite
 # Tous les chemins sont relatifs a la racine du repo (MultiAgentSecurite/).
+#
+# STRATEGIE HYBRIDE (plan final) :
+#   - C / C++ / Java  -> datasets a negatifs propres (Juliet, OWASP) = metriques HAUTES
+#   - Python/PHP/JS/TS/Go -> CVEfixes = metriques INDICATIVES (rappel surtout)
+# Le champ `quality` est reporte dans les sorties pour tracer la fiabilite.
 
 # --- Invocation de l'agent ---
 agent:
@@ -7,7 +12,7 @@ agent:
   runs_per_case: 1         # k : nb de repetitions par cas (LLM stochastiques). Mettre 3 pour mean +/- std.
   timeout_sec: 600         # garde-fou par cas
   scan_cache: true         # reutilise .scan_cache de l'agent (rate limits free-tier)
-  detection_only: true     # true = saute patcher/validator (rapide). Mettre true pour benchmarker SEULEMENT la detection sur gros datasets.
+  detection_only: true     # true = saute exploit_scorer/patcher/validator (rapide, economise des tokens). Pour benchmarker SEULEMENT la detection.
 
 # --- Regles de matching detection ---
 matching:
@@ -16,42 +21,41 @@ matching:
 
 # --- Datasets actives (mettre enabled: false pour ignorer) ---
 datasets:
-  synthetic:
-    enabled: true
-    adapter: synthetic
-    path: benchmark/datasets/synthetic
-    track: detection        # detection | repair | both
-
-  owasp:
-    enabled: false
-    adapter: owasp
-    path: benchmark/datasets/owasp/benchmark        # dossier clone de OWASP/BenchmarkJava
-    expected_results: expectedresults-1.2.csv
-    track: detection
-    scoring: category   # methode officielle OWASP : un finding compte par CWE de categorie
-    limit: 50           # N cas (equilibre vuln/sain) pour un 1er run rapide ; 0 = dataset complet (~2740)
-
-  juliet:
-    enabled: false
-    adapter: juliet
-    path: benchmark/datasets/juliet
-    track: detection
-
-  vul4j:
-    enabled: false
-    adapter: vul4j
-    path: benchmark/datasets/vul4j
-    track: repair
-
+  # --- Multi-langages, REEL (Python/PHP/JS/TS/Go + complement C/C++/Java) ---
   cvefixes:
-    enabled: false
+    enabled: true
     adapter: cvefixes
     path: benchmark/datasets/cvefixes
     track: detection
+    quality: indicative        # negatifs (fixed_code) imparfaits -> precision/FPR bruitees
     scoring: presence          # matching fichier (le code est au niveau region, pas de ligne)
-    per_language_limit: 10     # 10 vuln + 10 sains = 20 cas / langage (~160) - agent COMPLET avec LLM
+    per_language_limit: 50     # 50 vuln + 50 sains = 100 cas / langage (8 langages -> ~800 cas)
     include_negatives: true
-    max_scan: 20000            # garde-fou streaming HF
+    max_scan: 40000            # garde-fou streaming HF (augmente pour atteindre 50/langage)
+
+  # --- Java, REFERENCE detection (negatifs propres) ---
+  # Prerequis : git clone https://github.com/OWASP-Benchmark/BenchmarkJava
+  #             benchmark/datasets/owasp/benchmark   (puis mettre enabled: true)
+  owasp:
+    enabled: false
+    adapter: owasp
+    path: benchmark/datasets/owasp/benchmark
+    expected_results: expectedresults-1.2.csv
+    track: detection
+    quality: high              # negatifs propres + 1 defaut/fichier -> precision/FPR fiables
+    scoring: category          # methode officielle OWASP (scorecard)
+    limit: 0                   # 0 = dataset complet (~2740). Mettre 50 pour un 1er run rapide.
+
+  # --- C / C++, negatifs propres (Juliet / NIST SARD) ---
+  # Prerequis : telecharger Juliet C/C++ dans benchmark/datasets/juliet/
+  #             ET implementer l'adapter juliet (voir adapters/__init__.py).
+  juliet:
+    enabled: false             # ADAPTER NON IMPLEMENTE -> garder false pour l'instant
+    adapter: juliet
+    path: benchmark/datasets/juliet
+    track: detection
+    quality: high
+    per_language_limit: 50     # 50 C + 50 C++
 
 # --- Sortie ---
 output:

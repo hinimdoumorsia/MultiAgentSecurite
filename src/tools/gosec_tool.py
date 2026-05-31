@@ -16,6 +16,8 @@ class GosecTool:
                 ["gosec", "-fmt=json", "-quiet", "./..."],
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
+                errors="replace",
                 cwd=repo_root,
                 timeout=120,
             )

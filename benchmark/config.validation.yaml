@@ -1,0 +1,30 @@
+# Config de VALIDATION rapide : prouve que toute la chaine fonctionne bout-en-bout
+# avec le vrai agent, sur un tout petit echantillon (1 cas vuln + 1 sain / langage).
+# Ne sert PAS aux resultats definitifs (volume trop faible) -> utiliser config.yaml.
+
+agent:
+  max_iterations: 1
+  runs_per_case: 1
+  timeout_sec: 300
+  scan_cache: true
+  detection_only: true
+
+matching:
+  line_tolerance: 5
+  cwe_mode: family
+
+datasets:
+  cvefixes:
+    enabled: true
+    adapter: cvefixes
+    path: benchmark/datasets/cvefixes
+    track: detection
+    quality: indicative
+    scoring: presence
+    per_language_limit: 1     # 1 vuln + 1 sain / langage = ~16 cas
+    include_negatives: true
+    max_scan: 5000
+
+output:
+  dir: benchmark/results/_validation   # ISOLE des resultats definitifs (supprime apres validation)
+  bootstrap_samples: 200
