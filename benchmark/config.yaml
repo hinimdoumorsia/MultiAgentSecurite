@@ -37,7 +37,7 @@ datasets:
   # Prerequis : git clone https://github.com/OWASP-Benchmark/BenchmarkJava
   #             benchmark/datasets/owasp/benchmark   (puis mettre enabled: true)
   owasp:
-    enabled: false
+    enabled: true
     adapter: owasp
     path: benchmark/datasets/owasp/benchmark
     expected_results: expectedresults-1.2.csv
