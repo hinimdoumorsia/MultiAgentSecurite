@@ -112,9 +112,28 @@ def chart_llm_detection():
     fig.tight_layout(); fig.savefig(_IMG / "llm_detection.png", dpi=110); plt.close(fig)
 
 
+def chart_vul4j_llm():
+    """Fix-rate RIGOUREUX (tests PoV) par modèle, depuis results/vul4j_llm/<slug>.json."""
+    d = _RES / "vul4j_llm"
+    data = []
+    for p in sorted(d.glob("*.json")):
+        g = json.loads(p.read_text(encoding="utf-8"))
+        data.append((p.stem, g.get("fix_rate", 0.0), g.get("fixed", 0), g.get("total", 0)))
+    if not data:
+        raise FileNotFoundError("aucun results/vul4j_llm/*.json")
+    data.sort(key=lambda x: -x[1])
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.barh([x[0] for x in data][::-1], [x[1] for x in data][::-1], color="#ea4335")
+    ax.set_title("Correction RIGOUREUSE par LLM — Vul4J (tests PoV exécutables)")
+    ax.set_xlabel("Fix-rate (tests qui passent)"); ax.set_xlim(0, 1.0); ax.grid(axis="x", alpha=0.3)
+    for i, x in enumerate(data[::-1]):
+        ax.text(x[1] + 0.01, i, f"{x[2]}/{x[3]}", va="center", fontsize=8)
+    fig.tight_layout(); fig.savefig(_IMG / "vul4j_llm_fixrate.png", dpi=110); plt.close(fig)
+
+
 def main():
     for fn in (chart_detection_by_dataset, chart_spotbugs_impact, chart_cvefixes_by_lang,
-               chart_llm_correction, chart_llm_detection):
+               chart_llm_correction, chart_llm_detection, chart_vul4j_llm):
         try:
             fn(); print(f"  OK {fn.__name__}")
         except Exception as e:

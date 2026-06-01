@@ -23,7 +23,7 @@ VULNS = ["VUL4J-1", "VUL4J-6", "VUL4J-8", "VUL4J-12"]  # reproduites
 # Vul4J = patch FICHIER COMPLET : il faut donner ET récupérer le fichier ENTIER.
 # INPUT_CHARS (4000) servait à la compa détection/correction (petits extraits) ;
 # ici tronquer casse la compilation (build_broken). On élargit largement.
-FILE_CHARS = 18000      # entrée : fichier Java complet (cap généreux)
+FILE_CHARS = 26000      # entrée : fichier Java complet (couvre JpegDecoder ~20.7k)
 OUT_TOKENS = 8192       # sortie : assez pour renvoyer le fichier entier
 SYS = ("You are a security engineer. Fix ONLY the vulnerability in this Java file. "
        "Preserve package, imports, all other code, signatures and behaviour. "

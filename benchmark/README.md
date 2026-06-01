@@ -1,12 +1,120 @@
 # Benchmark — MultiAgentSecurite
 
-Évaluation **scientifique** de l'agent : qualité de **détection** (précision, rappel,
-F1, FPR, Youden's J), **par langage** et **global**, sur des **datasets étiquetés**
-(vérité terrain), ET de **correction** : qualité de patch (similarité, §1.5) **et taux de fix
-RIGOUREUX par tests exécutables** (Vul4J, §1.6).
+**En une phrase** : *MultiAgentSecurite* est un agent multi-agents (LLM + outils SAST) qui **détecte**
+des vulnérabilités dans du code et tente de les **corriger** ; ce dossier mesure **scientifiquement**
+à quel point il y arrive.
+
+Évaluation de la qualité de **détection** (précision, rappel, F1, FPR, Youden's J), **par langage** et
+**global**, sur des **datasets étiquetés** (vérité terrain), ET de **correction** : qualité de patch
+(similarité, §1.5/§1.7) **et taux de fix RIGOUREUX par tests exécutables** (Vul4J, §1.6).
 
 > Pourquoi des datasets étiquetés plutôt que « 200 dépôts aléatoires » ? Sans vérité
 > terrain, on ne peut calculer ni précision ni rappel.
+
+> 🆕 **Vous débutez ou un mot n'est pas clair ?** Lisez d'abord la **§0 Guide de lecture** :
+> elle définit *toutes* les métriques (rappel, précision, FPR, Youden…) et le vocabulaire (Vul4J,
+> fix-rate, négatifs propres/bruités…) sans prérequis.
+
+### Sommaire
+- **§0 — Guide de lecture** : toutes les métriques et le vocabulaire expliqués
+- **§1 — Résultats** : détection (§1.1-1.4), correction similarité (§1.5), correction rigoureuse Vul4J (§1.6), comparaison de 6 LLM (§1.7)
+- **§2 — Méthodologie** : comment les mesures sont produites
+- **§3 — Limites** : ce que les chiffres ne disent pas (biais, négatifs bruités, contamination…)
+- **§4 — Runs conservés** : inventaire des résultats bruts (`results/`)
+- **§5 — Reproduire** : commandes + architecture du code
+- **§6 — État des phases** · **§7 — Journal technique** (bugs trouvés & corrigés)
+
+---
+
+## 0. Guide de lecture (à lire avant les résultats)
+
+*Cette section explique, sans prérequis, tout le vocabulaire utilisé plus bas. Si un chiffre
+ou un mot du rapport n'est pas clair, la réponse est probablement ici.*
+
+### 0.1 Que fait l'agent, et qu'est-ce qu'on mesure ?
+
+L'agent fait **deux choses** ; on évalue les deux séparément :
+
+1. **Détection** — « ce code contient-il une vulnérabilité ? » (oui/non). On mesure s'il
+   trouve les vraies failles sans crier au loup partout. → métriques §0.3.
+2. **Correction** — « sait-il réparer la faille ? ». On mesure de deux façons :
+   - **similarité** au correctif humain (proxy approximatif, §1.5/§1.7) ;
+   - **fix-rate rigoureux** = un **test exécutable** prouve que la faille est partie (§1.6) — l'étalon-or.
+
+### 0.2 La brique de base : vrai/faux × positif/négatif
+
+Pour chaque cas, on compare la réponse de l'agent à la **vérité terrain** (le label connu du dataset).
+Quatre situations possibles (la « matrice de confusion ») :
+
+| | L'agent dit « vulnérable » | L'agent dit « sain » |
+|---|---|---|
+| **C'est vraiment vulnérable** | ✅ **VP** (vrai positif) | ❌ **FN** (faux négatif — faille ratée) |
+| **C'est vraiment sain** | ❌ **FP** (faux positif — fausse alerte) | ✅ **VN** (vrai négatif) |
+
+Tout le reste se calcule à partir de ces 4 nombres.
+
+### 0.3 Les métriques de détection (toutes expliquées)
+
+| Métrique | Formule | En français simple | Idéal |
+|---|---|---|---|
+| **Rappel** (recall) | VP / (VP + FN) | « parmi les vraies failles, quelle part j'ai trouvée ? » → ne **rate** pas | 1.0 |
+| **Précision** | VP / (VP + FP) | « quand je crie à la faille, quelle part est vraie ? » → ne **sur-alerte** pas | 1.0 |
+| **F1** | moyenne harmonique(P, R) | un seul chiffre qui **équilibre** précision et rappel | 1.0 |
+| **FPR** (taux de faux positifs) | FP / (FP + VN) | « parmi le code sain, quelle part j'ai signalée à tort ? » | 0.0 |
+| **Youden J** | Rappel + (1 − FPR) − 1 | **pouvoir de discrimination** : sépare-t-il vraiment vulnérable de sain ? | +1.0 |
+
+> **Comment lire Youden J** : **+1** = détecteur parfait ; **0** = pas mieux que le hasard ;
+> **négatif** = signale *plus* le code sain que le vulnérable (souvent un **artefact du dataset**,
+> pas une vraie contre-performance — voir §0.5 et §3.1). C'est notre métrique de synthèse préférée
+> car elle **pénalise** le fait de « tout signaler ».
+
+**Compromis classique** : monter le rappel (trouver plus de failles) fait souvent monter le FPR
+(plus de fausses alertes) → la précision baisse. C'est exactement l'effet de SpotBugs au §1.3.
+
+### 0.4 micro vs macro, et l'intervalle de confiance
+
+- **micro** = on agrège **tous les cas** ensemble (les gros langages pèsent plus). C'est le chiffre « global ».
+- **macro** = moyenne **par langage** (chaque langage compte pareil, même s'il a peu de cas).
+- **Intervalle de confiance 95 % (bootstrap)** = au lieu d'un chiffre sec « 0.79 », on donne une
+  fourchette « 0.79 [0.74–0.83] ». Calculé en ré-échantillonnant les cas 1000× : ça dit à quel point
+  le chiffre est **stable** vu la taille de l'échantillon. Fourchette large = peu de cas, prudence.
+
+### 0.5 « Négatifs propres » vs « négatifs bruités » (crucial)
+
+Pour calculer précision/FPR, il faut des **cas sains fiables**. Deux qualités de datasets :
+- **Négatifs propres** (OWASP, Juliet) : les cas « sains » sont **construits exprès** pour l'être →
+  une alerte dessus est *vraiment* un faux positif → **précision/FPR fiables** (✅).
+- **Négatifs bruités** (CVEfixes) : le « sain » = juste la *version corrigée* d'un fichier, qui peut
+  contenir **d'autres** failles non étiquetées → une « alerte » peut être *correcte* mais comptée FP →
+  **précision/FPR sous-estimées** (⚠️ indicatives). Dans ce cas **seul le rappel** est exploitable.
+
+C'est **toute** l'explication du Youden négatif (−0.55) de CVEfixes : un **artefact du dataset**, pas
+une faiblesse de l'agent (détaillé §3.1).
+
+### 0.6 Comment un cas est « scoré » (presence vs category)
+
+Quand l'agent signale une faille, à quel niveau valide-t-on que c'est « la bonne » ?
+- **presence** : sévère — toute alerte non attendue compte comme FP (utilisé sur CVEfixes).
+- **category** : niveau **fichier + même famille CWE** (le type de faille correspond), sans exiger la
+  ligne exacte (utilisé sur Juliet/OWASP). Plus juste quand l'outil voit la bonne faille au bon endroit
+  mais pas à la ligne pile.
+
+### 0.7 Les jeux de données (datasets) en une ligne
+
+| Dataset | Contenu | Force | Limite |
+|---|---|---|---|
+| **CVEfixes** | vraies CVE, 8 langages | réaliste, multi-langages | négatifs **bruités** (§0.5) |
+| **OWASP BenchmarkJava** | cas Java synthétiques | négatifs **propres**, idéal SAST | Java seulement, synthétique |
+| **Juliet (NIST SARD)** | cas C/C++ étiquetés | négatifs **propres**, ligne exacte connue | synthétique |
+| **Vul4J** | vraies vulns Java **avec tests exécutables** | **preuve dure** du fix (§1.6) | petit (reproduction lourde) |
+
+### 0.8 Pour la correction : « similarité » vs « fix-rate »
+
+- **Similarité** (§1.5/§1.7) = ressemblance textuelle (0 à 1) entre le patch de l'agent et le
+  correctif **humain** réel. **Proxy faible** : un patch *valide* peut être écrit autrement que l'humain
+  → bonne note possible pour un patch inutile, et inversement.
+- **Fix-rate** (§1.6) = part des vulns dont le **test PoV** repasse au vert après patch =
+  **preuve exécutable** que la faille est corrigée. **C'est la vraie mesure.** (Voir l'encadré §1.6.)
 
 ---
 
@@ -115,6 +223,19 @@ s'appliquent mal : `git apply` les rejette). 80 cas CVEfixes (10/langage).
 
 ### 1.6 Correction RIGOUREUSE — tests exécutables (Vul4J, run `vul4j_20260601-084641`)
 
+> **À lire d'abord — vocabulaire :**
+> - **Vul4J** = un *dataset* de ~**79 vraies vulnérabilités Java** tirées de vrais projets open-source.
+>   Chacune a un **identifiant numéroté** : `VUL4J-1`, `VUL4J-2`, … Le numéro est un **nom/étiquette**
+>   (pas une quantité). Ex. `VUL4J-6` = la 6ᵉ vuln du catalogue = une boucle infinie dans `commons-compress`.
+> - **Test PoV** (*Proof of Vulnerability*) = un test exécutable fourni avec chaque vuln. Sur le code
+>   **non corrigé** il **échoue** (la faille est là) ; si après patch il **passe**, la faille est
+>   **réellement corrigée** — c'est la seule preuve « dure ».
+> - **Fix-rate** = $\dfrac{\text{vulns réellement corrigées (PoV ✅)}}{\text{vulns testées}}$. Ici **4** vulns
+>   testées → un fix-rate de **1/4 = 25 %** signifie « 1 corrigée sur 4 ».
+> - **Pourquoi seulement 4 ?** Tester une vuln exige de la **reproduire** dans Docker (compiler + voir
+>   son PoV échouer). Beaucoup ne se reproduisent pas (dépendances/JDK cassés). Sur les essais, **4 se
+>   sont reproduites proprement** (VUL4J-1, -6, -8, -12) → c'est l'échantillon. Goulot = la reproduction, pas le LLM.
+
 Vraies vulnérabilités Java reproductibles **avec tests PoV exécutables** (le seul moyen de
 prouver « ça corrige vraiment »), via le conteneur Docker `tuhhsoftsec/vul4j`. Pipeline :
 checkout → baseline (le test PoV échoue) → DeepSeek V4 patche (fichier complet) → re-compile
@@ -169,10 +290,39 @@ pas de mélange). Providers : NVIDIA NIM (gratuit) + DeepSeek (payant). Runners 
 ![Comparaison LLM — correction](images/llm_correction.png)
 
 > ⚠️ La **similarité** est une métrique faible (un correctif valide peut diverger du fix humain) —
-> ce classement est donc **indicatif**. Le classement **rigoureux** (tests exécutables Vul4J) par
-> modèle a été tenté (`vul4j_llm.py`) mais **bloqué par le throttling NVIDIA free-tier** (timeouts) :
-> à ce jour, seul **DeepSeek-v4-flash a un fix-rate vérifié** (1/4, §1.6). Le comparatif rigoureux
-> des 6 modèles est **à refaire après reset des quotas** (ou en tier payant) — script prêt.
+> ce classement est donc **indicatif**. Le classement **rigoureux** (tests exécutables) suit.
+
+**Correction RIGOUREUSE par modèle (Vul4J, tests PoV exécutables)** — l'étalon-or, fait via
+**OpenRouter** (les 6 modèles, mêmes 4 vulns reproduites, fichier-complet ; run `vul4j_llm`) :
+
+| Modèle | Fix-rate | VUL4J-1 | VUL4J-6 | VUL4J-8 | VUL4J-12 |
+|---|---|---|---|---|---|
+| qwen3-coder | **1/4 (25 %)** | 🔧 | ✅ | 🔧 | 🔧 |
+| gpt-oss-120b | **1/4 (25 %)** | 🔧 | ✅ | 🔧 | 🔧 |
+| llama-4-maverick | **1/4 (25 %)** | 💥 | 💥 | 🔧 | ✅ |
+| deepseek-v4-flash | **1/4 (25 %)** | 🔧 | 🔧 | 🔧 | ✅ |
+| llama-3.3-70b | **0/4 (0 %)** | 💥 | 🔧 | 🔧 | 🔧 |
+| nemotron-super-49b | **0/4 (0 %)** | 🔧 | 💥 | 🔧 | 💥 |
+
+> ✅ = test PoV passe (fix prouvé) · 🔧 = patch valide mais ne corrige pas (`not_fixed`)
+> · 💥 = le patch casse la compilation (`build_broken`, fragilité du fichier-complet sur Java complexe).
+
+![Correction rigoureuse par LLM — Vul4J](images/vul4j_llm_fixrate.png)
+
+**Analyse (correction rigoureuse) :**
+- **Plafond bas et honnête** : aucun modèle ne dépasse **1/4 (25 %)** ; 2 modèles à 0/4. La
+  correction **réellement vérifiée par test** est **bien plus dure** que ne le laissait croire la
+  similarité (§1.7 correction) — preuve que la **similarité surestime** la capacité de réparation.
+- **Le classement change selon la métrique** : `llama-4-maverick`, 1ᵉʳ en similarité (0.37), n'est
+  qu'à 1/4 et **casse même le build** sur 2 cas ; `deepseek-v4`, dernier en similarité (0.27), fixe
+  aussi 1/4. → **la similarité n'est pas un bon proxy du vrai fix**.
+- **Difficulté propre à chaque faille** : VUL4J-6 et VUL4J-12 sont corrigées (par 2 modèles chacune,
+  donc *réellement* corrigeables) ; **VUL4J-1 et VUL4J-8 résistent à TOUS** les modèles → ces failles
+  demandent un patch multi-lignes/contextuel que le fichier-complet ne cible pas.
+- ⚠️ **Caveats** : N=4 (petit), décodage à **température 0.2** (non déterministe) → une différence de
+  ±1 fix n'est **pas significative** ; c'est la **magnitude (~25 %)** qui est le signal robuste, pas
+  la cellule exacte. D'ailleurs le run mono-modèle (§1.6, input 13k) voyait deepseek fixer VUL4J-6,
+  ici (multi, input élargi) il fixe VUL4J-12 : **même taux, cas différent** = variance stochastique.
 
 **Analyse :**
 - **Détection** : `llama-3.3-70b` a la **meilleure discrimination** (Youden +0.12, seul positif).
@@ -187,7 +337,8 @@ pas de mélange). Providers : NVIDIA NIM (gratuit) + DeepSeek (payant). Runners 
 - **Caveats** : CVEfixes a des négatifs bruités → FPR/Youden **indicatifs** (mais comparaison
   **relative valide**, mêmes cas pour tous). Échantillon **réduit** (32-40 cas) car le free-tier
   (NVIDIA/Groq) throttle sous charge soutenue. La correction **rigoureuse** (Vul4J, tests exécutables)
-  n'a été faite que pour 1 modèle (deepseek, 1/4) — l'étendre par modèle est lourd (builds Docker).
+  a été étendue aux **6 modèles** (ci-dessus, via OpenRouter) : tous plafonnent à **≤ 1/4**, ce qui
+  **recadre** le classement optimiste de la similarité.
 
 ---
 
@@ -260,8 +411,9 @@ Mitigation future : holdout de CVE récentes (2024-2025).
 | `run_20260531-172004` | OWASP + SpotBugs (2740) | ✅ valide |
 | `run_20260531-191017` | Juliet C/C++ (200), category | ✅ valide |
 | `correction_20260531-213154` | **Correction** CVEfixes (80, mode B, similarité) | ✅ valide |
-| `vul4j_20260601-084641` | **Correction rigoureuse** Vul4J (tests exécutables, fix-rate 1/4) | ✅ valide |
-| `llm_comparison/` | **Comparaison de 6 LLM** (détection + correction, §1.7) + `*_COMPARISON.md` | ✅ valide |
+| `vul4j_20260601-084641` | **Correction rigoureuse** Vul4J mono-modèle (deepseek, fix-rate 1/4) | ✅ valide |
+| `vul4j_llm/` | **Correction rigoureuse des 6 LLM** Vul4J (tests exécutables, 4 vulns) + `VUL4J_LLM_COMPARISON.md` | ✅ valide |
+| `llm_comparison/` | **Comparaison de 6 LLM** (détection + correction similarité, §1.7) + `*_COMPARISON.md` | ✅ valide |
 
 > Note : deux runs Juliet intermédiaires ont été produits puis **supprimés** car erronés —
 > un échantillon dégénéré (1 seul CWE, bug d'échantillonnage corrigé) et une version au
@@ -357,6 +509,8 @@ dans le mémoire comme preuve de rigueur méthodologique et pour la **reproducti
 | 11 | Validator inopérant sous Windows | applique via la commande POSIX `patch` | côté benchmark, `repair_verify` applique via **`git apply`** |
 | 12 | Comparaison LLM : 4/6 modèles à 0 % | requêtes trop grosses (413) / timeouts / Groq épuisé | input réduit, `max_tokens` par modèle, timeout+retries, routage NVIDIA→**OpenRouter** |
 | 13 | Vul4J par-modèle : timeouts | **NVIDIA NIM throttlé** sous charge soutenue | routage via **OpenRouter** (payant, fiable) |
+| 14 | Vul4J par-modèle : **tous `build_broken` (0 fix)** | l'input réutilisait `INPUT_CHARS=4000` (réglé pour les *extraits* détection/correction) → **fichier Java tronqué** → patch incomplet → compilation cassée | input élargi au **fichier complet** (`FILE_CHARS=26000`) + `max_tokens≥8192` pour le **renvoyer entier** ; garde « skip si > cap » au lieu de tronquer. Cohérence reconfirmée (VUL4J-6 redevient FIXED) |
+| 15 | Deux runs Vul4J écrivant le **même log** (collision) | relance sans arrêt effectif du précédent (`pgrep` peu fiable sous Windows) + mêmes dossiers Docker `/tmp/llm_*` | un seul run à la fois, **log dédié**, nettoyage `/tmp/llm_*` avant lancement |
 
 > Tous ces correctifs sont dans `src/` (agents, tools, graph) et `benchmark/` ; les runs invalidés
 > par ces bugs ont été refaits (et les versions erronées supprimées, cf. §4).
