@@ -123,6 +123,49 @@ checkout → baseline (le test PoV échoue) → DeepSeek V4 patche (fichier comp
   (parseur baseline en mode `povs`). Étendre le run renforcerait le taux.
 - Infra réutilisable : `benchmark/vul4j_batch.py` + image Docker `tuhhsoftsec/vul4j`.
 
+### 1.7 Comparaison de LLM (Phase 3)
+
+6 LLM évalués sur le **même** sous-ensemble CVEfixes (**1 modèle = 1 run**, attribution propre ;
+pas de mélange). Providers : NVIDIA NIM (gratuit) + DeepSeek (payant). Runners :
+`detection_runner.py`, `correction_runner.py`, registre `llm_models.py`.
+
+**Détection sémantique** (32 cas vuln+sain ; c'est l'agent LLM qui détecte sur CVEfixes) :
+
+| Modèle | Rappel | Précision | FPR | Youden J |
+|---|---|---|---|---|
+| **llama-3.3-70b** (NVIDIA) | 0.50 | 0.57 | 0.38 | **+0.12** |
+| gpt-oss-120b (raisonnement) | **0.69** | 0.46 | 0.81 | −0.12 |
+| deepseek-v4-flash (raisonnement) | 0.56 | 0.43 | 0.75 | −0.19 |
+| llama-4-maverick (MoE) | 0.44 | 0.41 | 0.62 | −0.19 |
+| qwen3-coder-480b (spécialisé code) | 0.38 | 0.40 | 0.56 | −0.19 |
+| nemotron-super-49b | 0.31 | 0.31 | 0.69 | −0.38 |
+
+**Correction** (40 cas, mode B ; taux de patch produit + similarité au fix humain) :
+
+| Modèle | Patch produit | Similarité au fix humain |
+|---|---|---|
+| **llama-4-maverick** (MoE) | 100 % | **0.37** |
+| qwen3-coder-480b (code) | 100 % | 0.34 |
+| llama-3.3-70b | 88 % | 0.33 |
+| nemotron-super-49b | 100 % | 0.28 |
+| deepseek-v4-flash | 100 % | 0.27 |
+| gpt-oss-120b | 100 % | 0.15 |
+
+**Analyse :**
+- **Détection** : `llama-3.3-70b` a la **meilleure discrimination** (Youden +0.12, seul positif).
+  Les modèles à **raisonnement** (gpt-oss R=0.69, deepseek R=0.56) **détectent davantage** mais
+  **sur-signalent** (FPR 0.75-0.81). Le **spécialisé code** (qwen-coder) n'est PAS le meilleur
+  détecteur (R=0.38).
+- **Correction** : `llama-4-maverick` (MoE généraliste) **mène** (sim 0.37), devant le code-spécialisé
+  qwen-coder (0.34). Le **raisonnement ne gagne pas** (gpt-oss 0.15).
+- **Conclusion** : **aucun LLM ne domine les deux axes** ; ni la spécialisation code ni le raisonnement
+  n'apportent un avantage net → l'**architecture multi-agents est relativement robuste au choix du LLM**.
+  C'est une contribution intéressante en soi.
+- **Caveats** : CVEfixes a des négatifs bruités → FPR/Youden **indicatifs** (mais comparaison
+  **relative valide**, mêmes cas pour tous). Échantillon **réduit** (32-40 cas) car le free-tier
+  (NVIDIA/Groq) throttle sous charge soutenue. La correction **rigoureuse** (Vul4J, tests exécutables)
+  n'a été faite que pour 1 modèle (deepseek, 1/4) — l'étendre par modèle est lourd (builds Docker).
+
 ---
 
 ## 2. Méthodologie
@@ -149,10 +192,11 @@ D'où un Youden **négatif** sur CVEfixes qui est un **artefact du dataset**, pa
 de l'agent — confirmé par les résultats positifs sur OWASP/Juliet (négatifs propres).
 
 ### 3.2 Modèle LLM bridé (free-tier)
-L'agent sémantique tourne sur le **8B** (Groq free-tier) à cause des quotas (le 70B est
-limité à 100k tokens/jour). Le 8B produit parfois du JSON invalide (parsing durci, mais
-~8 % de pertes) et une analyse logique moins fine. **Re-tester avec un meilleur LLM
-(70B / Claude) est attendu pour améliorer le rappel** (Phase 3).
+Les runs de **détection Phase 1** (CVEfixes/OWASP/Juliet) tournent avec l'agent sémantique sur le
+**8B** (Groq free-tier) à cause des quotas. Le 8B produit parfois du JSON invalide (parsing durci,
+~8 % de pertes) et une analyse logique moins fine. **L'effet du modèle a été quantifié en §1.7**
+(comparaison de 6 LLM) : un meilleur modèle change le rappel/la correction, mais aucun ne domine
+les deux axes.
 
 ### 3.3 Datasets « SAST-friendly »
 OWASP Benchmark est **conçu pour évaluer les SAST** → relativement favorable (R=0.96 n'est
@@ -194,14 +238,15 @@ Mitigation future : holdout de CVE récentes (2024-2025).
 | `run_20260531-191017` | Juliet C/C++ (200), category | ✅ valide |
 | `correction_20260531-213154` | **Correction** CVEfixes (80, mode B, similarité) | ✅ valide |
 | `vul4j_20260601-084641` | **Correction rigoureuse** Vul4J (tests exécutables, fix-rate 1/4) | ✅ valide |
+| `llm_comparison/` | **Comparaison de 6 LLM** (détection + correction, §1.7) + `*_COMPARISON.md` | ✅ valide |
 
 > Note : deux runs Juliet intermédiaires ont été produits puis **supprimés** car erronés —
 > un échantillon dégénéré (1 seul CWE, bug d'échantillonnage corrigé) et une version au
-> scoring `presence` (remplacée par `category`). Seuls les 4 runs valides ci-dessus sont conservés.
+> scoring `presence` (remplacée par `category`). Seuls les runs valides ci-dessus sont conservés.
 
-Chaque dossier valide contient : `summary.md`, `summary.json`, `detection_by_language.csv`,
-`detection_by_dataset.csv`, `raw_records.json`. Historique dans `results/INDEX.md`.
-**Ces résultats sont conservés comme baselines pour la comparaison future de LLM (Phase 3).**
+Les dossiers de détection contiennent : `summary.md`, `summary.json`, `detection_by_language.csv`,
+`detection_by_dataset.csv`, `raw_records.json` ; les correction/LLM contiennent leurs propres
+`summary.md`/`*.json`. Historique dans `results/INDEX.md`.
 
 ---
 
@@ -242,14 +287,16 @@ results/                 sorties (1 dossier run_<horodatage> par exécution)
 
 ---
 
-## 6. Suite
+## 6. État des phases
 
-**Phase 2 — Correction (agent entier)** : évaluer le Patcher + Validator.
-- Réparer `ValidatorAgent` (applique les patchs via la commande POSIX `patch`, absente sous
-  Windows → applicateur de diff Python).
-- Implémenter l'adaptateur **Vul4J** (Java, vraies failles avec **tests exécutables** =
-  étalon-or pour mesurer taux de fix et taux de **régression**).
-- Désactiver `detection_only` ; le Patcher utilise le 70B (coûteux) → petit échantillon.
+- ✅ **Phase 1 — Détection** : CVEfixes (8 lang), OWASP (Java, R=0.96 avec SpotBugs), Juliet (C/C++). §1.1-1.4
+- ✅ **Phase 2 — Correction** : qualité de patch multi-langages (CVEfixes, §1.5) + **fix rigoureux
+  vérifié par tests exécutables** (Vul4J, §1.6). PatcherAgent passé en fichier-complet ; Vul4J intégré.
+- ✅ **Phase 3 — Comparaison de 6 LLM** (NVIDIA NIM + DeepSeek) sur détection + correction. §1.7
 
-**Phase 3 — Comparaison de LLM** : rejouer ces mêmes tests avec de meilleurs modèles
-(70B, Claude…) et comparer aux baselines de `results/`.
+### Pistes d'extension (non bloquantes)
+- **Étendre Vul4J par modèle** : taux de fix rigoureux des 6 LLM (lourd — un build Docker par cas/modèle).
+- **Échantillons plus grands** pour la comparaison LLM (limité ici par le throttling free-tier ;
+  refaire après reset des quotas, ou en tier payant).
+- **Régression** sur CVEfixes (nécessiterait des tests exécutables, absents) — couverte par Vul4J seul.
+- **Holdout CVE récentes (2024-2025)** pour réduire la contamination (§3.6).

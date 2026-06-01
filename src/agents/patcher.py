@@ -12,26 +12,16 @@ from memory.persistent import PersistentMemory
 
 logger = logging.getLogger(__name__)
 
+# Approche FICHIER COMPLET : on demande le fichier corrigé entier (fiable), puis on
+# calcule le diff nous-mêmes via difflib -> toujours applicable par `git apply`
+# (contrairement aux diffs unifiés écrits par le LLM, qui échouent souvent).
 SYSTEM_PROMPT = """\
-You are a security engineer generating minimal, correct patches for vulnerabilities.
-
-Rules:
-- Fix ONLY the vulnerability described. Do not refactor unrelated code.
-- Preserve the original coding style, indentation, and language.
-- For memory safety issues in C/C++: prefer bounds-checked alternatives (strncpy, snprintf, etc.).
+You are a security engineer. Fix ONLY the described vulnerability in this file.
+- Fix only the vulnerability, do not refactor unrelated code.
+- Preserve the package, imports, coding style, indentation and all other behaviour.
+- For C/C++ memory safety: prefer bounds-checked alternatives (strncpy, snprintf...).
 - Do not introduce new vulnerabilities.
-- Return a unified diff format patch only, no explanation.
-
-Format:
-```diff
---- a/path/to/file
-+++ b/path/to/file
-@@ ... @@
- context
--vulnerable line
-+fixed line
- context
-```"""
+Return the COMPLETE corrected file content and NOTHING else (no markdown fences, no explanation)."""
 
 
 class PatcherAgent(BaseAgent):
@@ -82,15 +72,32 @@ class PatcherAgent(BaseAgent):
             f"CWE: {vuln.cwe_id}\n"
             f"File: {vuln.file_path} lines {vuln.line_start}-{vuln.line_end}\n"
             f"Description: {vuln.description}\n\n"
-            f"Full file content:\n```\n{file_content[:4000]}\n```"
+            f"Vulnerable file:\n```\n{file_content[:12000]}\n```"
         )
 
-        raw = self._llm.query(system=SYSTEM_PROMPT, user=prompt, model="strong")
-        if "```diff" in raw:
-            start = raw.index("```diff") + 7
-            end = raw.index("```", start)
-            return raw[start:end].strip()
-        return raw.strip() or None
+        raw = self._llm.query(system=SYSTEM_PROMPT, user=prompt, model="strong", max_tokens=8192)
+        corrected = self._clean_fullfile(raw)
+        if not corrected or corrected.strip() == file_content.strip():
+            return None
+
+        # Diff mécanique (toujours applicable par git apply).
+        import difflib
+        diff = "".join(difflib.unified_diff(
+            file_content.splitlines(keepends=True),
+            (corrected if corrected.endswith("\n") else corrected + "\n").splitlines(keepends=True),
+            fromfile=f"a/{vuln.file_path}", tofile=f"b/{vuln.file_path}",
+        ))
+        vuln.extra["patched_content"] = corrected  # pour application par remplacement
+        return diff or None
+
+    @staticmethod
+    def _clean_fullfile(raw: str) -> str:
+        s = (raw or "").strip()
+        if s.startswith("```"):
+            s = s.split("\n", 1)[1] if "\n" in s else s
+            if s.rstrip().endswith("```"):
+                s = s.rstrip()[:-3]
+        return s.strip("\n")
 
     def _read_file(self, repo_root: str, rel_path: str) -> str | None:
         from pathlib import Path

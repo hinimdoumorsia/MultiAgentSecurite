@@ -1,0 +1,64 @@
+{
+  "summary": {
+    "model": "qwen/qwen3-coder-480b-a35b-instruct",
+    "TP": 6,
+    "FN": 10,
+    "FP": 9,
+    "TN": 7,
+    "recall": 0.375,
+    "precision": 0.4,
+    "fpr": 0.5625,
+    "youden": -0.1875,
+    "errors": 1
+  },
+  "by_language": {
+    "c": {
+      "tp": 0,
+      "fn": 2,
+      "fp": 0,
+      "tn": 2
+    },
+    "javascript": {
+      "tp": 1,
+      "fn": 1,
+      "fp": 2,
+      "tn": 0
+    },
+    "python": {
+      "tp": 1,
+      "fn": 1,
+      "fp": 1,
+      "tn": 1
+    },
+    "cpp": {
+      "tp": 0,
+      "fn": 2,
+      "fp": 1,
+      "tn": 1
+    },
+    "php": {
+      "tp": 1,
+      "fn": 1,
+      "fp": 2,
+      "tn": 0
+    },
+    "go": {
+      "tp": 1,
+      "fn": 1,
+      "fp": 0,
+      "tn": 2
+    },
+    "java": {
+      "tp": 1,
+      "fn": 1,
+      "fp": 1,
+      "tn": 1
+    },
+    "typescript": {
+      "tp": 1,
+      "fn": 1,
+      "fp": 2,
+      "tn": 0
+    }
+  }
+}

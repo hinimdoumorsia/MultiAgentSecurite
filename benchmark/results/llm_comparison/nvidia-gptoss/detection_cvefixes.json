@@ -1,0 +1,64 @@
+{
+  "summary": {
+    "model": "openai/gpt-oss-120b",
+    "TP": 11,
+    "FN": 5,
+    "FP": 13,
+    "TN": 3,
+    "recall": 0.6875,
+    "precision": 0.4583,
+    "fpr": 0.8125,
+    "youden": -0.125,
+    "errors": 0
+  },
+  "by_language": {
+    "c": {
+      "tp": 1,
+      "fn": 1,
+      "fp": 1,
+      "tn": 1
+    },
+    "javascript": {
+      "tp": 2,
+      "fn": 0,
+      "fp": 2,
+      "tn": 0
+    },
+    "python": {
+      "tp": 1,
+      "fn": 1,
+      "fp": 2,
+      "tn": 0
+    },
+    "cpp": {
+      "tp": 1,
+      "fn": 1,
+      "fp": 1,
+      "tn": 1
+    },
+    "php": {
+      "tp": 2,
+      "fn": 0,
+      "fp": 2,
+      "tn": 0
+    },
+    "go": {
+      "tp": 1,
+      "fn": 1,
+      "fp": 1,
+      "tn": 1
+    },
+    "java": {
+      "tp": 2,
+      "fn": 0,
+      "fp": 2,
+      "tn": 0
+    },
+    "typescript": {
+      "tp": 1,
+      "fn": 1,
+      "fp": 2,
+      "tn": 0
+    }
+  }
+}
