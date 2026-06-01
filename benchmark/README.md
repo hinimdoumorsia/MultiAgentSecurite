@@ -344,15 +344,24 @@ pas de mélange). Providers : NVIDIA NIM (gratuit) + DeepSeek (payant). Runners 
 
 ## 2. Méthodologie
 
-- **Vérité terrain** : chaque cas est étiqueté vulnérable (avec CWE) ou sain.
-- **Matching** (`harness/match.py`) : un finding « couvre » un label si même fichier
-  (+ chevauchement de lignes si dispo) **et** CWE compatible (`family` via `cwe_map.py`).
-- **Scoring** :
-  - `presence` : tout finding sécurité dans le fichier suffit (cas à négatifs imparfaits).
-  - `category` : le finding doit être du **même CWE** que le cas (méthode OWASP, équitable
-    pour la précision/FPR) — utilisé pour OWASP et Juliet.
-- **Métriques** (`detection_metrics.py`) : P, R, F1, FPR, Youden J = R − FPR ; micro
-  (pondéré par cas) et macro (moyenne des langages) ; **IC 95 % du F1** par bootstrap.
+**Le pipeline de mesure en 5 étapes** (comment on passe du code à un chiffre comme « rappel = 0.96 ») :
+
+1. **Charger un cas étiqueté** — on prend un fichier du dataset dont on **connaît la réponse**
+   (vulnérable + quel type CWE, ou sain). C'est la *vérité terrain*.
+2. **Faire tourner l'agent** dessus (mode `detection_only`) → il renvoie ses *findings* (les alertes
+   qu'il a levées, chacune avec un fichier, une ligne, un type CWE).
+3. **Matching** (`harness/match.py`) — on confronte alerte et vérité : une alerte « couvre » le cas si
+   c'est le **même fichier** (+ chevauchement de lignes si connu) **et** un **CWE compatible** (même
+   *famille*, gérée par `cwe_map.py` — ainsi « injection SQL » ≈ « injection » comptent comme un match).
+   → cela produit les VP / FP / FN / VN (cf. §0.2).
+4. **Scoring** — deux exigences possibles selon la qualité des négatifs du dataset :
+   - `presence` : toute alerte sécurité dans le fichier suffit (datasets à négatifs imparfaits, ex. CVEfixes) ;
+   - `category` : l'alerte doit être du **même CWE** que le cas (plus juste pour précision/FPR) — OWASP, Juliet.
+5. **Métriques** (`detection_metrics.py`) — on agrège les VP/FP/FN/VN en P, R, F1, FPR, Youden J = R − FPR ;
+   en **micro** (pondéré par cas) et **macro** (moyenne des langages) ; avec un **IC 95 % du F1** par
+   bootstrap (mesure la stabilité du chiffre — cf. §0.4).
+
+> *Toutes ces notions (VP/FP, CWE, famille, micro/macro, négatifs propres) sont définies en **§0**.*
 
 ---
 
@@ -427,23 +436,42 @@ Les dossiers de détection contiennent : `summary.md`, `summary.json`, `detectio
 
 ## 5. Reproduire
 
-Depuis le dossier parent du dépôt (`projetagentc/`), avec l'environnement Python du projet :
+**Prérequis** (selon ce qu'on veut lancer) :
+- **Python** : l'environnement du projet (dépendances dans `requirements`/`src`).
+- **Clés API LLM** : dans `src/.env` (Groq pour la détection Phase 1 ; OpenRouter/NVIDIA pour la compa LLM).
+- **Outils SAST installés** : Semgrep, Bandit (Python), SpotBugs + FindSecBugs (Java), memory-engine (C/C++).
+- **Pour OWASP** : `git` + `mvn` (Maven) + JDK 17 (compile le projet Java avant scan).
+- **Pour Vul4J** : **Docker** (image `tuhhsoftsec/vul4j`) — c'est lui qui exécute les tests PoV.
+
+Toutes les commandes se lancent **depuis le dossier parent du dépôt** (`projetagentc/`) :
 
 ```bash
-# Test à blanc (sans API), valide la chaîne matching/métriques
+# (a) Test à blanc, SANS API ni outils : vérifie juste que la chaîne matching→métriques marche
 python -m MultiAgentSecurite.benchmark.harness.runner --config benchmark/config.yaml --dataset <nom> --mock
 
-# Vrai run d'un dataset (clés API dans src/.env + outils SAST installés)
+# (b) Vrai run de DÉTECTION sur un dataset → crée results/run_<horodatage>/ (summary.md + métriques)
 python -m MultiAgentSecurite.benchmark.harness.runner --config benchmark/config.yaml --dataset cvefixes
 python -m MultiAgentSecurite.benchmark.harness.runner --config benchmark/config.yaml --dataset owasp
 python -m MultiAgentSecurite.benchmark.harness.runner --config benchmark/config.yaml --dataset juliet
+
+# (c) Comparaison des 6 LLM (1 modèle/run) → results/llm_comparison/<modèle>/
+python -m MultiAgentSecurite.benchmark.detection_runner    # détection sémantique
+python -m MultiAgentSecurite.benchmark.correction_runner   # correction (similarité)
+
+# (d) Correction RIGOUREUSE Vul4J (tests exécutables, Docker requis) → results/vul4j_llm/
+python -m MultiAgentSecurite.benchmark.vul4j_llm           # les 6 LLM, 4 vulns reproduites
+
+# (e) (Re)génère tous les graphes depuis les résultats réels → benchmark/images/*.png
+python -m MultiAgentSecurite.benchmark.make_charts
 ```
 
-**Important** : après tout changement d'outil ou de modèle, préfixer `SCAN_FORCE_REFRESH=true`
-pour ignorer le cache de scan (sinon les anciens findings sont réutilisés).
+**Important** : après tout changement d'outil ou de modèle, préfixer la commande de
+`SCAN_FORCE_REFRESH=true` pour **ignorer le cache de scan** — sinon d'anciens findings sont réutilisés
+(c'est le piège du « cache-hit » qui avait faussé l'impact de SpotBugs, cf. §7).
 
-Datasets : CVEfixes (streaming HuggingFace, auto) ; OWASP (`git clone OWASP-Benchmark/BenchmarkJava`
-+ `mvn compile`) ; Juliet (télécharger NIST SARD C/C++ dans `datasets/juliet/`).
+**Où trouver les datasets** : CVEfixes (streaming HuggingFace, **automatique**) ; OWASP
+(`git clone OWASP-Benchmark/BenchmarkJava` + `mvn compile`) ; Juliet (télécharger NIST SARD C/C++ dans
+`datasets/juliet/`) ; Vul4J (fourni par l'image Docker).
 
 ### Architecture du harness
 ```
