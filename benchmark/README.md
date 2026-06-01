@@ -168,8 +168,11 @@ pas de mélange). Providers : NVIDIA NIM (gratuit) + DeepSeek (payant). Runners 
 
 ![Comparaison LLM — correction](images/llm_correction.png)
 
-> ⚠️ La **similarité** est une métrique faible (un correctif valide peut diverger du fix humain).
-> Le classement **rigoureux** par tests exécutables est dans `results/vul4j_llm/` (Vul4J multi-modèles).
+> ⚠️ La **similarité** est une métrique faible (un correctif valide peut diverger du fix humain) —
+> ce classement est donc **indicatif**. Le classement **rigoureux** (tests exécutables Vul4J) par
+> modèle a été tenté (`vul4j_llm.py`) mais **bloqué par le throttling NVIDIA free-tier** (timeouts) :
+> à ce jour, seul **DeepSeek-v4-flash a un fix-rate vérifié** (1/4, §1.6). Le comparatif rigoureux
+> des 6 modèles est **à refaire après reset des quotas** (ou en tier payant) — script prêt.
 
 **Analyse :**
 - **Détection** : `llama-3.3-70b` a la **meilleure discrimination** (Youden +0.12, seul positif).
