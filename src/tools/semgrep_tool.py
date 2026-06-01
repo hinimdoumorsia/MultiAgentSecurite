@@ -58,8 +58,11 @@ class SemgrepTool:
             return []
         
         # Construire la commande
-        cmd = ["semgrep", "--json"]
-        
+        # --no-git-ignore : sans ça, semgrep saute les fichiers non suivis par git
+        # (ex. datasets gitignorés) -> "Ran rules on 0 files". CRUCIAL pour scanner
+        # les cas de benchmark matérialisés dans un repo gitignoré.
+        cmd = ["semgrep", "--json", "--no-git-ignore"]
+
         for ruleset in rulesets:
             cmd += ["--config", ruleset]
         
@@ -72,15 +75,20 @@ class SemgrepTool:
             result = subprocess.run(cmd, capture_output=True, text=True,
                                      encoding="utf-8", errors="replace", timeout=1800)
             
-            if result.returncode not in [0, 1]:
-                logger.error(f"[semgrep] Error (code {result.returncode}): {result.stderr[:500]}")
-                return []
-            
+            # On NE renonce PAS sur un code != 0/1 (ex. code 7) : semgrep produit
+            # souvent un JSON valide avec des findings quand meme (une config du
+            # registre echoue mais les autres tournent). On parse d'abord stdout.
             try:
-                data = json.loads(result.stdout) if result.stdout else {"results": []}
+                data = json.loads(result.stdout) if result.stdout else None
             except json.JSONDecodeError as e:
-                logger.error(f"[semgrep] JSON parse error: {e}")
+                logger.error(f"[semgrep] JSON illisible (code {result.returncode}): {e}")
                 return []
+            if data is None:
+                logger.error(f"[semgrep] aucune sortie (code {result.returncode}): {result.stderr[:300]}")
+                return []
+            if result.returncode not in [0, 1]:
+                logger.warning(f"[semgrep] code {result.returncode} tolere — "
+                               f"{len(data.get('results', []))} findings exploites")
             
             findings = self._normalize(data.get("results", []))
             logger.info(f"[semgrep] Found {len(findings)} vulnerabilities")

@@ -2,7 +2,8 @@
 
 Évaluation **scientifique** de l'agent : qualité de **détection** (précision, rappel,
 F1, FPR, Youden's J), **par langage** et **global**, sur des **datasets étiquetés**
-(vérité terrain). La correction (repair) sera évaluée en Phase 2 (voir plus bas).
+(vérité terrain), ET de **correction** : qualité de patch (similarité, §1.5) **et taux de fix
+RIGOUREUX par tests exécutables** (Vul4J, §1.6).
 
 > Pourquoi des datasets étiquetés plutôt que « 200 dépôts aléatoires » ? Sans vérité
 > terrain, on ne peut calculer ni précision ni rappel.
@@ -77,6 +78,51 @@ faible** (Youden ≈ 0). Le `memory-engine` (à base de regex) et Semgrep flagge
 d'API dangereuses (`memcpy`, `strcpy`…) **même dans le code corrigé** qui les utilise de façon
 sûre. L'agent détecte « une » faille, mais distingue mal sûr/non-sûr sur C/C++.
 
+### 1.5 Correction — qualité de patch (mode B, run `correction_20260531-213154`)
+
+**Mode B** : on donne la faille **connue** au Patcher (qualité de correction *pure*, sans
+dépendre de la détection). Modèle de patch : **DeepSeek V4** (`deepseek-v4-flash`, **modèle
+unique** → attribution propre). Approche **fichier corrigé complet** (les diffs unifiés du LLM
+s'appliquent mal : `git apply` les rejette). 80 cas CVEfixes (10/langage).
+
+| Langage | Patch produit | Similarité au fix humain |
+|---|---|---|
+| c | 100 % | 0.53 |
+| php | 100 % | 0.46 |
+| java | 100 % | 0.38 |
+| cpp / python | 100 % | 0.36 / 0.33 |
+| typescript / javascript / go | 100 % | 0.21 / 0.20 / 0.18 |
+| **Global (80 cas)** | **100 %** | **0.33** |
+
+- **Patch produit** : DeepSeek V4 génère **systématiquement** un correctif plausible.
+- **Similarité** = ressemblance textuelle (difflib) au vrai fix humain (`fixed_code`). ⚠️ Métrique
+  **indicative** : un correctif valide peut être très différent du fix humain.
+- Le re-scan après patch a été **écarté** car circulaire (il faudrait que l'outil détecte
+  la faille d'abord, ≈24 % du temps seulement). Le fix RIGOUREUX = §1.6 (Vul4J).
+
+### 1.6 Correction RIGOUREUSE — tests exécutables (Vul4J, run `vul4j_20260601-084641`)
+
+Vraies vulnérabilités Java reproductibles **avec tests PoV exécutables** (le seul moyen de
+prouver « ça corrige vraiment »), via le conteneur Docker `tuhhsoftsec/vul4j`. Pipeline :
+checkout → baseline (le test PoV échoue) → DeepSeek V4 patche (fichier complet) → re-compile
++ re-test (`-b povs`) → le test PoV passe-t-il ?
+
+| Vuln | Projet (CWE) | Résultat |
+|---|---|---|
+| **VUL4J-6** | commons-compress (CWE-835, boucle infinie) | ✅ **FIXÉ** (PoV passe) |
+| VUL4J-1 | fastjson (CWE-20) | ❌ not_fixed |
+| VUL4J-8 | commons-compress (CWE-835) | ❌ not_fixed |
+| VUL4J-12 | commons-imaging (CWE-835) | ❌ build cassé par le patch |
+| **Taux de fix** | (sur 4 reproduites) | **1/4 = 25 %** |
+
+- **VUL4J-6 = succès vérifié par test exécutable** : DeepSeek V4 corrige réellement la faille
+  (boucle infinie commons-compress) et le test PoV passe. Preuve « dure » que l'agent peut corriger.
+- Échecs typiques : le patch **ne corrige pas** (full-file ne cible pas la bonne ligne) ou
+  **casse le build** (fragilité du fichier-complet sur du Java complexe).
+- ⚠️ **Petit échantillon** (8 tentées, 4 reproduites). 4 cas non reproduits = à affiner
+  (parseur baseline en mode `povs`). Étendre le run renforcerait le taux.
+- Infra réutilisable : `benchmark/vul4j_batch.py` + image Docker `tuhhsoftsec/vul4j`.
+
 ---
 
 ## 2. Méthodologie
@@ -120,6 +166,12 @@ pas une borne universelle). Juliet est synthétique. CVEfixes (vrai monde) est p
   flague 76 % des fichiers mais avec le **mauvais CWE** (failles web/logiques type SSRF,
   prototype pollution que Semgrep classe mal et que le 8B n'identifie pas).
 - C/C++ : memory-engine (regex) → bon rappel mais mauvaise discrimination (§1.4).
+- **Semgrep ne détecte presque rien sur CVEfixes (régions de diff partielles) ni sur Juliet
+  (C/C++)** : ses règles ont besoin du contexte source→sink d'un fichier complet. Ces résultats
+  reposent donc sur **Bandit** (Python), le **memory-engine** (C/C++) et l'**agent sémantique** —
+  pas sur Semgrep, qui ne brille que sur OWASP (fichiers Java complets). Un bug (Semgrep sautait
+  les fichiers gitignorés + intolérance au code de sortie 7) a été corrigé, mais **sans effet
+  matériel** sur CVEfixes/Juliet (Semgrep n'y trouvait rien de toute façon).
 
 ### 3.5 Matching au niveau fichier
 OWASP et Juliet sont scorés au **niveau fichier** (pas ligne précise). Juliet fournit la
@@ -140,6 +192,8 @@ Mitigation future : holdout de CVE récentes (2024-2025).
 | `run_20260531-163500` | OWASP Semgrep seul (2740) | ✅ valide (baseline) |
 | `run_20260531-172004` | OWASP + SpotBugs (2740) | ✅ valide |
 | `run_20260531-191017` | Juliet C/C++ (200), category | ✅ valide |
+| `correction_20260531-213154` | **Correction** CVEfixes (80, mode B, similarité) | ✅ valide |
+| `vul4j_20260601-084641` | **Correction rigoureuse** Vul4J (tests exécutables, fix-rate 1/4) | ✅ valide |
 
 > Note : deux runs Juliet intermédiaires ont été produits puis **supprimés** car erronés —
 > un échantillon dégénéré (1 seul CWE, bug d'échantillonnage corrigé) et une version au

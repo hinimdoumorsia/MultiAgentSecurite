@@ -1,0 +1,42 @@
+[
+  {
+    "id": "VUL4J-1",
+    "status": "not_fixed",
+    "before": "0/1",
+    "after": "0/1"
+  },
+  {
+    "id": "VUL4J-5",
+    "status": "no_reproduce"
+  },
+  {
+    "id": "VUL4J-6",
+    "status": "FIXED",
+    "before": "0/1",
+    "after": "1/1"
+  },
+  {
+    "id": "VUL4J-7",
+    "status": "no_reproduce"
+  },
+  {
+    "id": "VUL4J-8",
+    "status": "not_fixed",
+    "before": "0/1",
+    "after": "0/1"
+  },
+  {
+    "id": "VUL4J-10",
+    "status": "no_reproduce"
+  },
+  {
+    "id": "VUL4J-11",
+    "status": "no_reproduce"
+  },
+  {
+    "id": "VUL4J-12",
+    "status": "build_broken",
+    "before": "0/1",
+    "after": "0/0"
+  }
+]

@@ -1,0 +1,642 @@
+[
+  {
+    "case_id": "CVE-2024-24746_d42a0ebe_1_bad",
+    "language": "c",
+    "cwe": "CWE-835",
+    "produced": true,
+    "similarity": 0.5316,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2022-3976_10622ba3_2_bad",
+    "language": "c",
+    "cwe": "CWE-22",
+    "produced": true,
+    "similarity": 0.2681,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2023-27772_79a8eaf2_3_bad",
+    "language": "c",
+    "cwe": "CWE-754",
+    "produced": true,
+    "similarity": 0.7646,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2023-31470_56d0332b_4_bad",
+    "language": "c",
+    "cwe": "CWE-787",
+    "produced": true,
+    "similarity": 0.2191,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2018-1000041_f9d69ead_5_bad",
+    "language": "c",
+    "cwe": "CWE-Unknown",
+    "produced": true,
+    "similarity": 0.5714,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2020-29074_69eeb9f7_6_bad",
+    "language": "c",
+    "cwe": "CWE-732",
+    "produced": true,
+    "similarity": 0.955,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2022-4639_b19f8a60_7_bad",
+    "language": "c",
+    "cwe": "CWE-134",
+    "produced": true,
+    "similarity": 1.0,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2013-7294_28993512_8_bad",
+    "language": "c",
+    "cwe": "CWE-20",
+    "produced": true,
+    "similarity": 0.2097,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2016-5361_152d6d95_9_bad",
+    "language": "c",
+    "cwe": "CWE-20",
+    "produced": true,
+    "similarity": 0.651,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2020-1763_471a3e41_10_bad",
+    "language": "c",
+    "cwe": "CWE-125",
+    "produced": true,
+    "similarity": 0.1595,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2020-7763_b5d2da26_1_bad",
+    "language": "javascript",
+    "cwe": "CWE-22",
+    "produced": true,
+    "similarity": 0.2187,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2023-51665_72849601_2_bad",
+    "language": "javascript",
+    "cwe": "CWE-918",
+    "produced": true,
+    "similarity": 0.2994,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2023-51697_f2f2ea16_3_bad",
+    "language": "javascript",
+    "cwe": "CWE-918",
+    "produced": true,
+    "similarity": 0.0967,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2023-2516_39b774cb_4_bad",
+    "language": "javascript",
+    "cwe": "CWE-79",
+    "produced": true,
+    "similarity": 0.0005,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2020-15095_a9857b8f_5_bad",
+    "language": "javascript",
+    "cwe": "CWE-532",
+    "produced": true,
+    "similarity": 0.1727,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2022-1650_10ee0c48_6_bad",
+    "language": "javascript",
+    "cwe": "CWE-212",
+    "produced": true,
+    "similarity": 0.1097,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2019-10767_f6e292c6_7_bad",
+    "language": "javascript",
+    "cwe": "CWE-22",
+    "produced": true,
+    "similarity": 0.0327,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2021-23470_476d0007_8_bad",
+    "language": "javascript",
+    "cwe": "CWE-1321",
+    "produced": true,
+    "similarity": 0.4781,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2023-44400_88afab65_9_bad",
+    "language": "javascript",
+    "cwe": "CWE-384",
+    "produced": true,
+    "similarity": 0.181,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2023-49804_482049c7_10_bad",
+    "language": "javascript",
+    "cwe": "CWE-384",
+    "produced": true,
+    "similarity": 0.3765,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2017-16876_5f06d724_1_bad",
+    "language": "python",
+    "cwe": "CWE-79",
+    "produced": true,
+    "similarity": 0.6417,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2024-3651_1d365e17_2_bad",
+    "language": "python",
+    "cwe": "CWE-Unknown",
+    "produced": true,
+    "similarity": 0.4116,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2015-6941_c0689e32_3_bad",
+    "language": "python",
+    "cwe": "CWE-534",
+    "produced": true,
+    "similarity": 0.6217,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2017-17713_62814915_4_bad",
+    "language": "python",
+    "cwe": "CWE-89",
+    "produced": true,
+    "similarity": 0.5608,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2017-17714_62814915_5_bad",
+    "language": "python",
+    "cwe": "CWE-79",
+    "produced": true,
+    "similarity": 0.639,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2021-29421_3f38f732_6_bad",
+    "language": "python",
+    "cwe": "CWE-611",
+    "produced": true,
+    "similarity": 0.0302,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2016-4444_5cd60033_7_bad",
+    "language": "python",
+    "cwe": "CWE-77",
+    "produced": true,
+    "similarity": 0.1127,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2023-41334_22057d37_8_bad",
+    "language": "python",
+    "cwe": "CWE-Unknown",
+    "produced": true,
+    "similarity": 0.046,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2021-23418_85d5a6b4_9_bad",
+    "language": "python",
+    "cwe": "CWE-611",
+    "produced": true,
+    "similarity": 0.0533,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2021-23418_9d6051be_10_bad",
+    "language": "python",
+    "cwe": "CWE-611",
+    "produced": true,
+    "similarity": 0.1844,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2019-25087_1a0de56e_1_bad",
+    "language": "cpp",
+    "cwe": "CWE-22",
+    "produced": true,
+    "similarity": 0.6839,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2020-24654_8bf8c5ef_2_bad",
+    "language": "cpp",
+    "cwe": "CWE-59",
+    "produced": true,
+    "similarity": 0.4147,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2023-52266_17405b97_3_bad",
+    "language": "cpp",
+    "cwe": "CWE-416",
+    "produced": true,
+    "similarity": 0.4966,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2023-52267_17405b97_4_bad",
+    "language": "cpp",
+    "cwe": "CWE-125",
+    "produced": true,
+    "similarity": 0.5243,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2024-29187_6d372e51_5_bad",
+    "language": "cpp",
+    "cwe": "CWE-Unknown",
+    "produced": true,
+    "similarity": 0.1608,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2024-29188_93eeb5f6_6_bad",
+    "language": "cpp",
+    "cwe": "CWE-Unknown",
+    "produced": true,
+    "similarity": 0.208,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2022-35938_4142e47e_7_bad",
+    "language": "cpp",
+    "cwe": "CWE-125",
+    "produced": true,
+    "similarity": 0.4117,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2022-40299_5f28fbf0_8_bad",
+    "language": "cpp",
+    "cwe": "CWE-330",
+    "produced": true,
+    "similarity": 0.0942,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2019-20805_8be9da82_9_bad",
+    "language": "cpp",
+    "cwe": "CWE-190",
+    "produced": true,
+    "similarity": 0.1953,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2020-27787_e2f60adc_10_bad",
+    "language": "cpp",
+    "cwe": "CWE-Unknown",
+    "produced": true,
+    "similarity": 0.4401,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2016-7149_9a4ab854_1_bad",
+    "language": "php",
+    "cwe": "CWE-79",
+    "produced": true,
+    "similarity": 0.6202,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2016-7150_dd975fff_2_bad",
+    "language": "php",
+    "cwe": "CWE-79",
+    "produced": true,
+    "similarity": 0.158,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2016-8901_999b5ad1_3_bad",
+    "language": "php",
+    "cwe": "CWE-74",
+    "produced": true,
+    "similarity": 0.8869,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2016-8901_25c21cf9_4_bad",
+    "language": "php",
+    "cwe": "CWE-74",
+    "produced": true,
+    "similarity": 0.437,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2017-1000423_b899d654_5_bad",
+    "language": "php",
+    "cwe": "CWE-20",
+    "produced": true,
+    "similarity": 0.4095,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2017-1000423_0096a3eb_6_bad",
+    "language": "php",
+    "cwe": "CWE-20",
+    "produced": true,
+    "similarity": 0.0673,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2017-5494_261dbd5b_7_bad",
+    "language": "php",
+    "cwe": "CWE-79",
+    "produced": true,
+    "similarity": 0.4828,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2017-5553_ce5b36e4_8_bad",
+    "language": "php",
+    "cwe": "CWE-79",
+    "produced": true,
+    "similarity": 0.6794,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2022-0402_c19d65ab_9_bad",
+    "language": "php",
+    "cwe": "CWE-79",
+    "produced": true,
+    "similarity": 0.2631,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2021-4431_3bd1709a_10_bad",
+    "language": "php",
+    "cwe": "CWE-79",
+    "produced": true,
+    "similarity": 0.645,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2024-28236_e1572743_1_bad",
+    "language": "go",
+    "cwe": "CWE-Unknown",
+    "produced": true,
+    "similarity": 0.2648,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2021-21403_9a125624_2_bad",
+    "language": "go",
+    "cwe": "CWE-287",
+    "produced": true,
+    "similarity": 0.1311,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2022-29188_dea7b3c8_3_bad",
+    "language": "go",
+    "cwe": "CWE-918",
+    "produced": true,
+    "similarity": 0.3189,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2021-3762_691f2023_4_bad",
+    "language": "go",
+    "cwe": "CWE-22",
+    "produced": true,
+    "similarity": 0.0647,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2022-2582_35fa6ddf_5_bad",
+    "language": "go",
+    "cwe": "CWE-326",
+    "produced": true,
+    "similarity": 0.0588,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2022-25891_6a27056f_6_bad",
+    "language": "go",
+    "cwe": "CWE-Unknown",
+    "produced": true,
+    "similarity": 0.4675,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2024-35183_0d06e157_7_bad",
+    "language": "go",
+    "cwe": "CWE-Unknown",
+    "produced": true,
+    "similarity": 0.1357,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2024-35183_403e9356_8_bad",
+    "language": "go",
+    "cwe": "CWE-Unknown",
+    "produced": true,
+    "similarity": 0.0535,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2020-15222_0c9e0f6d_9_bad",
+    "language": "go",
+    "cwe": "CWE-345",
+    "produced": true,
+    "similarity": 0.0607,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2020-15223_03dd5581_10_bad",
+    "language": "go",
+    "cwe": "CWE-754",
+    "produced": true,
+    "similarity": 0.2385,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2023-37908_f4d5acac_1_bad",
+    "language": "java",
+    "cwe": "CWE-79",
+    "produced": true,
+    "similarity": 0.0621,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2023-37912_5f558b8f_2_bad",
+    "language": "java",
+    "cwe": "CWE-Unknown",
+    "produced": true,
+    "similarity": 0.0994,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2021-29451_8c754a0a_3_bad",
+    "language": "java",
+    "cwe": "CWE-347",
+    "produced": true,
+    "similarity": 0.4358,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2022-3952_94653cb3_4_bad",
+    "language": "java",
+    "cwe": "CWE-668",
+    "produced": true,
+    "similarity": 0.6207,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2023-7166_c62da9bb_5_bad",
+    "language": "java",
+    "cwe": "CWE-79",
+    "produced": true,
+    "similarity": 0.6454,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2023-7171_d6093d81_6_bad",
+    "language": "java",
+    "cwe": "CWE-79",
+    "produced": true,
+    "similarity": 0.6779,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2021-27582_7eba3c12_7_bad",
+    "language": "java",
+    "cwe": "CWE-1321",
+    "produced": true,
+    "similarity": 0.2082,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2024-25638_bc51df1c_8_bad",
+    "language": "java",
+    "cwe": "CWE-Unknown",
+    "produced": true,
+    "similarity": 0.3757,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2014-8122_6808b11c_9_bad",
+    "language": "java",
+    "cwe": "CWE-362",
+    "produced": true,
+    "similarity": 0.2508,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2014-8122_8e413202_10_bad",
+    "language": "java",
+    "cwe": "CWE-362",
+    "produced": true,
+    "similarity": 0.4684,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2024-29900_d421d4bd_1_bad",
+    "language": "typescript",
+    "cwe": "CWE-Unknown",
+    "produced": true,
+    "similarity": 0.2871,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2023-28444_d701f512_2_bad",
+    "language": "typescript",
+    "cwe": "CWE-200",
+    "produced": true,
+    "similarity": 0.0087,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2021-32851_07348526_3_bad",
+    "language": "typescript",
+    "cwe": "CWE-79",
+    "produced": true,
+    "similarity": 0.4088,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2022-39300_c1f275c2_4_bad",
+    "language": "typescript",
+    "cwe": "CWE-347",
+    "produced": true,
+    "similarity": 0.0444,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2022-21671_e44b6a8f_5_bad",
+    "language": "typescript",
+    "cwe": "CWE-Unknown",
+    "produced": true,
+    "similarity": 0.4365,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2022-23068_431dc961_6_bad",
+    "language": "typescript",
+    "cwe": "CWE-79",
+    "produced": true,
+    "similarity": 0.0019,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2024-32866_4819d51b_7_bad",
+    "language": "typescript",
+    "cwe": "CWE-Unknown",
+    "produced": true,
+    "similarity": 0.5019,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2024-28195_c3ae8767_8_bad",
+    "language": "typescript",
+    "cwe": "CWE-Unknown",
+    "produced": true,
+    "similarity": 0.183,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2022-48345_d4bdc89f_9_bad",
+    "language": "typescript",
+    "cwe": "CWE-79",
+    "produced": true,
+    "similarity": 0.0736,
+    "error": null
+  },
+  {
+    "case_id": "CVE-2023-32325_67e07eb8_10_bad",
+    "language": "typescript",
+    "cwe": "CWE-79",
+    "produced": true,
+    "similarity": 0.112,
+    "error": null
+  }
+]
