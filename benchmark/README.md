@@ -29,6 +29,12 @@ SpotBugs+FindSecBugs (Java), memory-engine Rust (C/C++). Mode `detection_only`.
 > précision/FPR significatifs). `indicative` = négatifs bruités → seul le **rappel** est
 > exploitable, la précision/FPR sont sous-estimées (voir §3.1).
 
+![Détection par dataset](images/detection_by_dataset.png)
+
+> *Lecture du graphe* : sur les datasets à négatifs propres (OWASP, Juliet) le Youden J est
+> **positif** ; sur CVEfixes il est négatif — artefact des négatifs bruités (§3.1), pas une
+> contre-performance de l'agent.
+
 ### 1.2 CVEfixes — multi-langages, vraies CVE (run `run_20260531-152036`)
 
 Vraies CVE issues de HuggingFace (`hitoshura25/cvefixes`), 50 vuln + 50 corrigées par
@@ -44,6 +50,11 @@ langage. Scoring `presence` (matching au niveau fichier).
 
 **Seul le rappel (~0.24) est exploitable.** La précision/FPR ne sont PAS fiables ici
 (§3.1). C'est un signal de **généralisation multi-langages**, pas un chiffre absolu.
+
+![CVEfixes — rappel par langage](images/cvefixes_recall_by_lang.png)
+
+> *Lecture* : Python mène (Bandit **+** Semgrep), JavaScript ferme la marche (0.08) — seul
+> Semgrep le couvre, et les CVE JS sont des failles web/logiques mal classées (§3.4).
 
 ### 1.3 OWASP Benchmark — Java, référence SAST (runs `163500` puis `172004`)
 
@@ -61,6 +72,8 @@ un finding compte s'il est du même CWE de catégorie). Métriques **fiables**.
 au prix d'un FPR plus élevé (plus de fausses alertes). **Compromis SAST classique : plus
 d'outils = plus de détection, mais plus de bruit.** Seulement **54 faux négatifs sur 1415**
 vulnérabilités avec la chaîne complète.
+
+![OWASP — impact SpotBugs](images/owasp_spotbugs_impact.png)
 
 ### 1.4 Juliet — C/C++, négatifs propres (run `run_20260531-191017`)
 
@@ -140,6 +153,8 @@ pas de mélange). Providers : NVIDIA NIM (gratuit) + DeepSeek (payant). Runners 
 | qwen3-coder-480b (spécialisé code) | 0.38 | 0.40 | 0.56 | −0.19 |
 | nemotron-super-49b | 0.31 | 0.31 | 0.69 | −0.38 |
 
+![Comparaison LLM — détection](images/llm_detection.png)
+
 **Correction** (40 cas, mode B ; taux de patch produit + similarité au fix humain) :
 
 | Modèle | Patch produit | Similarité au fix humain |
@@ -150,6 +165,11 @@ pas de mélange). Providers : NVIDIA NIM (gratuit) + DeepSeek (payant). Runners 
 | nemotron-super-49b | 100 % | 0.28 |
 | deepseek-v4-flash | 100 % | 0.27 |
 | gpt-oss-120b | 100 % | 0.15 |
+
+![Comparaison LLM — correction](images/llm_correction.png)
+
+> ⚠️ La **similarité** est une métrique faible (un correctif valide peut diverger du fix humain).
+> Le classement **rigoureux** par tests exécutables est dans `results/vul4j_llm/` (Vul4J multi-modèles).
 
 **Analyse :**
 - **Détection** : `llama-3.3-70b` a la **meilleure discrimination** (Youden +0.12, seul positif).
@@ -280,10 +300,20 @@ harness/
   detection_metrics.py   P/R/F1/FPR/Youden, micro/macro, IC bootstrap
   repair_metrics.py      taux fix / régression / diff valide (Phase 2)
   run_agent.py           AgentRunner (workflow réel) | MockRunner
-  runner.py              orchestration + écriture des résultats
-  adapters/              cvefixes, owasp, juliet (+ vul4j à venir)
-results/                 sorties (1 dossier run_<horodatage> par exécution)
+  runner.py              orchestration détection + écriture des résultats
+  adapters/              cvefixes, owasp, juliet
+llm_models.py            registre des 6 LLM à comparer (provider, modèle, max_tokens)
+detection_runner.py      comparaison LLM — détection sémantique (multi-modèles)
+correction_runner.py     comparaison LLM — correction (similarité, mode B)
+vul4j_batch.py           correction rigoureuse Vul4J (tests exécutables)
+vul4j_llm.py             correction rigoureuse Vul4J — multi-modèles
+make_charts.py           génère les graphes (images/) depuis les résultats réels
+images/                  graphes PNG (régénérables : python -m MultiAgentSecurite.benchmark.make_charts)
+results/                 sorties (1 dossier par exécution + llm_comparison/ + vul4j_llm/)
 ```
+
+> **Régénérer les graphes** après de nouveaux runs : `python -m MultiAgentSecurite.benchmark.make_charts`
+> (lit uniquement les `results/` réels, aucune donnée inventée).
 
 ---
 
