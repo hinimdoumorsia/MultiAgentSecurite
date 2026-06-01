@@ -20,6 +20,11 @@ C = "vul4j"
 _CSV = _REPO / "benchmark" / "datasets" / "vul4j" / "dataset" / "vul4j_dataset.csv"
 _OUT = _REPO / "benchmark" / "results" / "vul4j_llm"
 VULNS = ["VUL4J-1", "VUL4J-6", "VUL4J-8", "VUL4J-12"]  # reproduites
+# Vul4J = patch FICHIER COMPLET : il faut donner ET récupérer le fichier ENTIER.
+# INPUT_CHARS (4000) servait à la compa détection/correction (petits extraits) ;
+# ici tronquer casse la compilation (build_broken). On élargit largement.
+FILE_CHARS = 18000      # entrée : fichier Java complet (cap généreux)
+OUT_TOKENS = 8192       # sortie : assez pour renvoyer le fichier entier
 SYS = ("You are a security engineer. Fix ONLY the vulnerability in this Java file. "
        "Preserve package, imports, all other code, signatures and behaviour. "
        "Return the COMPLETE corrected file, no markdown fences, no explanation.")
@@ -68,11 +73,13 @@ def patch_one(cli, model, maxtok, fpath, cwe):
     rc, before = dexec(f"cat {fpath}")
     if rc != 0 or not before.strip():
         return False
+    if len(before) > FILE_CHARS:   # ne pas tronquer un gros fichier (patch cassé garanti)
+        print(f"      skip {Path(fpath).name}: {len(before)}c > {FILE_CHARS}"); return False
     try:
         r = cli.chat.completions.create(model=model, messages=[
             {"role": "system", "content": SYS},
-            {"role": "user", "content": f"Vulnerability {cwe}.\n```java\n{before[:INPUT_CHARS]}\n```"}],
-            temperature=0.2, max_tokens=maxtok)
+            {"role": "user", "content": f"Vulnerability {cwe}.\n```java\n{before[:FILE_CHARS]}\n```"}],
+            temperature=0.2, max_tokens=max(maxtok, OUT_TOKENS))
         corr = clean(r.choices[0].message.content or "")
     except Exception as e:
         print(f"      patch err: {str(e)[:60]}"); return False

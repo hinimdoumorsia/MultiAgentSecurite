@@ -1,10 +1,10 @@
 {
   "model": "meta-llama/llama-3.3-70b-instruct",
   "results": {
-    "VUL4J-1": "build_broken",
+    "VUL4J-1": "not_fixed",
     "VUL4J-6": "build_broken",
-    "VUL4J-8": "build_broken",
-    "VUL4J-12": "build_broken"
+    "VUL4J-8": "not_fixed",
+    "VUL4J-12": "patch_fail"
   },
   "fixed": 0,
   "total": 4,

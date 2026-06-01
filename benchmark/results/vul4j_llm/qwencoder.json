@@ -1,0 +1,12 @@
+{
+  "model": "qwen/qwen3-coder",
+  "results": {
+    "VUL4J-1": "build_broken",
+    "VUL4J-6": "patch_fail",
+    "VUL4J-8": "build_broken",
+    "VUL4J-12": "build_broken"
+  },
+  "fixed": 0,
+  "total": 4,
+  "fix_rate": 0.0
+}
