@@ -333,3 +333,30 @@ results/                 sorties (1 dossier par exécution + llm_comparison/ + v
   refaire après reset des quotas, ou en tier payant).
 - **Régression** sur CVEfixes (nécessiterait des tests exécutables, absents) — couverte par Vul4J seul.
 - **Holdout CVE récentes (2024-2025)** pour réduire la contamination (§3.6).
+
+---
+
+## 7. Journal technique — bugs rencontrés & corrigés
+
+Pendant la mise en place du benchmark, plusieurs bugs/pièges ont été **trouvés puis corrigés**
+(chaque run était vérifié avant/pendant pour éviter de produire des résultats faux). À documenter
+dans le mémoire comme preuve de rigueur méthodologique et pour la **reproductibilité**.
+
+| # | Problème observé | Cause | Correction |
+|---|---|---|---|
+| 1 | Orchestrateur LangGraph : `MemorySafety`/`Semantic` jamais exécutés (mode GitHub) | `build_workflow()` sans param `detection_only` + fan-out non câblé (desync code↔harness) | `build_workflow(detection_only)` + analyse câblée séquentiellement |
+| 2 | Outils SAST plantent sous Windows (findings perdus) | `subprocess(text=True)` sans `encoding` → crash cp1252 sur sortie UTF-8 | `encoding="utf-8", errors="replace"` sur les 5 wrappers |
+| 3 | Semgrep scanne **0 fichier** sur les datasets | il saute les fichiers **gitignorés** | option `--no-git-ignore` |
+| 4 | Semgrep renvoie `[]` malgré des findings | **code de sortie 7** (une config registre échoue) rejeté en bloc | tolérer le code 7 et parser stdout quand même |
+| 5 | Semgrep ne trouve rien sur CVEfixes/Juliet | fichiers = **régions partielles / C-C++** (besoin contexte source→sink) | constaté (§3.4) — détection portée par Bandit/memory-engine/sémantique |
+| 6 | OWASP : SpotBugs « n'apporte rien » (faux) | **cache-hit** : le scan réutilisait un cache pré-fix (SpotBugs pas ré-exécuté) | `SCAN_FORCE_REFRESH=true` après tout changement d'outil |
+| 7 | Juliet : Youden −0.94, échantillon dégénéré | adaptateur prenait 50 fichiers **du même CWE** (tri alphabétique) | sélection **round-robin par CWE** (54 CWE) |
+| 8 | Juliet : FPR=0.99 (injuste) | scoring `presence` (tout finding = FP) | scoring `category` (FP seulement si même CWE) |
+| 9 | Agent complet : **0 patch généré** | `exploit_scorer` échoue le JSON → aucune vuln marquée exploitable → Patcher sauté | parsing JSON robuste + **repli par sévérité** |
+| 10 | Patchs jamais appliqués | les **diffs unifiés du LLM** ne passent pas `git apply` | génération du **fichier corrigé complet** + diff calculé par `difflib` |
+| 11 | Validator inopérant sous Windows | applique via la commande POSIX `patch` | côté benchmark, `repair_verify` applique via **`git apply`** |
+| 12 | Comparaison LLM : 4/6 modèles à 0 % | requêtes trop grosses (413) / timeouts / Groq épuisé | input réduit, `max_tokens` par modèle, timeout+retries, routage NVIDIA→**OpenRouter** |
+| 13 | Vul4J par-modèle : timeouts | **NVIDIA NIM throttlé** sous charge soutenue | routage via **OpenRouter** (payant, fiable) |
+
+> Tous ces correctifs sont dans `src/` (agents, tools, graph) et `benchmark/` ; les runs invalidés
+> par ces bugs ont été refaits (et les versions erronées supprimées, cf. §4).
