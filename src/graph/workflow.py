@@ -35,7 +35,8 @@ from graph.router import (
 from graph.state import AgentState
 
 
-def build_workflow(detection_only: bool = False) -> StateGraph:
+def build_workflow(detection_only: bool = False, skip_semantic: bool = False,
+                   skip_scanner: bool = False, skip_memory: bool = False) -> StateGraph:
     """Construit le graphe LangGraph.
 
     detection_only=True : pipeline de DÉTECTION seule (triage -> scanner ->
@@ -46,17 +47,30 @@ def build_workflow(detection_only: bool = False) -> StateGraph:
     detection_only=False : pipeline complet avec scoring, génération de patch et
         validation (boucle de retry jusqu'à max_patch_iterations).
 
+    skip_semantic=True : ABLATION — on ne câble PAS le SemanticAnalystAgent (LLM).
+        Le flux passe directement de memory_safety à l'étape suivante (report en
+        détection, exploit_scorer sinon). Sert à mesurer l'apport réel du
+        raisonnement sémantique LLM par rapport aux seuls outils SAST.
+
     Note : l'analyse est câblée en SÉQUENTIEL (scanner -> memory_safety ->
     semantic_analyst) pour garantir que les deux agents tournent réellement.
     memory_safety se court-circuite seul s'il n'y a pas de C/C++/Rust.
     """
     graph = StateGraph(AgentState)
 
+    # Sous-ensemble d'analyseurs activés (ablation : skip_scanner/skip_memory/skip_semantic).
+    analyzers = [
+        ("scanner", ScannerAgent, not skip_scanner),
+        ("memory_safety", MemorySafetyAgent, not skip_memory),
+        ("semantic_analyst", SemanticAnalystAgent, not skip_semantic),
+    ]
+    enabled = [name for name, _, on in analyzers if on]
+
     # Register agents as nodes
     graph.add_node("triage", TriageAgent().run)
-    graph.add_node("scanner", ScannerAgent().run)
-    graph.add_node("memory_safety", MemorySafetyAgent().run)
-    graph.add_node("semantic_analyst", SemanticAnalystAgent().run)
+    for name, cls, on in analyzers:
+        if on:
+            graph.add_node(name, cls().run)
     graph.add_node("report", ReportAgent().run)
     if not detection_only:
         graph.add_node("exploit_scorer", ExploitScorerAgent().run)
@@ -66,20 +80,23 @@ def build_workflow(detection_only: bool = False) -> StateGraph:
     # Entry point
     graph.set_entry_point("triage")
 
+    # triage -> premier analyseur activé (ou report si aucun).
+    first = enabled[0] if enabled else "report"
     graph.add_conditional_edges(
         "triage",
         route_after_triage,
-        {"scanner": "scanner", "report": "report"},
+        {"scanner": first, "report": "report"},
     )
 
-    # Analyse séquentielle : les deux agents d'analyse tournent toujours.
-    graph.add_edge("scanner", "memory_safety")
-    graph.add_edge("memory_safety", "semantic_analyst")
+    # Analyse séquentielle sur le sous-ensemble activé.
+    for a, b in zip(enabled, enabled[1:]):
+        graph.add_edge(a, b)
+    analysis_exit = enabled[-1] if enabled else "triage"
 
     if detection_only:
-        graph.add_edge("semantic_analyst", "report")
+        graph.add_edge(analysis_exit, "report")
     else:
-        graph.add_edge("semantic_analyst", "exploit_scorer")
+        graph.add_edge(analysis_exit, "exploit_scorer")
         graph.add_conditional_edges(
             "exploit_scorer",
             route_after_exploit_scorer,

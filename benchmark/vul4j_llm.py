@@ -19,7 +19,9 @@ from llm_models import MODELS, client_for, INPUT_CHARS  # noqa: E402
 C = "vul4j"
 _CSV = _REPO / "benchmark" / "datasets" / "vul4j" / "dataset" / "vul4j_dataset.csv"
 _OUT = _REPO / "benchmark" / "results" / "vul4j_llm"
-VULNS = ["VUL4J-1", "VUL4J-6", "VUL4J-8", "VUL4J-12"]  # reproduites
+# 12 cas reproductibles (PoV échoue au baseline), validés via VUL4J/testing_results.json
+# (cf. vul4j_classify_json.py). Étend l'étude n=4 -> n=12.
+VULNS = [f"VUL4J-{i}" for i in range(1, 13)]
 # Vul4J = patch FICHIER COMPLET : il faut donner ET récupérer le fichier ENTIER.
 # INPUT_CHARS (4000) servait à la compa détection/correction (petits extraits) ;
 # ici tronquer casse la compilation (build_broken). On élargit largement.
@@ -40,8 +42,14 @@ def dexec(cmd, t=600):
 
 
 def parse_test(out):
+    """nr = nb de tests exécutés ; failing = le PoV échoue encore.
+    Vul4J signale l'échec via 'Tests with errors:' (exception) OU 'Failing tests:'
+    (assertion) : il faut détecter les deux (sinon faux 'FIXED' sur les échecs
+    par assertion). Après patch : FIXED = nr>0 et NON failing."""
     run = re.search(r"running tests:\s*(\d+)", out)
-    return (int(run.group(1)) if run else 0), ("Tests with errors" in out)
+    nr = int(run.group(1)) if run else 0
+    failing = ("Failing tests:" in out) or ("Tests with errors" in out) or ("Tests in error" in out)
+    return nr, failing
 
 
 def src_files(human_patch):

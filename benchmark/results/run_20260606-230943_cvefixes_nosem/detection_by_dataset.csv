@@ -1,0 +1,9 @@
+dataset/language,quality,tp,fp,fn,tn,precision,recall,f1,fpr,youden_j
+cvefixes/c,indicative,0,10,50,40,0.0,0.0,0.0,0.2,-0.2
+cvefixes/cpp,indicative,0,12,50,38,0.0,0.0,0.0,0.24,-0.24
+cvefixes/go,indicative,0,0,50,49,0.0,0.0,0.0,0.0,0.0
+cvefixes/java,indicative,0,0,50,50,0.0,0.0,0.0,0.0,0.0
+cvefixes/javascript,indicative,0,0,50,50,0.0,0.0,0.0,0.0,0.0
+cvefixes/php,indicative,0,0,50,50,0.0,0.0,0.0,0.0,0.0
+cvefixes/python,indicative,1,2,49,48,0.3333,0.02,0.0377,0.04,-0.02
+cvefixes/typescript,indicative,0,2,50,47,0.0,0.0,0.0,0.0408,-0.0408

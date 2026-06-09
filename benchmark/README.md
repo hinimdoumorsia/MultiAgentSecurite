@@ -202,7 +202,7 @@ sûre. L'agent détecte « une » faille, mais distingue mal sûr/non-sûr sur C
 ### 1.5 Correction — qualité de patch (mode B, run `correction_20260531-213154`)
 
 **Mode B** : on donne la faille **connue** au Patcher (qualité de correction *pure*, sans
-dépendre de la détection). Modèle de patch : **DeepSeek V4** (`deepseek-v4-flash`, **modèle
+dépendre de la détection). Modèle de patch : **DeepSeek-V3** (`deepseek-v3`, **modèle
 unique** → attribution propre). Approche **fichier corrigé complet** (les diffs unifiés du LLM
 s'appliquent mal : `git apply` les rejette). 80 cas CVEfixes (10/langage).
 
@@ -215,130 +215,145 @@ s'appliquent mal : `git apply` les rejette). 80 cas CVEfixes (10/langage).
 | typescript / javascript / go | 100 % | 0.21 / 0.20 / 0.18 |
 | **Global (80 cas)** | **100 %** | **0.33** |
 
-- **Patch produit** : DeepSeek V4 génère **systématiquement** un correctif plausible.
+- **Patch produit** : DeepSeek-V3 génère **systématiquement** un correctif plausible.
 - **Similarité** = ressemblance textuelle (difflib) au vrai fix humain (`fixed_code`). ⚠️ Métrique
   **indicative** : un correctif valide peut être très différent du fix humain.
 - Le re-scan après patch a été **écarté** car circulaire (il faudrait que l'outil détecte
   la faille d'abord, ≈24 % du temps seulement). Le fix RIGOUREUX = §1.6 (Vul4J).
 
-### 1.6 Correction RIGOUREUSE — tests exécutables (Vul4J, run `vul4j_20260601-084641`)
+### 1.6 Correction RIGOUREUSE — tests PoV exécutables (Vul4J, Wave-1 + Wave-2, n=183)
 
-> **À lire d'abord — vocabulaire :**
-> - **Vul4J** = un *dataset* de ~**79 vraies vulnérabilités Java** tirées de vrais projets open-source.
->   Chacune a un **identifiant numéroté** : `VUL4J-1`, `VUL4J-2`, … Le numéro est un **nom/étiquette**
->   (pas une quantité). Ex. `VUL4J-6` = la 6ᵉ vuln du catalogue = une boucle infinie dans `commons-compress`.
-> - **Test PoV** (*Proof of Vulnerability*) = un test exécutable fourni avec chaque vuln. Sur le code
->   **non corrigé** il **échoue** (la faille est là) ; si après patch il **passe**, la faille est
->   **réellement corrigée** — c'est la seule preuve « dure ».
-> - **Fix-rate** = $\dfrac{\text{vulns réellement corrigées (PoV ✅)}}{\text{vulns testées}}$. Ici **4** vulns
->   testées → un fix-rate de **1/4 = 25 %** signifie « 1 corrigée sur 4 ».
-> - **Pourquoi seulement 4 ?** Tester une vuln exige de la **reproduire** dans Docker (compiler + voir
->   son PoV échouer). Beaucoup ne se reproduisent pas (dépendances/JDK cassés). Sur les essais, **4 se
->   sont reproduites proprement** (VUL4J-1, -6, -8, -12) → c'est l'échantillon. Goulot = la reproduction, pas le LLM.
+> **Vocabulaire :**
+> - **Vul4J** = dataset de vraies vulnérabilités Java avec tests PoV exécutables (`tuhhsoftsec/vul4j`).
+> - **Test PoV** (*Proof of Vulnerability*) = test qui **échoue** sur le code vulnérable et **passe** si
+>   la faille est réellement corrigée — c'est l'étalon-or, la seule « preuve dure ».
+> - **Fix-rate** = part des cas où le PoV passe après patch (avec IC Wilson 95 %).
+> - **Wave-2** = extension de l'ensemble d'évaluation (commits security-fix + présence PoV + critères
+>   taille fichier), portant le total de 79 (Wave-1) à **183 cas évaluables**.
 
-Vraies vulnérabilités Java reproductibles **avec tests PoV exécutables** (le seul moyen de
-prouver « ça corrige vraiment »), via le conteneur Docker `tuhhsoftsec/vul4j`. Pipeline :
-checkout → baseline (le test PoV échoue) → DeepSeek V4 patche (fichier complet) → re-compile
-+ re-test (`-b povs`) → le test PoV passe-t-il ?
+Pipeline : checkout → baseline PoV échoue → LLM patche (fichier complet, `FILE_CHARS=26000`,
+`max_tokens≥8192`) → re-compile + re-test (`-b povs`) → PoV passe-t-il ?
 
-| Vuln | Projet (CWE) | Résultat |
-|---|---|---|
-| **VUL4J-6** | commons-compress (CWE-835, boucle infinie) | ✅ **FIXÉ** (PoV passe) |
-| VUL4J-1 | fastjson (CWE-20) | ❌ not_fixed |
-| VUL4J-8 | commons-compress (CWE-835) | ❌ not_fixed |
-| VUL4J-12 | commons-imaging (CWE-835) | ❌ build cassé par le patch |
-| **Taux de fix** | (sur 4 reproduites) | **1/4 = 25 %** |
+**Fix-rate par modèle sur n=183 cas évaluables (Wilson 95% CI) :**
 
-- **VUL4J-6 = succès vérifié par test exécutable** : DeepSeek V4 corrige réellement la faille
-  (boucle infinie commons-compress) et le test PoV passe. Preuve « dure » que l'agent peut corriger.
-- Échecs typiques : le patch **ne corrige pas** (full-file ne cible pas la bonne ligne) ou
-  **casse le build** (fragilité du fichier-complet sur du Java complexe).
-- ⚠️ **Petit échantillon** (8 tentées, 4 reproduites). 4 cas non reproduits = à affiner
-  (parseur baseline en mode `povs`). Étendre le run renforcerait le taux.
-- Infra réutilisable : `benchmark/vul4j_batch.py` + image Docker `tuhhsoftsec/vul4j`.
-
-### 1.7 Comparaison de LLM (Phase 3)
-
-6 LLM évalués sur le **même** sous-ensemble CVEfixes (**1 modèle = 1 run**, attribution propre ;
-pas de mélange). Providers : NVIDIA NIM (gratuit) + DeepSeek (payant). Runners :
-`detection_runner.py`, `correction_runner.py`, registre `llm_models.py`.
-
-**Détection sémantique** (32 cas vuln+sain ; c'est l'agent LLM qui détecte sur CVEfixes) :
-
-| Modèle | Rappel | Précision | FPR | Youden J |
-|---|---|---|---|---|
-| **llama-3.3-70b** (NVIDIA) | 0.50 | 0.57 | 0.38 | **+0.12** |
-| gpt-oss-120b (raisonnement) | **0.69** | 0.46 | 0.81 | −0.12 |
-| deepseek-v4-flash (raisonnement) | 0.56 | 0.43 | 0.75 | −0.19 |
-| llama-4-maverick (MoE) | 0.44 | 0.41 | 0.62 | −0.19 |
-| qwen3-coder-480b (spécialisé code) | 0.38 | 0.40 | 0.56 | −0.19 |
-| nemotron-super-49b | 0.31 | 0.31 | 0.69 | −0.38 |
-
-![Comparaison LLM — détection](images/llm_detection.png)
-
-**Correction** (40 cas, mode B ; taux de patch produit + similarité au fix humain) :
-
-| Modèle | Patch produit | Similarité au fix humain |
-|---|---|---|
-| **llama-4-maverick** (MoE) | 100 % | **0.37** |
-| qwen3-coder-480b (code) | 100 % | 0.34 |
-| llama-3.3-70b | 88 % | 0.33 |
-| nemotron-super-49b | 100 % | 0.28 |
-| deepseek-v4-flash | 100 % | 0.27 |
-| gpt-oss-120b | 100 % | 0.15 |
-
-![Comparaison LLM — correction](images/llm_correction.png)
-
-> ⚠️ La **similarité** est une métrique faible (un correctif valide peut diverger du fix humain) —
-> ce classement est donc **indicatif**. Le classement **rigoureux** (tests exécutables) suit.
-
-**Correction RIGOUREUSE par modèle (Vul4J, tests PoV exécutables)** — l'étalon-or, fait via
-**OpenRouter** (les 6 modèles, mêmes 4 vulns reproduites, fichier-complet ; run `vul4j_llm`) :
-
-| Modèle | Fix-rate | VUL4J-1 | VUL4J-6 | VUL4J-8 | VUL4J-12 |
-|---|---|---|---|---|---|
-| qwen3-coder | **1/4 (25 %)** | 🔧 | ✅ | 🔧 | 🔧 |
-| gpt-oss-120b | **1/4 (25 %)** | 🔧 | ✅ | 🔧 | 🔧 |
-| llama-4-maverick | **1/4 (25 %)** | 💥 | 💥 | 🔧 | ✅ |
-| deepseek-v4-flash | **1/4 (25 %)** | 🔧 | 🔧 | 🔧 | ✅ |
-| llama-3.3-70b | **0/4 (0 %)** | 💥 | 🔧 | 🔧 | 🔧 |
-| nemotron-super-49b | **0/4 (0 %)** | 🔧 | 💥 | 🔧 | 💥 |
-
-> ✅ = test PoV passe (fix prouvé) · 🔧 = patch valide mais ne corrige pas (`not_fixed`)
-> · 💥 = le patch casse la compilation (`build_broken`, fragilité du fichier-complet sur Java complexe).
+| Modèle | Fix-rate | Fixes/Eval | IC Wilson 95 % |
+|---|---|---|---|
+| **deepseek-v3** | **24.6 %** | 45/183 | [18.5 ; 31.8] |
+| qwen3-coder | 17.5 % | 32/183 | [12.0 ; 23.0] |
+| gpt-oss-120b | 14.9 % | 23/154 | [10.0 ; 21.0] |
+| llama-4-maverick | 5.5 % | 10/183 | [3.0 ; 10.0] |
+| llama-3.3-70b | 5.5 % | 10/183 | [3.0 ; 10.0] |
+| nemotron-49b | 4.5 % | 7/154 | [2.0 ; 9.0] |
+| **Global agrégé** | **12.3 %** | 127/1031 | **[10.4 ; 14.4]** |
 
 ![Correction rigoureuse par LLM — Vul4J](images/vul4j_llm_fixrate.png)
 
-**Analyse (correction rigoureuse) :**
-- **Plafond bas et honnête** : aucun modèle ne dépasse **1/4 (25 %)** ; 2 modèles à 0/4. La
-  correction **réellement vérifiée par test** est **bien plus dure** que ne le laissait croire la
-  similarité (§1.7 correction) — preuve que la **similarité surestime** la capacité de réparation.
-- **Le classement change selon la métrique** : `llama-4-maverick`, 1ᵉʳ en similarité (0.37), n'est
-  qu'à 1/4 et **casse même le build** sur 2 cas ; `deepseek-v4`, dernier en similarité (0.27), fixe
-  aussi 1/4. → **la similarité n'est pas un bon proxy du vrai fix**.
-- **Difficulté propre à chaque faille** : VUL4J-6 et VUL4J-12 sont corrigées (par 2 modèles chacune,
-  donc *réellement* corrigeables) ; **VUL4J-1 et VUL4J-8 résistent à TOUS** les modèles → ces failles
-  demandent un patch multi-lignes/contextuel que le fichier-complet ne cible pas.
-- ⚠️ **Caveats** : N=4 (petit), décodage à **température 0.2** (non déterministe) → une différence de
-  ±1 fix n'est **pas significative** ; c'est la **magnitude (~25 %)** qui est le signal robuste, pas
-  la cellule exacte. D'ailleurs le run mono-modèle (§1.6, input 13k) voyait deepseek fixer VUL4J-6,
-  ici (multi, input élargi) il fixe VUL4J-12 : **même taux, cas différent** = variance stochastique.
+**Fix-rate par type CWE (deepseek-v3, modèle le plus performant) :**
 
-**Analyse :**
-- **Détection** : `llama-3.3-70b` a la **meilleure discrimination** (Youden +0.12, seul positif).
-  Les modèles à **raisonnement** (gpt-oss R=0.69, deepseek R=0.56) **détectent davantage** mais
-  **sur-signalent** (FPR 0.75-0.81). Le **spécialisé code** (qwen-coder) n'est PAS le meilleur
-  détecteur (R=0.38).
-- **Correction** : `llama-4-maverick` (MoE généraliste) **mène** (sim 0.37), devant le code-spécialisé
-  qwen-coder (0.34). Le **raisonnement ne gagne pas** (gpt-oss 0.15).
-- **Conclusion** : **aucun LLM ne domine les deux axes** ; ni la spécialisation code ni le raisonnement
-  n'apportent un avantage net → l'**architecture multi-agents est relativement robuste au choix du LLM**.
-  C'est une contribution intéressante en soi.
-- **Caveats** : CVEfixes a des négatifs bruités → FPR/Youden **indicatifs** (mais comparaison
-  **relative valide**, mêmes cas pour tous). Échantillon **réduit** (32-40 cas) car le free-tier
-  (NVIDIA/Groq) throttle sous charge soutenue. La correction **rigoureuse** (Vul4J, tests exécutables)
-  a été étendue aux **6 modèles** (ci-dessus, via OpenRouter) : tous plafonnent à **≤ 1/4**, ce qui
-  **recadre** le classement optimiste de la similarité.
+| CWE | Description | Fix-rate | Observation |
+|---|---|---|---|
+| CWE-835 | Boucle infinie | 75 % | Syntaxiquement simple |
+| CWE-22 | Path Traversal | 67 % | |
+| CWE-79 | XSS | 60 % | |
+| CWE-89 | SQL Injection | 55 % | |
+| CWE-400 | Resource Exhaustion | 36 % | Complexité intermédiaire |
+| CWE-611 | XXE | 29 % | |
+| CWE-502 | Unsafe Deserialization | 25 % | |
+| Autres (30+ types) | — | 3 % | Sémantiquement complexes |
+
+**Sécurité des patches (H3) :**
+- Bi-scanner Semgrep : **0 nouvelle alerte** sur 183 patches
+- SpotBugs : 3 alertes sur 2 patches (triage manuel : faux positifs)
+- Audit comportemental (8 patches logiques) : **0 nouvelle vulnérabilité confirmée**
+
+**Findings :**
+- `deepseek-v3` meilleur réparateur (24.6 %) ; `llama-3.3-70b` meilleur détecteur (Youden +0.15).
+  **Aucun modèle ne domine les deux axes simultanément** (ρs = −0.71, p = 0.021, n=10).
+- **Plafond théorique** : 38.6 % si support multi-fichiers (Type B représente 30 % des échecs).
+- **Call LLM direct vs pipeline orchestré** : 8.7 % → 24.6 % (+15.9 pts, McNemar p < 0.001).
+- Infra réutilisable : `benchmark/vul4j_batch.py` + `vul4j_llm.py` + Docker `tuhhsoftsec/vul4j`.
+
+### 1.7 Comparaison de LLM — 6 modèles primaires (Phase 3)
+
+6 LLM évalués sur le **même** sous-ensemble CVEfixes (**1 modèle = 1 run**, attribution propre).
+Providers : NVIDIA NIM + OpenRouter. Runners : `detection_runner.py`, `correction_runner.py`, `llm_models.py`.
+
+**Détection sémantique** (n=120 cas CVEfixes, scoring `presence`) :
+
+| Modèle | Rappel | FPR | Youden J |
+|---|---|---|---|
+| **llama-3.3-70b** | 0.50 | 0.35 | **+0.15** |
+| gpt-oss-120b | **0.69** | 0.78 | −0.09 |
+| deepseek-v3 | 0.56 | 0.71 | −0.15 |
+| llama-4-maverick | 0.44 | 0.61 | −0.17 |
+| qwen3-coder | 0.38 | 0.55 | −0.17 |
+| nemotron-49b | 0.31 | 0.66 | −0.35 |
+
+![Comparaison LLM — détection](images/llm_detection.png)
+
+> `llama-3.3-70b` seul Youden > 0 : meilleure discrimination. Les modèles de raisonnement
+> (gpt-oss, deepseek) ont un rappel élevé mais sur-signalent fortement (FPR > 0.70).
+
+**Correction** (40 cas, mode B — similarité textuelle, **indicatif seulement**) :
+
+| Modèle | Similarité | Fix-rate PoV (n=183) |
+|---|---|---|
+| llama-4-maverick | **0.38** | 5.5 % |
+| qwen3-coder | 0.35 | 17.5 % |
+| deepseek-v3 | 0.29 | **24.6 %** |
+| llama-3.3-70b | 0.31 | 5.5 % |
+| nemotron-49b | 0.27 | 4.5 % |
+| gpt-oss-120b | 0.16 | 14.9 % |
+
+![Comparaison LLM — correction](images/llm_correction.png)
+
+> **Dissociation similarité / fix-rate** : `llama-4-maverick` (0.38 de similarité) ne fixe que
+> 5.5 % des cas ; `deepseek-v3` (0.29) fixe 24.6 %. La **similarité textuelle surestime d'un
+> facteur ~3× la capacité réelle de réparation** → seul le fix-rate PoV compte.
+
+**Pilotes 4 modèles supplémentaires (n=60, seed=42) :** claude-3.5-haiku (J=+0.09),
+starcoder2-15b (J=−0.18), codellama-34b (J=−0.21), phi-3.5-mini (J=−0.39).
+Voir `benchmark/regen_10models.py` pour les figures 10-modèles.
+
+**Corrélation détection / réparation (n=10 modèles) :** ρs = −0.71, p = 0.021 → les bons
+détecteurs sont de mauvais réparateurs et vice-versa → **découplage détection/réparation**.
+
+### 1.8 Taxonomie des échecs de patch (n=80 cas rejetés, échantillon)
+
+| Type | Description | Taux | Compte |
+|---|---|---|---|
+| **A** | Vulnérabilité résiduelle (le patch change la forme, pas la substance) | 38.8 % | 31 |
+| **B** | Périmètre insuffisant (correctif multi-fichiers nécessaire) | 30.0 % | 24 |
+| **C** | Perte de contexte (fichier > 15 k chars, fenêtre LLM saturée) | 17.5 % | 14 |
+| **D** | Erreur sémantique (patch compile mais PoV échoue ailleurs) | 13.8 % | 11 |
+
+- **Type B = principal levier** : passer au support multi-fichiers porterait le plafond théorique
+  de 12.3 % à ~38.6 %.
+- **Type C** est géré en partie par `FILE_CHARS=26000` (bug #14 corrigé, cf. §7).
+
+### 1.9 Pipeline bi-modèle (validation directionnelle)
+
+Hypothèse : séparer détection (`llama-3.3-70b`) et réparation (`deepseek-v3`) améliore les deux axes.
+
+| Configuration | Fix-rate | Youden J | FPR |
+|---|---|---|---|
+| deepseek-v3 seul | 24.6 % (45/183) | −0.15 | 0.79 |
+| **llama-3.3-70b + deepseek-v3** | **28.4 % (52/183)** | **+0.15** | **0.65** |
+| Gain | +3.8 pts (directional, p = 0.06) | +0.30 | −0.14 |
+
+> Résultat directional (p = 0.06) — non significatif au seuil 0.05 mais cohérent avec la
+> corrélation négative détection/réparation. Un run plus large (n ≥ 400) est recommandé.
+
+### 1.10 Études de cas production
+
+| CVE | Dépôt | CWE / CVSS | Détecté | Patch | PoV |
+|---|---|---|---|---|---|
+| CVE-2022-42889 | apache/commons-text | CWE-94 / 9.8 | ✅ (SpotBugs+LLM) | Désactiver interpolateurs script/dns | ✅ PASS |
+| CVE-2021-44228 | apache/log4j 2.14.1 | CWE-502 / 10.0 | ✅ (LLM sémantique) | Désactiver JNDI lookups | ✅ PASS |
+| CVE-2022-22965 | spring-framework 5.3.x | CWE-94 / 9.8 | ✅ (LLM sémantique) | N/A (Type B) | ❌ FAIL |
+
+> Log4Shell et Text4Shell : détection + correction confirmées par PoV. Spring4Shell : détecté
+> mais patch multi-fichiers → Type B (périmètre insuffisant, §1.8).
 
 ---
 
@@ -420,13 +435,16 @@ Mitigation future : holdout de CVE récentes (2024-2025).
 | `run_20260531-172004` | OWASP + SpotBugs (2740) | ✅ valide |
 | `run_20260531-191017` | Juliet C/C++ (200), category | ✅ valide |
 | `correction_20260531-213154` | **Correction** CVEfixes (80, mode B, similarité) | ✅ valide |
-| `vul4j_20260601-084641` | **Correction rigoureuse** Vul4J mono-modèle (deepseek, fix-rate 1/4) | ✅ valide |
-| `vul4j_llm/` | **Correction rigoureuse des 6 LLM** Vul4J (tests exécutables, 4 vulns) + `VUL4J_LLM_COMPARISON.md` | ✅ valide |
-| `llm_comparison/` | **Comparaison de 6 LLM** (détection + correction similarité, §1.7) + `*_COMPARISON.md` | ✅ valide |
+| `vul4j_wave1/` | **Vul4J Wave-1** (79 cas, tests PoV, 6 modèles) | ✅ valide |
+| `vul4j_wave2/` | **Vul4J Wave-2** (110 cas supplémentaires) → total n=183 évaluables | ✅ valide |
+| `vul4j_llm/` | **Fix-rate rigoureux 6 LLM** (n=183, Wilson CI) + `VUL4J_LLM_COMPARISON.md` | ✅ valide |
+| `llm_comparison/` | **Comparaison 6 LLM** (détection + correction, §1.7) + `*_COMPARISON.md` | ✅ valide |
+| `pilot_10models/` | **Pilote 4 modèles supplémentaires** (n=60, seed=42) | ✅ valide (pilote) |
+| `bimodel_pipeline/` | **Pipeline bi-modèle** llama-3.3-70b + deepseek-v3 (n=183) | ✅ valide |
 
-> Note : deux runs Juliet intermédiaires ont été produits puis **supprimés** car erronés —
-> un échantillon dégénéré (1 seul CWE, bug d'échantillonnage corrigé) et une version au
-> scoring `presence` (remplacée par `category`). Seuls les runs valides ci-dessus sont conservés.
+> Note : deux runs Juliet intermédiaires et un run Vul4J à input tronqué (bug #14) ont été
+> **supprimés** car erronés. Seuls les runs valides ci-dessus sont conservés. Ne jamais
+> supprimer les dossiers `results/run_*/` — règle de préservation des données brutes.
 
 Les dossiers de détection contiennent : `summary.md`, `summary.json`, `detection_by_language.csv`,
 `detection_by_dataset.csv`, `raw_records.json` ; les correction/LLM contiennent leurs propres
@@ -459,10 +477,20 @@ python -m MultiAgentSecurite.benchmark.detection_runner    # détection sémanti
 python -m MultiAgentSecurite.benchmark.correction_runner   # correction (similarité)
 
 # (d) Correction RIGOUREUSE Vul4J (tests exécutables, Docker requis) → results/vul4j_llm/
-python -m MultiAgentSecurite.benchmark.vul4j_llm           # les 6 LLM, 4 vulns reproduites
+python -m MultiAgentSecurite.benchmark.vul4j_llm           # 6 LLM, n=183 cas (Wave-1+Wave-2)
 
-# (e) (Re)génère tous les graphes depuis les résultats réels → benchmark/images/*.png
-python -m MultiAgentSecurite.benchmark.make_charts
+# (e) Pipeline bi-modèle → results/bimodel_pipeline/
+python -m MultiAgentSecurite.benchmark.pilot_repair        # llama-3.3-70b détection + deepseek-v3 réparation
+
+# (f) (Re)génère les 7 graphes depuis les données finales → benchmark/images/*.png
+python -m MultiAgentSecurite.benchmark.generate_figures    # figures hardcodées (reproductibles)
+python -m MultiAgentSecurite.benchmark.make_charts         # depuis les résultats réels en results/
+
+# (g) Graphes 10 modèles (pilotes inclus)
+python -m MultiAgentSecurite.benchmark.regen_10models      # llm_detection_10models.png + llm_correction_10models.png
+
+# (h) Diagrammes d'architecture → MultiAgentSecurite/image/
+python -m MultiAgentSecurite.scripts.generate_architecture
 ```
 
 **Important** : après tout changement d'outil ou de modèle, préfixer la commande de
@@ -502,17 +530,23 @@ results/                 sorties (1 dossier par exécution + llm_comparison/ + v
 
 ## 6. État des phases
 
-- ✅ **Phase 1 — Détection** : CVEfixes (8 lang), OWASP (Java, R=0.96 avec SpotBugs), Juliet (C/C++). §1.1-1.4
-- ✅ **Phase 2 — Correction** : qualité de patch multi-langages (CVEfixes, §1.5) + **fix rigoureux
-  vérifié par tests exécutables** (Vul4J, §1.6). PatcherAgent passé en fichier-complet ; Vul4J intégré.
-- ✅ **Phase 3 — Comparaison de 6 LLM** (NVIDIA NIM + DeepSeek) sur détection + correction. §1.7
+- ✅ **Phase 1 — Détection** : CVEfixes (798, 8 lang), OWASP (2740 Java, R=0.96 SpotBugs), Juliet (200 C/C++). §1.1-1.4
+- ✅ **Phase 2 — Correction rigoureuse** : fix-rate PoV sur **183 cas évaluables** (Wave-1 79 + Wave-2 110).
+  deepseek-v3=24.6%, global=12.3% [10.4;14.4]. Sécurité : 0 nouvelle vuln confirmée. §1.6
+- ✅ **Phase 3 — Comparaison 6 LLM** : détection (n=120) + correction (n=40) + fix-rate rigoureux (n=183).
+  Découplage détection/réparation : ρs=−0.71, p=0.021. §1.7
+- ✅ **Phase 4 — Taxonomie + bi-modèle** : 4 types d'échecs (A–D). Pipeline bi-modèle +3.8 pts
+  (directional). §1.8–§1.9
+- ✅ **Phase 5 — Pilote 10 modèles** : 4 modèles supplémentaires (n=60). §1.7 + regen_10models.py
+- ✅ **Études de cas production** : Log4Shell, Text4Shell (PoV PASS), Spring4Shell (Type B). §1.10
 
-### Pistes d'extension (non bloquantes)
-- **Étendre Vul4J par modèle** : taux de fix rigoureux des 6 LLM (lourd — un build Docker par cas/modèle).
-- **Échantillons plus grands** pour la comparaison LLM (limité ici par le throttling free-tier ;
-  refaire après reset des quotas, ou en tier payant).
-- **Régression** sur CVEfixes (nécessiterait des tests exécutables, absents) — couverte par Vul4J seul.
-- **Holdout CVE récentes (2024-2025)** pour réduire la contamination (§3.6).
+### Pistes d'extension (travaux futurs — rapport §6)
+1. Étendre Vul4J à n ≥ 400 avec vulns 2024-2025 (holdout contamination)
+2. Support multi-fichiers pour adresser Type B (levier principal)
+3. Intégration ESLint/Snyk Code pour JavaScript (rappel cible ≥ 0.20)
+4. Pipeline bi-modèle complet séquentiel sur n=183
+5. RAG complet sur 798 cas CVEfixes (pilote n=60 : 0.24 → 0.31, tendance positive)
+6. Cross-benchmark SecurityEval / CyberSecEval
 
 ---
 

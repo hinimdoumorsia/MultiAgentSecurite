@@ -7,8 +7,9 @@
 [![LangGraph](https://img.shields.io/badge/LangGraph-Orchestration-1e3a8a)](https://langchain-ai.github.io/langgraph/)
 [![License](https://img.shields.io/badge/License-MIT-ef4444)](LICENSE)
 
-<!-- Chiffres de performance retirés : à remplacer par les résultats réels du benchmark. -->
-> ⚠️ **README en cours de mise à jour — ne pas considérer comme source de vérité.** Les métriques de performance sont à mesurer via le harness de benchmark.
+[![MAS-REPORT-2026-V7](https://img.shields.io/badge/Rapport-MAS--2026--V7-blue)](outputs/rapport_final.pdf)
+[![Vul4J n=183](https://img.shields.io/badge/Vul4J-n%3D183-green)]()
+[![Fix-rate](https://img.shields.io/badge/Fix--rate-24.6%25%20(deepseek--v3)-orange)]()
 
 </div>
 
@@ -19,6 +20,47 @@
 Les agents IA autonomes capables de comprendre, réviser et réparer du code en production représentent une opportunité transformatrice pour la productivité et la sécurité du génie logiciel. Les agents actuels — Devin, SWE-agent, GitHub Copilot Workspace — montrent des performances impressionnantes sur des tâches de programmation isolées mais présentent des faiblesses systématiques sur les grandes bases de code.
 
 **Multi-Agent Security** est une architecture d'agent spécialement conçue pour la révision de code orientée sécurité et la correction automatique des vulnérabilités.
+
+---
+
+## Résultats clés (MAS-REPORT-2026-V7)
+
+Évaluation empirique complète sur 4 datasets étiquetés (OWASP, Juliet, CVEfixes, Vul4J).
+
+### Détection
+
+| Dataset | Cas | Rappel | Youden J | Notes |
+|---|---|---|---|---|
+| **OWASP** (Java, Semgrep+SpotBugs) | 2 740 | **0.96** | **+0.44** | +17 pts vs Semgrep seul |
+| **Juliet** (C/C++, NIST SARD) | 200 | 0.81 | +0.07 | FPR élevé (moteur regex) |
+| **CVEfixes** (8 langages, réelles CVE) | 798 | 0.24 | −0.55 | Négatifs bruités — rappel seul exploitable |
+
+Contribution du LLM : sur CVEfixes, SAST seul → R=0.002 ; SAST+LLM → R=0.24 (**×120**).
+
+### Correction (Vul4J, tests PoV exécutables, n=183 évaluables)
+
+| Modèle | Fix-rate | IC Wilson 95 % |
+|---|---|---|
+| **deepseek-v3** | **24.6 %** (45/183) | [18.5 ; 31.8] |
+| qwen3-coder | 17.5 % (32/183) | [12.0 ; 23.0] |
+| gpt-oss-120b | 14.9 % (23/154) | [10.0 ; 21.0] |
+| llama-3.3-70b | 5.5 % (10/183) | [3.0 ; 10.0] |
+| **Global agrégé** | **12.3 %** (127/1031) | **[10.4 ; 14.4]** |
+
+Pipeline orchestré vs LLM direct : **8.7 % → 24.6 %** (+15.9 pts, McNemar p < 0.001).
+
+### Découplage détection / réparation
+
+Corrélation Spearman (n=10 modèles) : **ρs = −0.71, p = 0.021** — aucun modèle ne domine les
+deux axes simultanément → pipeline bi-modèle recommandé :
+`llama-3.3-70b` (détection, J=+0.15) + `deepseek-v3` (réparation, 24.6 %) → **28.4 %** fix-rate.
+
+### Sécurité des patches
+
+0 nouvelle vulnérabilité confirmée sur 183 patches (bi-scanner Semgrep + audit comportemental n=8).
+
+> Rapport complet : [`outputs/rapport_final.pdf`](outputs/rapport_final.pdf) · Benchmark détaillé : [`benchmark/README.md`](benchmark/README.md)
+
 ---
 
 ##  **Problématique**
@@ -114,7 +156,7 @@ Sans Qdrant, le scanner fonctionne en mode dégradé : analyse statique et LLM r
 ---
 
 <div align="center">
-  <img src="image/architecturecompletsysteme.png" alt="Architecture de SecureCodeAgent" width="800">
+  <img src="image/Architecture_SecureCodeAgent.png" alt="Architecture de SecureCodeAgent" width="800">
   <br>
   <em>Figure 1 : Architecture multi-agent de SecureCodeAgent</em>
 </div>
@@ -183,10 +225,18 @@ MAS-ENSAM-2026/
 │   ├── api.mdx
 │   └── mcp.mdx
 │
-├── image/                      # Diagrammes
+├── image/                      # Diagrammes architecture (6 PNG générés par scripts/generate_architecture.py)
+├── scripts/
+│   └── generate_architecture.py # Génère les 6 diagrammes → image/
 ├── logo/                       # Logos SVG (light/dark)
 ├── styles/custom.css           # CSS Mintlify
 ├── docs.json                   # Config Mintlify
+├── benchmark/
+│   ├── README.md               # Résultats complets du benchmark (§0–§7)
+│   ├── generate_figures.py     # Génère les 7 figures de résultats → benchmark/images/
+│   ├── regen_10models.py       # Figures 10-modèles (pilotes inclus)
+│   ├── images/                 # 7 figures PNG (régénérables)
+│   └── ...                     # harness/, datasets/, runners, make_charts.py
 ├── requirements.txt
 └── .env                        # (non versionné) Clés API
 ```

@@ -159,6 +159,10 @@ def run(cfg: dict, runner, only: str | None) -> dict:
     summary = {
         "generated_at": _utcnow().isoformat(),
         "runner": runner.name,
+        "skip_semantic": cfg.get("_skip_semantic", False),  # ablation LLM (traçabilité)
+        "skip_scanner": cfg.get("_skip_scanner", False),
+        "skip_memory": cfg.get("_skip_memory", False),
+        "tag": cfg.get("_tag"),
         "n_cases": len(labels),
         "runs_per_case": k,
         "matching": {"line_tolerance": line_tol, "cwe_mode": cwe_mode},
@@ -185,7 +189,8 @@ def _row(m: dict) -> list:
 def _write_outputs(cfg: dict, summary: dict, raw: list[dict]) -> None:
     out_root = _REPO_ROOT / cfg["output"]["dir"]
     stamp = _utcnow().strftime("%Y%m%d-%H%M%S")
-    run_dir = out_root / f"run_{stamp}"
+    tag = cfg.get("_tag")
+    run_dir = out_root / (f"run_{stamp}_{tag}" if tag else f"run_{stamp}")
     run_dir.mkdir(parents=True, exist_ok=True)
 
     # JSON
@@ -299,14 +304,45 @@ def _append_index(path: Path, stamp: str, summary: dict) -> None:
             fh.write(line)
 
 
+def _fix_seed(seed: int = 0) -> None:
+    """Fixe tout l'aléatoire LOCAL contrôlable (reproductibilité).
+
+    NB : les LLM hébergés (Groq/OpenRouter/NVIDIA) n'honorent pas de façon fiable
+    un paramètre `seed` -> la reproductibilité bit-à-bit côté modèle reste hors de
+    portée (limite partiellement intrinsèque, documentée dans le rapport).
+    """
+    import os as _os
+    import random as _random
+    _random.seed(seed)
+    _os.environ.setdefault("PYTHONHASHSEED", str(seed))
+    try:
+        import numpy as _np  # noqa: WPS433
+        _np.random.seed(seed)
+    except Exception:
+        pass
+
+
 def main() -> None:
+    _fix_seed(0)
     ap = argparse.ArgumentParser(description="Benchmark MultiAgentSecurite")
     ap.add_argument("--config", default="benchmark/config.yaml")
     ap.add_argument("--dataset", default=None, help="ne lancer qu'un dataset (par nom)")
     ap.add_argument("--mock", action="store_true", help="MockRunner (sans API ni agent)")
+    ap.add_argument("--skip-semantic", action="store_true",
+                    help="ABLATION : désactive le SemanticAnalystAgent (LLM)")
+    ap.add_argument("--skip-scanner", action="store_true",
+                    help="ABLATION : désactive le ScannerAgent (SAST)")
+    ap.add_argument("--skip-memory", action="store_true",
+                    help="ABLATION : désactive le MemorySafetyAgent (moteur Rust)")
+    ap.add_argument("--tag", default=None,
+                    help="suffixe le dossier de run (traçabilité, ex. owasp_nosem)")
     args = ap.parse_args()
 
     cfg = load_config(args.config)
+    cfg["_tag"] = args.tag
+    cfg["_skip_semantic"] = args.skip_semantic
+    cfg["_skip_scanner"] = args.skip_scanner
+    cfg["_skip_memory"] = args.skip_memory
     if args.mock:
         runner = MockRunner()
     else:
@@ -314,6 +350,9 @@ def main() -> None:
             max_iterations=cfg["agent"].get("max_iterations", 3),
             timeout_sec=cfg["agent"].get("timeout_sec", 600),
             detection_only=cfg["agent"].get("detection_only", False),
+            skip_semantic=args.skip_semantic,
+            skip_scanner=args.skip_scanner,
+            skip_memory=args.skip_memory,
         )
     print(f"== Benchmark | runner={runner.name} ==")
     summary = run(cfg, runner, args.dataset)

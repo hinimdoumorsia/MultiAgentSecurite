@@ -64,6 +64,9 @@ desktop.ini
 *.swo
 *~
 
+# ── Outils SAST binaires (trop lourds pour git, installer localement) ─
+benchmark/tools/
+
 # ── Divers ────────────────────────────────────────────
 *.bak
 *.tmp

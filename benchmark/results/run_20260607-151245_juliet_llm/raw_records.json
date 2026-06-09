@@ -1,0 +1,6892 @@
+[
+  {
+    "case_id": "CWE-114_CWE114_Process_Control__w32_char_connect_socket_01_1_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FN",
+    "label_file": "CWE114_Process_Control__w32_char_connect_socket_01.c",
+    "label_cwe": "CWE-114",
+    "is_vulnerable": true,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "CWE114_Process_Control__w32_char_connect_socket_01.c",
+        "lines": [
+          94,
+          94
+        ],
+        "cwe": "CWE-22"
+      },
+      {
+        "file": "CWE114_Process_Control__w32_char_connect_socket_01.c",
+        "lines": [
+          98,
+          98
+        ],
+        "cwe": "CWE-22"
+      },
+      {
+        "file": "CWE114_Process_Control__w32_char_connect_socket_01.c",
+        "lines": [
+          100,
+          100
+        ],
+        "cwe": "CWE-22"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 2.01,
+    "error": null
+  },
+  {
+    "case_id": "CWE-114_CWE114_Process_Control__w32_char_connect_socket_01_1_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "CWE114_Process_Control__w32_char_connect_socket_01.c",
+    "label_cwe": "CWE-114",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE114_Process_Control__w32_char_connect_socket_01.c",
+        "lines": [
+          43,
+          43
+        ],
+        "cwe": "CWE-22"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 0.62,
+    "error": null
+  },
+  {
+    "case_id": "CWE-121_CWE121_Stack_Based_Buffer_Overflow__char_type_overrun_memcpy_01_2_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE121_Stack_Based_Buffer_Overflow__char_type_overrun_memcpy_01.c",
+    "label_cwe": "CWE-121",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE121_Stack_Based_Buffer_Overflow__char_type_overrun_memcpy_01.c",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-121"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 1.51,
+    "error": null
+  },
+  {
+    "case_id": "CWE-121_CWE121_Stack_Based_Buffer_Overflow__char_type_overrun_memcpy_01_2_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE121_Stack_Based_Buffer_Overflow__char_type_overrun_memcpy_01.c",
+    "label_cwe": "CWE-121",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE121_Stack_Based_Buffer_Overflow__char_type_overrun_memcpy_01.c",
+        "lines": [
+          31,
+          31
+        ],
+        "cwe": "CWE-121"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 18.95,
+    "error": null
+  },
+  {
+    "case_id": "CWE-122_CWE122_Heap_Based_Buffer_Overflow__char_type_overrun_memcpy_01_3_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE122_Heap_Based_Buffer_Overflow__char_type_overrun_memcpy_01.c",
+    "label_cwe": "CWE-122",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE122_Heap_Based_Buffer_Overflow__char_type_overrun_memcpy_01.c",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-122"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 0.36,
+    "error": null
+  },
+  {
+    "case_id": "CWE-122_CWE122_Heap_Based_Buffer_Overflow__char_type_overrun_memcpy_01_3_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE122_Heap_Based_Buffer_Overflow__char_type_overrun_memcpy_01.c",
+    "label_cwe": "CWE-122",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE122_Heap_Based_Buffer_Overflow__char_type_overrun_memcpy_01.c",
+        "lines": [
+          34,
+          35
+        ],
+        "cwe": "CWE-122"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 17.26,
+    "error": null
+  },
+  {
+    "case_id": "CWE-123_CWE123_Write_What_Where_Condition__connect_socket_01_4_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE123_Write_What_Where_Condition__connect_socket_01.c",
+    "label_cwe": "CWE-123",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE123_Write_What_Where_Condition__connect_socket_01.c",
+        "lines": [
+          104,
+          104
+        ],
+        "cwe": "CWE-123"
+      },
+      {
+        "file": "CWE123_Write_What_Where_Condition__connect_socket_01.c",
+        "lines": [
+          104,
+          104
+        ],
+        "cwe": "CWE-200"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 14.27,
+    "error": null
+  },
+  {
+    "case_id": "CWE-123_CWE123_Write_What_Where_Condition__connect_socket_01_4_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE123_Write_What_Where_Condition__connect_socket_01.c",
+    "label_cwe": "CWE-123",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE123_Write_What_Where_Condition__connect_socket_01.c",
+        "lines": [
+          64,
+          64
+        ],
+        "cwe": "CWE-123"
+      },
+      {
+        "file": "CWE123_Write_What_Where_Condition__connect_socket_01.c",
+        "lines": [
+          65,
+          65
+        ],
+        "cwe": "CWE-123"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 21.89,
+    "error": null
+  },
+  {
+    "case_id": "CWE-124_CWE124_Buffer_Underwrite__char_alloca_cpy_01_5_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE124_Buffer_Underwrite__char_alloca_cpy_01.c",
+    "label_cwe": "CWE-124",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE124_Buffer_Underwrite__char_alloca_cpy_01.c",
+        "lines": [
+          23,
+          23
+        ],
+        "cwe": "CWE-124"
+      },
+      {
+        "file": "CWE124_Buffer_Underwrite__char_alloca_cpy_01.c",
+        "lines": [
+          32,
+          32
+        ],
+        "cwe": "CWE-124"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 0.55,
+    "error": null
+  },
+  {
+    "case_id": "CWE-124_CWE124_Buffer_Underwrite__char_alloca_cpy_01_5_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE124_Buffer_Underwrite__char_alloca_cpy_01.c",
+    "label_cwe": "CWE-124",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE124_Buffer_Underwrite__char_alloca_cpy_01.c",
+        "lines": [
+          26,
+          26
+        ],
+        "cwe": "CWE-124"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 6.78,
+    "error": null
+  },
+  {
+    "case_id": "CWE-126_CWE126_Buffer_Overread__char_alloca_loop_01_6_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE126_Buffer_Overread__char_alloca_loop_01.c",
+    "label_cwe": "CWE-126",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE126_Buffer_Overread__char_alloca_loop_01.c",
+        "lines": [
+          43,
+          43
+        ],
+        "cwe": "CWE-126"
+      },
+      {
+        "file": "CWE126_Buffer_Overread__char_alloca_loop_01.c",
+        "lines": [
+          44,
+          44
+        ],
+        "cwe": "CWE-126"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 8.95,
+    "error": null
+  },
+  {
+    "case_id": "CWE-126_CWE126_Buffer_Overread__char_alloca_loop_01_6_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE126_Buffer_Overread__char_alloca_loop_01.c",
+    "label_cwe": "CWE-126",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE126_Buffer_Overread__char_alloca_loop_01.c",
+        "lines": [
+          44,
+          44
+        ],
+        "cwe": "CWE-126"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 11.16,
+    "error": null
+  },
+  {
+    "case_id": "CWE-127_CWE127_Buffer_Underread__char_alloca_cpy_01_7_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE127_Buffer_Underread__char_alloca_cpy_01.c",
+    "label_cwe": "CWE-127",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE127_Buffer_Underread__char_alloca_cpy_01.c",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-127"
+      },
+      {
+        "file": "CWE127_Buffer_Underread__char_alloca_cpy_01.c",
+        "lines": [
+          31,
+          31
+        ],
+        "cwe": "CWE-127"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 7.07,
+    "error": null
+  },
+  {
+    "case_id": "CWE-127_CWE127_Buffer_Underread__char_alloca_cpy_01_7_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE127_Buffer_Underread__char_alloca_cpy_01.c",
+    "label_cwe": "CWE-127",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE127_Buffer_Underread__char_alloca_cpy_01.c",
+        "lines": [
+          23,
+          23
+        ],
+        "cwe": "CWE-127"
+      },
+      {
+        "file": "CWE127_Buffer_Underread__char_alloca_cpy_01.c",
+        "lines": [
+          30,
+          30
+        ],
+        "cwe": "CWE-127"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 7.99,
+    "error": null
+  },
+  {
+    "case_id": "CWE-134_CWE134_Uncontrolled_Format_String__char_connect_socket_fprintf_01_8_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE134_Uncontrolled_Format_String__char_connect_socket_fprintf_01.c",
+    "label_cwe": "CWE-134",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE134_Uncontrolled_Format_String__char_connect_socket_fprintf_01.c",
+        "lines": [
+          123,
+          123
+        ],
+        "cwe": "CWE-134"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.9,
+    "error": null
+  },
+  {
+    "case_id": "CWE-134_CWE134_Uncontrolled_Format_String__char_connect_socket_fprintf_01_8_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE134_Uncontrolled_Format_String__char_connect_socket_fprintf_01.c",
+    "label_cwe": "CWE-134",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE134_Uncontrolled_Format_String__char_connect_socket_fprintf_01.c",
+        "lines": [
+          69,
+          69
+        ],
+        "cwe": "CWE-134"
+      },
+      {
+        "file": "CWE134_Uncontrolled_Format_String__char_connect_socket_fprintf_01.c",
+        "lines": [
+          141,
+          141
+        ],
+        "cwe": "CWE-134"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 14.01,
+    "error": null
+  },
+  {
+    "case_id": "CWE-15_CWE15_External_Control_of_System_or_Configuration_Setting__w32_01_9_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE15_External_Control_of_System_or_Configuration_Setting__w32_01.c",
+    "label_cwe": "CWE-15",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE15_External_Control_of_System_or_Configuration_Setting__w32_01.c",
+        "lines": [
+          45,
+          45
+        ],
+        "cwe": "CWE-15"
+      },
+      {
+        "file": "CWE15_External_Control_of_System_or_Configuration_Setting__w32_01.c",
+        "lines": [
+          0,
+          0
+        ],
+        "cwe": "CWE-200"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 13.43,
+    "error": null
+  },
+  {
+    "case_id": "CWE-15_CWE15_External_Control_of_System_or_Configuration_Setting__w32_01_9_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE15_External_Control_of_System_or_Configuration_Setting__w32_01.c",
+    "label_cwe": "CWE-15",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE15_External_Control_of_System_or_Configuration_Setting__w32_01.c",
+        "lines": [
+          41,
+          41
+        ],
+        "cwe": "CWE-15"
+      },
+      {
+        "file": "CWE15_External_Control_of_System_or_Configuration_Setting__w32_01.c",
+        "lines": [
+          45,
+          45
+        ],
+        "cwe": "CWE-15"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 7.99,
+    "error": null
+  },
+  {
+    "case_id": "CWE-176_CWE176_Improper_Handling_of_Unicode_Encoding__w32_01_10_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FN",
+    "label_file": "CWE176_Improper_Handling_of_Unicode_Encoding__w32_01.c",
+    "label_cwe": "CWE-176",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE176_Improper_Handling_of_Unicode_Encoding__w32_01.c",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-119"
+      },
+      {
+        "file": "CWE176_Improper_Handling_of_Unicode_Encoding__w32_01.c",
+        "lines": [
+          29,
+          29
+        ],
+        "cwe": "CWE-119"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 9.63,
+    "error": null
+  },
+  {
+    "case_id": "CWE-176_CWE176_Improper_Handling_of_Unicode_Encoding__w32_01_10_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE176_Improper_Handling_of_Unicode_Encoding__w32_01.c",
+    "label_cwe": "CWE-176",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE176_Improper_Handling_of_Unicode_Encoding__w32_01.c",
+        "lines": [
+          34,
+          36
+        ],
+        "cwe": "CWE-176"
+      },
+      {
+        "file": "CWE176_Improper_Handling_of_Unicode_Encoding__w32_01.c",
+        "lines": [
+          50,
+          52
+        ],
+        "cwe": "CWE-176"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 13.09,
+    "error": null
+  },
+  {
+    "case_id": "CWE-188_CWE188_Reliance_on_Data_Memory_Layout__modify_local_01_11_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE188_Reliance_on_Data_Memory_Layout__modify_local_01.c",
+    "label_cwe": "CWE-188",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE188_Reliance_on_Data_Memory_Layout__modify_local_01.c",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-188"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 8.31,
+    "error": null
+  },
+  {
+    "case_id": "CWE-188_CWE188_Reliance_on_Data_Memory_Layout__modify_local_01_11_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE188_Reliance_on_Data_Memory_Layout__modify_local_01.c",
+    "label_cwe": "CWE-188",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE188_Reliance_on_Data_Memory_Layout__modify_local_01.c",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-188"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 7.06,
+    "error": null
+  },
+  {
+    "case_id": "CWE-190_CWE190_Integer_Overflow__char_fscanf_add_01_12_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE190_Integer_Overflow__char_fscanf_add_01.c",
+    "label_cwe": "CWE-190",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE190_Integer_Overflow__char_fscanf_add_01.c",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-190"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 6.55,
+    "error": null
+  },
+  {
+    "case_id": "CWE-190_CWE190_Integer_Overflow__char_fscanf_add_01_12_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE190_Integer_Overflow__char_fscanf_add_01.c",
+    "label_cwe": "CWE-190",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE190_Integer_Overflow__char_fscanf_add_01.c",
+        "lines": [
+          34,
+          36
+        ],
+        "cwe": "CWE-190"
+      },
+      {
+        "file": "CWE190_Integer_Overflow__char_fscanf_add_01.c",
+        "lines": [
+          51,
+          54
+        ],
+        "cwe": "CWE-190"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 9.11,
+    "error": null
+  },
+  {
+    "case_id": "CWE-191_CWE191_Integer_Underflow__char_fscanf_multiply_01_13_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE191_Integer_Underflow__char_fscanf_multiply_01.c",
+    "label_cwe": "CWE-191",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE191_Integer_Underflow__char_fscanf_multiply_01.c",
+        "lines": [
+          24,
+          25
+        ],
+        "cwe": "CWE-191"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 7.99,
+    "error": null
+  },
+  {
+    "case_id": "CWE-191_CWE191_Integer_Underflow__char_fscanf_multiply_01_13_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE191_Integer_Underflow__char_fscanf_multiply_01.c",
+    "label_cwe": "CWE-191",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE191_Integer_Underflow__char_fscanf_multiply_01.c",
+        "lines": [
+          60,
+          60
+        ],
+        "cwe": "CWE-191"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 9.32,
+    "error": null
+  },
+  {
+    "case_id": "CWE-194_CWE194_Unexpected_Sign_Extension__connect_socket_malloc_01_14_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE194_Unexpected_Sign_Extension__connect_socket_malloc_01.c",
+    "label_cwe": "CWE-194",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE194_Unexpected_Sign_Extension__connect_socket_malloc_01.c",
+        "lines": [
+          83,
+          83
+        ],
+        "cwe": "CWE-194"
+      },
+      {
+        "file": "CWE194_Unexpected_Sign_Extension__connect_socket_malloc_01.c",
+        "lines": [
+          113,
+          113
+        ],
+        "cwe": "CWE-401"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 15.05,
+    "error": null
+  },
+  {
+    "case_id": "CWE-194_CWE194_Unexpected_Sign_Extension__connect_socket_malloc_01_14_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE194_Unexpected_Sign_Extension__connect_socket_malloc_01.c",
+    "label_cwe": "CWE-194",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE194_Unexpected_Sign_Extension__connect_socket_malloc_01.c",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-194"
+      },
+      {
+        "file": "CWE194_Unexpected_Sign_Extension__connect_socket_malloc_01.c",
+        "lines": [
+          28,
+          28
+        ],
+        "cwe": "CWE-457"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 10.93,
+    "error": null
+  },
+  {
+    "case_id": "CWE-195_CWE195_Signed_to_Unsigned_Conversion_Error__connect_socket_malloc_01_15_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE195_Signed_to_Unsigned_Conversion_Error__connect_socket_malloc_01.c",
+    "label_cwe": "CWE-195",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE195_Signed_to_Unsigned_Conversion_Error__connect_socket_malloc_01.c",
+        "lines": [
+          83,
+          83
+        ],
+        "cwe": "CWE-195"
+      },
+      {
+        "file": "CWE195_Signed_to_Unsigned_Conversion_Error__connect_socket_malloc_01.c",
+        "lines": [
+          89,
+          89
+        ],
+        "cwe": "CWE-119"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 14.21,
+    "error": null
+  },
+  {
+    "case_id": "CWE-195_CWE195_Signed_to_Unsigned_Conversion_Error__connect_socket_malloc_01_15_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE195_Signed_to_Unsigned_Conversion_Error__connect_socket_malloc_01.c",
+    "label_cwe": "CWE-195",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE195_Signed_to_Unsigned_Conversion_Error__connect_socket_malloc_01.c",
+        "lines": [
+          44,
+          44
+        ],
+        "cwe": "CWE-195"
+      },
+      {
+        "file": "CWE195_Signed_to_Unsigned_Conversion_Error__connect_socket_malloc_01.c",
+        "lines": [
+          49,
+          49
+        ],
+        "cwe": "CWE-195"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 10.7,
+    "error": null
+  },
+  {
+    "case_id": "CWE-196_CWE196_Unsigned_to_Signed_Conversion_Error__basic_01_16_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE196_Unsigned_to_Signed_Conversion_Error__basic_01.c",
+    "label_cwe": "CWE-196",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE196_Unsigned_to_Signed_Conversion_Error__basic_01.c",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-196"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 6.76,
+    "error": null
+  },
+  {
+    "case_id": "CWE-196_CWE196_Unsigned_to_Signed_Conversion_Error__basic_01_16_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE196_Unsigned_to_Signed_Conversion_Error__basic_01.c",
+    "label_cwe": "CWE-196",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE196_Unsigned_to_Signed_Conversion_Error__basic_01.c",
+        "lines": [
+          22,
+          22
+        ],
+        "cwe": "CWE-196"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 6.66,
+    "error": null
+  },
+  {
+    "case_id": "CWE-197_CWE197_Numeric_Truncation_Error__int_connect_socket_to_char_01_17_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE197_Numeric_Truncation_Error__int_connect_socket_to_char_01.c",
+    "label_cwe": "CWE-197",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE197_Numeric_Truncation_Error__int_connect_socket_to_char_01.c",
+        "lines": [
+          64,
+          64
+        ],
+        "cwe": "CWE-197"
+      },
+      {
+        "file": "CWE197_Numeric_Truncation_Error__int_connect_socket_to_char_01.c",
+        "lines": [
+          73,
+          73
+        ],
+        "cwe": "CWE-200"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 11.67,
+    "error": null
+  },
+  {
+    "case_id": "CWE-197_CWE197_Numeric_Truncation_Error__int_connect_socket_to_char_01_17_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE197_Numeric_Truncation_Error__int_connect_socket_to_char_01.c",
+    "label_cwe": "CWE-197",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE197_Numeric_Truncation_Error__int_connect_socket_to_char_01.c",
+        "lines": [
+          52,
+          52
+        ],
+        "cwe": "CWE-197"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 8.59,
+    "error": null
+  },
+  {
+    "case_id": "CWE-222_CWE222_Truncation_of_Security_Relevant_Information__w32_01_18_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE222_Truncation_of_Security_Relevant_Information__w32_01.c",
+    "label_cwe": "CWE-222",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE222_Truncation_of_Security_Relevant_Information__w32_01.c",
+        "lines": [
+          73,
+          73
+        ],
+        "cwe": "CWE-222"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.57,
+    "error": null
+  },
+  {
+    "case_id": "CWE-222_CWE222_Truncation_of_Security_Relevant_Information__w32_01_18_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE222_Truncation_of_Security_Relevant_Information__w32_01.c",
+    "label_cwe": "CWE-222",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE222_Truncation_of_Security_Relevant_Information__w32_01.c",
+        "lines": [
+          63,
+          63
+        ],
+        "cwe": "CWE-222"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.89,
+    "error": null
+  },
+  {
+    "case_id": "CWE-223_CWE223_Omission_of_Security_Relevant_Information__w32_01_19_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE223_Omission_of_Security_Relevant_Information__w32_01.c",
+    "label_cwe": "CWE-223",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE223_Omission_of_Security_Relevant_Information__w32_01.c",
+        "lines": [
+          83,
+          83
+        ],
+        "cwe": "CWE-223"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.33,
+    "error": null
+  },
+  {
+    "case_id": "CWE-223_CWE223_Omission_of_Security_Relevant_Information__w32_01_19_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "CWE223_Omission_of_Security_Relevant_Information__w32_01.c",
+    "label_cwe": "CWE-223",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE223_Omission_of_Security_Relevant_Information__w32_01.c",
+        "lines": [
+          44,
+          44
+        ],
+        "cwe": "CWE-259"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 10.86,
+    "error": null
+  },
+  {
+    "case_id": "CWE-226_CWE226_Sensitive_Information_Uncleared_Before_Release__w32_char_alloca_01_20_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE226_Sensitive_Information_Uncleared_Before_Release__w32_char_alloca_01.c",
+    "label_cwe": "CWE-226",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE226_Sensitive_Information_Uncleared_Before_Release__w32_char_alloca_01.c",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-226"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 9.63,
+    "error": null
+  },
+  {
+    "case_id": "CWE-226_CWE226_Sensitive_Information_Uncleared_Before_Release__w32_char_alloca_01_20_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE226_Sensitive_Information_Uncleared_Before_Release__w32_char_alloca_01.c",
+    "label_cwe": "CWE-226",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE226_Sensitive_Information_Uncleared_Before_Release__w32_char_alloca_01.c",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-226"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 8.58,
+    "error": null
+  },
+  {
+    "case_id": "CWE-242_CWE242_Use_of_Inherently_Dangerous_Function__basic_01_21_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE242_Use_of_Inherently_Dangerous_Function__basic_01.c",
+    "label_cwe": "CWE-242",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE242_Use_of_Inherently_Dangerous_Function__basic_01.c",
+        "lines": [
+          19,
+          19
+        ],
+        "cwe": "CWE-242"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 7.55,
+    "error": null
+  },
+  {
+    "case_id": "CWE-242_CWE242_Use_of_Inherently_Dangerous_Function__basic_01_21_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE242_Use_of_Inherently_Dangerous_Function__basic_01.c",
+    "label_cwe": "CWE-242",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE242_Use_of_Inherently_Dangerous_Function__basic_01.c",
+        "lines": [
+          29,
+          29
+        ],
+        "cwe": "CWE-242"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 6.69,
+    "error": null
+  },
+  {
+    "case_id": "CWE-244_CWE244_Heap_Inspection__w32_char_free_01_22_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE244_Heap_Inspection__w32_char_free_01.c",
+    "label_cwe": "CWE-244",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE244_Heap_Inspection__w32_char_free_01.c",
+        "lines": [
+          43,
+          43
+        ],
+        "cwe": "CWE-244"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 8.67,
+    "error": null
+  },
+  {
+    "case_id": "CWE-244_CWE244_Heap_Inspection__w32_char_free_01_22_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE244_Heap_Inspection__w32_char_free_01.c",
+    "label_cwe": "CWE-244",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE244_Heap_Inspection__w32_char_free_01.c",
+        "lines": [
+          34,
+          35
+        ],
+        "cwe": "CWE-244"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 8.53,
+    "error": null
+  },
+  {
+    "case_id": "CWE-247_CWE247_Reliance_on_DNS_Lookups_in_Security_Decision__w32_01_23_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE247_Reliance_on_DNS_Lookups_in_Security_Decision__w32_01.c",
+    "label_cwe": "CWE-247",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE247_Reliance_on_DNS_Lookups_in_Security_Decision__w32_01.c",
+        "lines": [
+          63,
+          63
+        ],
+        "cwe": "CWE-247"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 11.57,
+    "error": null
+  },
+  {
+    "case_id": "CWE-247_CWE247_Reliance_on_DNS_Lookups_in_Security_Decision__w32_01_23_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE247_Reliance_on_DNS_Lookups_in_Security_Decision__w32_01.c",
+    "label_cwe": "CWE-247",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE247_Reliance_on_DNS_Lookups_in_Security_Decision__w32_01.c",
+        "lines": [
+          43,
+          43
+        ],
+        "cwe": "CWE-247"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.86,
+    "error": null
+  },
+  {
+    "case_id": "CWE-252_CWE252_Unchecked_Return_Value__char_fgets_01_24_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE252_Unchecked_Return_Value__char_fgets_01.c",
+    "label_cwe": "CWE-252",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE252_Unchecked_Return_Value__char_fgets_01.c",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-252"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 5.48,
+    "error": null
+  },
+  {
+    "case_id": "CWE-252_CWE252_Unchecked_Return_Value__char_fgets_01_24_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE252_Unchecked_Return_Value__char_fgets_01.c",
+    "label_cwe": "CWE-252",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE252_Unchecked_Return_Value__char_fgets_01.c",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-252"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 7.94,
+    "error": null
+  },
+  {
+    "case_id": "CWE-253_CWE253_Incorrect_Check_of_Function_Return_Value__char_fgets_01_25_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE253_Incorrect_Check_of_Function_Return_Value__char_fgets_01.c",
+    "label_cwe": "CWE-253",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE253_Incorrect_Check_of_Function_Return_Value__char_fgets_01.c",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-253"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 7.61,
+    "error": null
+  },
+  {
+    "case_id": "CWE-253_CWE253_Incorrect_Check_of_Function_Return_Value__char_fgets_01_25_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE253_Incorrect_Check_of_Function_Return_Value__char_fgets_01.c",
+    "label_cwe": "CWE-253",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE253_Incorrect_Check_of_Function_Return_Value__char_fgets_01.c",
+        "lines": [
+          28,
+          30
+        ],
+        "cwe": "CWE-253"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 6.72,
+    "error": null
+  },
+  {
+    "case_id": "CWE-256_CWE256_Plaintext_Storage_of_Password__w32_char_01_26_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE256_Plaintext_Storage_of_Password__w32_char_01.c",
+    "label_cwe": "CWE-256",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE256_Plaintext_Storage_of_Password__w32_char_01.c",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-256"
+      },
+      {
+        "file": "CWE256_Plaintext_Storage_of_Password__w32_char_01.c",
+        "lines": [
+          44,
+          44
+        ],
+        "cwe": "CWE-256"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 8.84,
+    "error": null
+  },
+  {
+    "case_id": "CWE-256_CWE256_Plaintext_Storage_of_Password__w32_char_01_26_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "CWE256_Plaintext_Storage_of_Password__w32_char_01.c",
+    "label_cwe": "CWE-256",
+    "is_vulnerable": false,
+    "n_findings": 5,
+    "findings_in_file": [
+      {
+        "file": "CWE256_Plaintext_Storage_of_Password__w32_char_01.c",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-327"
+      },
+      {
+        "file": "CWE256_Plaintext_Storage_of_Password__w32_char_01.c",
+        "lines": [
+          45,
+          45
+        ],
+        "cwe": "CWE-362"
+      },
+      {
+        "file": "CWE256_Plaintext_Storage_of_Password__w32_char_01.c",
+        "lines": [
+          54,
+          54
+        ],
+        "cwe": "CWE-362"
+      },
+      {
+        "file": "CWE256_Plaintext_Storage_of_Password__w32_char_01.c",
+        "lines": [
+          143,
+          143
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "CWE256_Plaintext_Storage_of_Password__w32_char_01.c",
+        "lines": [
+          150,
+          150
+        ],
+        "cwe": "CWE-200"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 22.33,
+    "error": null
+  },
+  {
+    "case_id": "CWE-259_CWE259_Hard_Coded_Password__w32_char_01_27_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE259_Hard_Coded_Password__w32_char_01.c",
+    "label_cwe": "CWE-259",
+    "is_vulnerable": true,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "CWE259_Hard_Coded_Password__w32_char_01.c",
+        "lines": [
+          23,
+          23
+        ],
+        "cwe": "CWE-259"
+      },
+      {
+        "file": "CWE259_Hard_Coded_Password__w32_char_01.c",
+        "lines": [
+          29,
+          29
+        ],
+        "cwe": "CWE-259"
+      },
+      {
+        "file": "CWE259_Hard_Coded_Password__w32_char_01.c",
+        "lines": [
+          36,
+          36
+        ],
+        "cwe": "CWE-259"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 11.88,
+    "error": null
+  },
+  {
+    "case_id": "CWE-259_CWE259_Hard_Coded_Password__w32_char_01_27_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE259_Hard_Coded_Password__w32_char_01.c",
+    "label_cwe": "CWE-259",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE259_Hard_Coded_Password__w32_char_01.c",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-259"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 11.08,
+    "error": null
+  },
+  {
+    "case_id": "CWE-272_CWE272_Least_Privilege_Violation__w32_char_CreateProcess_01_28_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE272_Least_Privilege_Violation__w32_char_CreateProcess_01.c",
+    "label_cwe": "CWE-272",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE272_Least_Privilege_Violation__w32_char_CreateProcess_01.c",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-272"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 7.76,
+    "error": null
+  },
+  {
+    "case_id": "CWE-272_CWE272_Least_Privilege_Violation__w32_char_CreateProcess_01_28_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "CWE272_Least_Privilege_Violation__w32_char_CreateProcess_01.c",
+    "label_cwe": "CWE-272",
+    "is_vulnerable": false,
+    "n_findings": 0,
+    "findings_in_file": [],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 8.73,
+    "error": null
+  },
+  {
+    "case_id": "CWE-273_CWE273_Improper_Check_for_Dropped_Privileges__w32_ImpersonateNamedPipeClient_01_29_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE273_Improper_Check_for_Dropped_Privileges__w32_ImpersonateNamedPipeClient_01.c",
+    "label_cwe": "CWE-273",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE273_Improper_Check_for_Dropped_Privileges__w32_ImpersonateNamedPipeClient_01.c",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-273"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 8.67,
+    "error": null
+  },
+  {
+    "case_id": "CWE-273_CWE273_Improper_Check_for_Dropped_Privileges__w32_ImpersonateNamedPipeClient_01_29_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE273_Improper_Check_for_Dropped_Privileges__w32_ImpersonateNamedPipeClient_01.c",
+    "label_cwe": "CWE-273",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE273_Improper_Check_for_Dropped_Privileges__w32_ImpersonateNamedPipeClient_01.c",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-273"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 9.73,
+    "error": null
+  },
+  {
+    "case_id": "CWE-284_CWE284_Improper_Access_Control__w32_char_CreateDesktop_01_30_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE284_Improper_Access_Control__w32_char_CreateDesktop_01.c",
+    "label_cwe": "CWE-284",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE284_Improper_Access_Control__w32_char_CreateDesktop_01.c",
+        "lines": [
+          22,
+          22
+        ],
+        "cwe": "CWE-284"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 7.58,
+    "error": null
+  },
+  {
+    "case_id": "CWE-284_CWE284_Improper_Access_Control__w32_char_CreateDesktop_01_30_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE284_Improper_Access_Control__w32_char_CreateDesktop_01.c",
+    "label_cwe": "CWE-284",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE284_Improper_Access_Control__w32_char_CreateDesktop_01.c",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-284"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 6.86,
+    "error": null
+  },
+  {
+    "case_id": "CWE-319_CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_01_31_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_01.c",
+    "label_cwe": "CWE-319",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_01.c",
+        "lines": [
+          44,
+          44
+        ],
+        "cwe": "CWE-319"
+      },
+      {
+        "file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_01.c",
+        "lines": [
+          83,
+          83
+        ],
+        "cwe": "CWE-319"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 14.37,
+    "error": null
+  },
+  {
+    "case_id": "CWE-319_CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_01_31_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_01.c",
+    "label_cwe": "CWE-319",
+    "is_vulnerable": false,
+    "n_findings": 9,
+    "findings_in_file": [
+      {
+        "file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_01.c",
+        "lines": [
+          54,
+          54
+        ],
+        "cwe": "CWE-319"
+      },
+      {
+        "file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_01.c",
+        "lines": [
+          54,
+          54
+        ],
+        "cwe": "CWE-319"
+      },
+      {
+        "file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_01.c",
+        "lines": [
+          54,
+          54
+        ],
+        "cwe": "CWE-319"
+      },
+      {
+        "file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_01.c",
+        "lines": [
+          54,
+          54
+        ],
+        "cwe": "CWE-319"
+      },
+      {
+        "file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_01.c",
+        "lines": [
+          54,
+          54
+        ],
+        "cwe": "CWE-319"
+      },
+      {
+        "file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_01.c",
+        "lines": [
+          54,
+          54
+        ],
+        "cwe": "CWE-319"
+      },
+      {
+        "file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_01.c",
+        "lines": [
+          54,
+          54
+        ],
+        "cwe": "CWE-319"
+      },
+      {
+        "file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_01.c",
+        "lines": [
+          54,
+          54
+        ],
+        "cwe": "CWE-319"
+      },
+      {
+        "file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_01.c",
+        "lines": [
+          54,
+          54
+        ],
+        "cwe": "CWE-319"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 22.09,
+    "error": null
+  },
+  {
+    "case_id": "CWE-321_CWE321_Hard_Coded_Cryptographic_Key__w32_char_01_32_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE321_Hard_Coded_Cryptographic_Key__w32_char_01.c",
+    "label_cwe": "CWE-321",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE321_Hard_Coded_Cryptographic_Key__w32_char_01.c",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-321"
+      },
+      {
+        "file": "CWE321_Hard_Coded_Cryptographic_Key__w32_char_01.c",
+        "lines": [
+          38,
+          38
+        ],
+        "cwe": "CWE-321"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 16.89,
+    "error": null
+  },
+  {
+    "case_id": "CWE-321_CWE321_Hard_Coded_Cryptographic_Key__w32_char_01_32_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE321_Hard_Coded_Cryptographic_Key__w32_char_01.c",
+    "label_cwe": "CWE-321",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE321_Hard_Coded_Cryptographic_Key__w32_char_01.c",
+        "lines": [
+          23,
+          23
+        ],
+        "cwe": "CWE-321"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.62,
+    "error": null
+  },
+  {
+    "case_id": "CWE-325_CWE325_Missing_Required_Cryptographic_Step__w32_CryptCreateHash_01_33_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE325_Missing_Required_Cryptographic_Step__w32_CryptCreateHash_01.c",
+    "label_cwe": "CWE-325",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE325_Missing_Required_Cryptographic_Step__w32_CryptCreateHash_01.c",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-325"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 16.87,
+    "error": null
+  },
+  {
+    "case_id": "CWE-325_CWE325_Missing_Required_Cryptographic_Step__w32_CryptCreateHash_01_33_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE325_Missing_Required_Cryptographic_Step__w32_CryptCreateHash_01.c",
+    "label_cwe": "CWE-325",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE325_Missing_Required_Cryptographic_Step__w32_CryptCreateHash_01.c",
+        "lines": [
+          53,
+          53
+        ],
+        "cwe": "CWE-325"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 4.52,
+    "error": null
+  },
+  {
+    "case_id": "CWE-327_CWE327_Use_Broken_Crypto__w32_3DES_01_34_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE327_Use_Broken_Crypto__w32_3DES_01.c",
+    "label_cwe": "CWE-327",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE327_Use_Broken_Crypto__w32_3DES_01.c",
+        "lines": [
+          63,
+          63
+        ],
+        "cwe": "CWE-327"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.79,
+    "error": null
+  },
+  {
+    "case_id": "CWE-327_CWE327_Use_Broken_Crypto__w32_3DES_01_34_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE327_Use_Broken_Crypto__w32_3DES_01.c",
+    "label_cwe": "CWE-327",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE327_Use_Broken_Crypto__w32_3DES_01.c",
+        "lines": [
+          73,
+          73
+        ],
+        "cwe": "CWE-327"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 13.82,
+    "error": null
+  },
+  {
+    "case_id": "CWE-328_CWE328_Reversible_One_Way_Hash__w32_MD2_01_35_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE328_Reversible_One_Way_Hash__w32_MD2_01.c",
+    "label_cwe": "CWE-328",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE328_Reversible_One_Way_Hash__w32_MD2_01.c",
+        "lines": [
+          63,
+          63
+        ],
+        "cwe": "CWE-328"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.8,
+    "error": null
+  },
+  {
+    "case_id": "CWE-328_CWE328_Reversible_One_Way_Hash__w32_MD2_01_35_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE328_Reversible_One_Way_Hash__w32_MD2_01.c",
+    "label_cwe": "CWE-328",
+    "is_vulnerable": false,
+    "n_findings": 4,
+    "findings_in_file": [
+      {
+        "file": "CWE328_Reversible_One_Way_Hash__w32_MD2_01.c",
+        "lines": [
+          54,
+          54
+        ],
+        "cwe": "CWE-328"
+      },
+      {
+        "file": "CWE328_Reversible_One_Way_Hash__w32_MD2_01.c",
+        "lines": [
+          25,
+          25
+        ],
+        "cwe": "CWE-327"
+      },
+      {
+        "file": "CWE328_Reversible_One_Way_Hash__w32_MD2_01.c",
+        "lines": [
+          43,
+          43
+        ],
+        "cwe": "CWE-327"
+      },
+      {
+        "file": "CWE328_Reversible_One_Way_Hash__w32_MD2_01.c",
+        "lines": [
+          64,
+          64
+        ],
+        "cwe": "CWE-319"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 20.78,
+    "error": null
+  },
+  {
+    "case_id": "CWE-338_CWE338_Weak_PRNG__w32_01_36_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE338_Weak_PRNG__w32_01.c",
+    "label_cwe": "CWE-338",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE338_Weak_PRNG__w32_01.c",
+        "lines": [
+          20,
+          20
+        ],
+        "cwe": "CWE-338"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 0.52,
+    "error": null
+  },
+  {
+    "case_id": "CWE-338_CWE338_Weak_PRNG__w32_01_36_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE338_Weak_PRNG__w32_01.c",
+    "label_cwe": "CWE-338",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE338_Weak_PRNG__w32_01.c",
+        "lines": [
+          0,
+          0
+        ],
+        "cwe": "CWE-338"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 14.84,
+    "error": null
+  },
+  {
+    "case_id": "CWE-364_CWE364_Signal_Handler_Race_Condition__basic_01_37_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE364_Signal_Handler_Race_Condition__basic_01.c",
+    "label_cwe": "CWE-364",
+    "is_vulnerable": true,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "CWE364_Signal_Handler_Race_Condition__basic_01.c",
+        "lines": [
+          73,
+          73
+        ],
+        "cwe": "CWE-364"
+      },
+      {
+        "file": "CWE364_Signal_Handler_Race_Condition__basic_01.c",
+        "lines": [
+          81,
+          81
+        ],
+        "cwe": "CWE-364"
+      },
+      {
+        "file": "CWE364_Signal_Handler_Race_Condition__basic_01.c",
+        "lines": [
+          91,
+          91
+        ],
+        "cwe": "CWE-364"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.27,
+    "error": null
+  },
+  {
+    "case_id": "CWE-364_CWE364_Signal_Handler_Race_Condition__basic_01_37_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE364_Signal_Handler_Race_Condition__basic_01.c",
+    "label_cwe": "CWE-364",
+    "is_vulnerable": false,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "CWE364_Signal_Handler_Race_Condition__basic_01.c",
+        "lines": [
+          44,
+          44
+        ],
+        "cwe": "CWE-364"
+      },
+      {
+        "file": "CWE364_Signal_Handler_Race_Condition__basic_01.c",
+        "lines": [
+          53,
+          53
+        ],
+        "cwe": "CWE-364"
+      },
+      {
+        "file": "CWE364_Signal_Handler_Race_Condition__basic_01.c",
+        "lines": [
+          61,
+          61
+        ],
+        "cwe": "CWE-364"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 14.76,
+    "error": null
+  },
+  {
+    "case_id": "CWE-366_CWE366_Race_Condition_Within_Thread__global_int_01_38_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE366_Race_Condition_Within_Thread__global_int_01.c",
+    "label_cwe": "CWE-366",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE366_Race_Condition_Within_Thread__global_int_01.c",
+        "lines": [
+          34,
+          36
+        ],
+        "cwe": "CWE-366"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 5.67,
+    "error": null
+  },
+  {
+    "case_id": "CWE-366_CWE366_Race_Condition_Within_Thread__global_int_01_38_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE366_Race_Condition_Within_Thread__global_int_01.c",
+    "label_cwe": "CWE-366",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE366_Race_Condition_Within_Thread__global_int_01.c",
+        "lines": [
+          34,
+          37
+        ],
+        "cwe": "CWE-366"
+      },
+      {
+        "file": "CWE366_Race_Condition_Within_Thread__global_int_01.c",
+        "lines": [
+          44,
+          47
+        ],
+        "cwe": "CWE-366"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 16.93,
+    "error": null
+  },
+  {
+    "case_id": "CWE-367_CWE367_TOC_TOU__access_01_39_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE367_TOC_TOU__access_01.c",
+    "label_cwe": "CWE-367",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE367_TOC_TOU__access_01.c",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-367"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 5.67,
+    "error": null
+  },
+  {
+    "case_id": "CWE-367_CWE367_TOC_TOU__access_01_39_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE367_TOC_TOU__access_01.c",
+    "label_cwe": "CWE-367",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE367_TOC_TOU__access_01.c",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-367"
+      },
+      {
+        "file": "CWE367_TOC_TOU__access_01.c",
+        "lines": [
+          38,
+          38
+        ],
+        "cwe": "CWE-367"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 14.21,
+    "error": null
+  },
+  {
+    "case_id": "CWE-369_CWE369_Divide_by_Zero__float_connect_socket_01_40_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE369_Divide_by_Zero__float_connect_socket_01.c",
+    "label_cwe": "CWE-369",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE369_Divide_by_Zero__float_connect_socket_01.c",
+        "lines": [
+          73,
+          73
+        ],
+        "cwe": "CWE-369"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 6.85,
+    "error": null
+  },
+  {
+    "case_id": "CWE-369_CWE369_Divide_by_Zero__float_connect_socket_01_40_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE369_Divide_by_Zero__float_connect_socket_01.c",
+    "label_cwe": "CWE-369",
+    "is_vulnerable": false,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "CWE369_Divide_by_Zero__float_connect_socket_01.c",
+        "lines": [
+          43,
+          43
+        ],
+        "cwe": "CWE-369"
+      },
+      {
+        "file": "CWE369_Divide_by_Zero__float_connect_socket_01.c",
+        "lines": [
+          67,
+          67
+        ],
+        "cwe": "CWE-369"
+      },
+      {
+        "file": "CWE369_Divide_by_Zero__float_connect_socket_01.c",
+        "lines": [
+          54,
+          54
+        ],
+        "cwe": "CWE-200"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 19.36,
+    "error": null
+  },
+  {
+    "case_id": "CWE-377_CWE377_Insecure_Temporary_File__char_mktemp_01_41_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE377_Insecure_Temporary_File__char_mktemp_01.c",
+    "label_cwe": "CWE-377",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE377_Insecure_Temporary_File__char_mktemp_01.c",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-377"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 11.04,
+    "error": null
+  },
+  {
+    "case_id": "CWE-377_CWE377_Insecure_Temporary_File__char_mktemp_01_41_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE377_Insecure_Temporary_File__char_mktemp_01.c",
+    "label_cwe": "CWE-377",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE377_Insecure_Temporary_File__char_mktemp_01.c",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-377"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 9.14,
+    "error": null
+  },
+  {
+    "case_id": "CWE-390_CWE390_Error_Without_Action__fgets_char_01_42_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE390_Error_Without_Action__fgets_char_01.c",
+    "label_cwe": "CWE-390",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE390_Error_Without_Action__fgets_char_01.c",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-390"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 0.51,
+    "error": null
+  },
+  {
+    "case_id": "CWE-390_CWE390_Error_Without_Action__fgets_char_01_42_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE390_Error_Without_Action__fgets_char_01.c",
+    "label_cwe": "CWE-390",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE390_Error_Without_Action__fgets_char_01.c",
+        "lines": [
+          24,
+          26
+        ],
+        "cwe": "CWE-390"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.8,
+    "error": null
+  },
+  {
+    "case_id": "CWE-391_CWE391_Unchecked_Error_Condition__sqrt_01_43_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE391_Unchecked_Error_Condition__sqrt_01.c",
+    "label_cwe": "CWE-391",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE391_Unchecked_Error_Condition__sqrt_01.c",
+        "lines": [
+          17,
+          17
+        ],
+        "cwe": "CWE-391"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 0.29,
+    "error": null
+  },
+  {
+    "case_id": "CWE-391_CWE391_Unchecked_Error_Condition__sqrt_01_43_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE391_Unchecked_Error_Condition__sqrt_01.c",
+    "label_cwe": "CWE-391",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE391_Unchecked_Error_Condition__sqrt_01.c",
+        "lines": [
+          23,
+          24
+        ],
+        "cwe": "CWE-391"
+      },
+      {
+        "file": "CWE391_Unchecked_Error_Condition__sqrt_01.c",
+        "lines": [
+          25,
+          26
+        ],
+        "cwe": "CWE-391"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.92,
+    "error": null
+  },
+  {
+    "case_id": "CWE-398_CWE398_Poor_Code_Quality__addition_01_44_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE398_Poor_Code_Quality__addition_01.c",
+    "label_cwe": "CWE-398",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE398_Poor_Code_Quality__addition_01.c",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-398"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 6.86,
+    "error": null
+  },
+  {
+    "case_id": "CWE-398_CWE398_Poor_Code_Quality__addition_01_44_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE398_Poor_Code_Quality__addition_01.c",
+    "label_cwe": "CWE-398",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE398_Poor_Code_Quality__addition_01.c",
+        "lines": [
+          23,
+          24
+        ],
+        "cwe": "CWE-398"
+      },
+      {
+        "file": "CWE398_Poor_Code_Quality__addition_01.c",
+        "lines": [
+          26,
+          26
+        ],
+        "cwe": "CWE-398"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 5.81,
+    "error": null
+  },
+  {
+    "case_id": "CWE-400_CWE400_Resource_Exhaustion__connect_socket_for_loop_01_45_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE400_Resource_Exhaustion__connect_socket_for_loop_01.c",
+    "label_cwe": "CWE-400",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE400_Resource_Exhaustion__connect_socket_for_loop_01.c",
+        "lines": [
+          74,
+          74
+        ],
+        "cwe": "CWE-400"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.82,
+    "error": null
+  },
+  {
+    "case_id": "CWE-400_CWE400_Resource_Exhaustion__connect_socket_for_loop_01_45_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE400_Resource_Exhaustion__connect_socket_for_loop_01.c",
+    "label_cwe": "CWE-400",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE400_Resource_Exhaustion__connect_socket_for_loop_01.c",
+        "lines": [
+          73,
+          73
+        ],
+        "cwe": "CWE-400"
+      },
+      {
+        "file": "CWE400_Resource_Exhaustion__connect_socket_for_loop_01.c",
+        "lines": [
+          104,
+          104
+        ],
+        "cwe": "CWE-400"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.91,
+    "error": null
+  },
+  {
+    "case_id": "CWE-401_CWE401_Memory_Leak__char_calloc_01_46_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE401_Memory_Leak__char_calloc_01.c",
+    "label_cwe": "CWE-401",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE401_Memory_Leak__char_calloc_01.c",
+        "lines": [
+          17,
+          18
+        ],
+        "cwe": "CWE-401"
+      },
+      {
+        "file": "CWE401_Memory_Leak__char_calloc_01.c",
+        "lines": [
+          22,
+          22
+        ],
+        "cwe": "CWE-401"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 9.01,
+    "error": null
+  },
+  {
+    "case_id": "CWE-401_CWE401_Memory_Leak__char_calloc_01_46_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE401_Memory_Leak__char_calloc_01.c",
+    "label_cwe": "CWE-401",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE401_Memory_Leak__char_calloc_01.c",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-401"
+      },
+      {
+        "file": "CWE401_Memory_Leak__char_calloc_01.c",
+        "lines": [
+          23,
+          23
+        ],
+        "cwe": "CWE-401"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 8.74,
+    "error": null
+  },
+  {
+    "case_id": "CWE-404_CWE404_Improper_Resource_Shutdown__fopen_w32_close_01_47_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE404_Improper_Resource_Shutdown__fopen_w32_close_01.c",
+    "label_cwe": "CWE-404",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE404_Improper_Resource_Shutdown__fopen_w32_close_01.c",
+        "lines": [
+          20,
+          20
+        ],
+        "cwe": "CWE-404"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 6.56,
+    "error": null
+  },
+  {
+    "case_id": "CWE-404_CWE404_Improper_Resource_Shutdown__fopen_w32_close_01_47_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE404_Improper_Resource_Shutdown__fopen_w32_close_01.c",
+    "label_cwe": "CWE-404",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE404_Improper_Resource_Shutdown__fopen_w32_close_01.c",
+        "lines": [
+          23,
+          24
+        ],
+        "cwe": "CWE-404"
+      },
+      {
+        "file": "CWE404_Improper_Resource_Shutdown__fopen_w32_close_01.c",
+        "lines": [
+          17,
+          18
+        ],
+        "cwe": "CWE-404"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 2.8,
+    "error": null
+  },
+  {
+    "case_id": "CWE-415_CWE415_Double_Free__malloc_free_char_01_48_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE415_Double_Free__malloc_free_char_01.c",
+    "label_cwe": "CWE-415",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE415_Double_Free__malloc_free_char_01.c",
+        "lines": [
+          24,
+          25
+        ],
+        "cwe": "CWE-415"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.63,
+    "error": null
+  },
+  {
+    "case_id": "CWE-415_CWE415_Double_Free__malloc_free_char_01_48_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE415_Double_Free__malloc_free_char_01.c",
+    "label_cwe": "CWE-415",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE415_Double_Free__malloc_free_char_01.c",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-415"
+      },
+      {
+        "file": "CWE415_Double_Free__malloc_free_char_01.c",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-415"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 7.89,
+    "error": null
+  },
+  {
+    "case_id": "CWE-416_CWE416_Use_After_Free__malloc_free_char_01_49_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE416_Use_After_Free__malloc_free_char_01.c",
+    "label_cwe": "CWE-416",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE416_Use_After_Free__malloc_free_char_01.c",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-416"
+      },
+      {
+        "file": "CWE416_Use_After_Free__malloc_free_char_01.c",
+        "lines": [
+          26,
+          26
+        ],
+        "cwe": "CWE-401"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 7.99,
+    "error": null
+  },
+  {
+    "case_id": "CWE-416_CWE416_Use_After_Free__malloc_free_char_01_49_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE416_Use_After_Free__malloc_free_char_01.c",
+    "label_cwe": "CWE-416",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE416_Use_After_Free__malloc_free_char_01.c",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-416"
+      },
+      {
+        "file": "CWE416_Use_After_Free__malloc_free_char_01.c",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-416"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 8.81,
+    "error": null
+  },
+  {
+    "case_id": "CWE-426_CWE426_Untrusted_Search_Path__char_popen_01_50_bad",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE426_Untrusted_Search_Path__char_popen_01.c",
+    "label_cwe": "CWE-426",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE426_Untrusted_Search_Path__char_popen_01.c",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-426"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 5.63,
+    "error": null
+  },
+  {
+    "case_id": "CWE-426_CWE426_Untrusted_Search_Path__char_popen_01_50_good",
+    "dataset": "juliet",
+    "language": "c",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE426_Untrusted_Search_Path__char_popen_01.c",
+    "label_cwe": "CWE-426",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE426_Untrusted_Search_Path__char_popen_01.c",
+        "lines": [
+          54,
+          54
+        ],
+        "cwe": "CWE-426"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 13.21,
+    "error": null
+  },
+  {
+    "case_id": "CWE-114_CWE114_Process_Control__w32_char_connect_socket_33_1_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FN",
+    "label_file": "CWE114_Process_Control__w32_char_connect_socket_33.cpp",
+    "label_cwe": "CWE-114",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE114_Process_Control__w32_char_connect_socket_33.cpp",
+        "lines": [
+          123,
+          123
+        ],
+        "cwe": "CWE-427"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.6,
+    "error": null
+  },
+  {
+    "case_id": "CWE-114_CWE114_Process_Control__w32_char_connect_socket_33_1_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE114_Process_Control__w32_char_connect_socket_33.cpp",
+    "label_cwe": "CWE-114",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE114_Process_Control__w32_char_connect_socket_33.cpp",
+        "lines": [
+          53,
+          53
+        ],
+        "cwe": "CWE-114"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 9.82,
+    "error": null
+  },
+  {
+    "case_id": "CWE-121_CWE121_Stack_Based_Buffer_Overflow__CWE129_connect_socket_33_2_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE121_Stack_Based_Buffer_Overflow__CWE129_connect_socket_33.cpp",
+    "label_cwe": "CWE-121",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE121_Stack_Based_Buffer_Overflow__CWE129_connect_socket_33.cpp",
+        "lines": [
+          82,
+          84
+        ],
+        "cwe": "CWE-121"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 8.69,
+    "error": null
+  },
+  {
+    "case_id": "CWE-121_CWE121_Stack_Based_Buffer_Overflow__CWE129_connect_socket_33_2_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE121_Stack_Based_Buffer_Overflow__CWE129_connect_socket_33.cpp",
+    "label_cwe": "CWE-121",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE121_Stack_Based_Buffer_Overflow__CWE129_connect_socket_33.cpp",
+        "lines": [
+          64,
+          64
+        ],
+        "cwe": "CWE-121"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 16.72,
+    "error": null
+  },
+  {
+    "case_id": "CWE-122_CWE122_Heap_Based_Buffer_Overflow__cpp_CWE129_connect_socket_01_3_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE122_Heap_Based_Buffer_Overflow__cpp_CWE129_connect_socket_01.cpp",
+    "label_cwe": "CWE-122",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE122_Heap_Based_Buffer_Overflow__cpp_CWE129_connect_socket_01.cpp",
+        "lines": [
+          83,
+          83
+        ],
+        "cwe": "CWE-122"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 16.43,
+    "error": null
+  },
+  {
+    "case_id": "CWE-122_CWE122_Heap_Based_Buffer_Overflow__cpp_CWE129_connect_socket_01_3_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE122_Heap_Based_Buffer_Overflow__cpp_CWE129_connect_socket_01.cpp",
+    "label_cwe": "CWE-122",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE122_Heap_Based_Buffer_Overflow__cpp_CWE129_connect_socket_01.cpp",
+        "lines": [
+          83,
+          83
+        ],
+        "cwe": "CWE-122"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.99,
+    "error": null
+  },
+  {
+    "case_id": "CWE-123_CWE123_Write_What_Where_Condition__connect_socket_33_4_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE123_Write_What_Where_Condition__connect_socket_33.cpp",
+    "label_cwe": "CWE-123",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE123_Write_What_Where_Condition__connect_socket_33.cpp",
+        "lines": [
+          83,
+          83
+        ],
+        "cwe": "CWE-123"
+      },
+      {
+        "file": "CWE123_Write_What_Where_Condition__connect_socket_33.cpp",
+        "lines": [
+          104,
+          104
+        ],
+        "cwe": "CWE-200"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 18.29,
+    "error": null
+  },
+  {
+    "case_id": "CWE-123_CWE123_Write_What_Where_Condition__connect_socket_33_4_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "CWE123_Write_What_Where_Condition__connect_socket_33.cpp",
+    "label_cwe": "CWE-123",
+    "is_vulnerable": false,
+    "n_findings": 8,
+    "findings_in_file": [
+      {
+        "file": "CWE123_Write_What_Where_Condition__connect_socket_33.cpp",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-367"
+      },
+      {
+        "file": "CWE123_Write_What_Where_Condition__connect_socket_33.cpp",
+        "lines": [
+          35,
+          35
+        ],
+        "cwe": "CWE-367"
+      },
+      {
+        "file": "CWE123_Write_What_Where_Condition__connect_socket_33.cpp",
+        "lines": [
+          36,
+          36
+        ],
+        "cwe": "CWE-367"
+      },
+      {
+        "file": "CWE123_Write_What_Where_Condition__connect_socket_33.cpp",
+        "lines": [
+          37,
+          37
+        ],
+        "cwe": "CWE-367"
+      },
+      {
+        "file": "CWE123_Write_What_Where_Condition__connect_socket_33.cpp",
+        "lines": [
+          43,
+          43
+        ],
+        "cwe": "CWE-367"
+      },
+      {
+        "file": "CWE123_Write_What_Where_Condition__connect_socket_33.cpp",
+        "lines": [
+          44,
+          44
+        ],
+        "cwe": "CWE-367"
+      },
+      {
+        "file": "CWE123_Write_What_Where_Condition__connect_socket_33.cpp",
+        "lines": [
+          45,
+          45
+        ],
+        "cwe": "CWE-367"
+      },
+      {
+        "file": "CWE123_Write_What_Where_Condition__connect_socket_33.cpp",
+        "lines": [
+          46,
+          46
+        ],
+        "cwe": "CWE-367"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 13.42,
+    "error": null
+  },
+  {
+    "case_id": "CWE-124_CWE124_Buffer_Underwrite__char_alloca_cpy_33_5_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE124_Buffer_Underwrite__char_alloca_cpy_33.cpp",
+    "label_cwe": "CWE-124",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE124_Buffer_Underwrite__char_alloca_cpy_33.cpp",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-124"
+      },
+      {
+        "file": "CWE124_Buffer_Underwrite__char_alloca_cpy_33.cpp",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-124"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 14.83,
+    "error": null
+  },
+  {
+    "case_id": "CWE-124_CWE124_Buffer_Underwrite__char_alloca_cpy_33_5_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE124_Buffer_Underwrite__char_alloca_cpy_33.cpp",
+    "label_cwe": "CWE-124",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE124_Buffer_Underwrite__char_alloca_cpy_33.cpp",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-124"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 9.17,
+    "error": null
+  },
+  {
+    "case_id": "CWE-126_CWE126_Buffer_Overread__char_alloca_loop_33_6_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE126_Buffer_Overread__char_alloca_loop_33.cpp",
+    "label_cwe": "CWE-126",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE126_Buffer_Overread__char_alloca_loop_33.cpp",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-126"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 9.01,
+    "error": null
+  },
+  {
+    "case_id": "CWE-126_CWE126_Buffer_Overread__char_alloca_loop_33_6_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE126_Buffer_Overread__char_alloca_loop_33.cpp",
+    "label_cwe": "CWE-126",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE126_Buffer_Overread__char_alloca_loop_33.cpp",
+        "lines": [
+          43,
+          43
+        ],
+        "cwe": "CWE-126"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 8.79,
+    "error": null
+  },
+  {
+    "case_id": "CWE-127_CWE127_Buffer_Underread__char_alloca_cpy_33_7_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE127_Buffer_Underread__char_alloca_cpy_33.cpp",
+    "label_cwe": "CWE-127",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE127_Buffer_Underread__char_alloca_cpy_33.cpp",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-127"
+      },
+      {
+        "file": "CWE127_Buffer_Underread__char_alloca_cpy_33.cpp",
+        "lines": [
+          32,
+          32
+        ],
+        "cwe": "CWE-127"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 7.61,
+    "error": null
+  },
+  {
+    "case_id": "CWE-127_CWE127_Buffer_Underread__char_alloca_cpy_33_7_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE127_Buffer_Underread__char_alloca_cpy_33.cpp",
+    "label_cwe": "CWE-127",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE127_Buffer_Underread__char_alloca_cpy_33.cpp",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-127"
+      },
+      {
+        "file": "CWE127_Buffer_Underread__char_alloca_cpy_33.cpp",
+        "lines": [
+          41,
+          41
+        ],
+        "cwe": "CWE-127"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 8.73,
+    "error": null
+  },
+  {
+    "case_id": "CWE-134_CWE134_Uncontrolled_Format_String__char_connect_socket_fprintf_33_8_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE134_Uncontrolled_Format_String__char_connect_socket_fprintf_33.cpp",
+    "label_cwe": "CWE-134",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE134_Uncontrolled_Format_String__char_connect_socket_fprintf_33.cpp",
+        "lines": [
+          124,
+          124
+        ],
+        "cwe": "CWE-134"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 13.62,
+    "error": null
+  },
+  {
+    "case_id": "CWE-134_CWE134_Uncontrolled_Format_String__char_connect_socket_fprintf_33_8_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE134_Uncontrolled_Format_String__char_connect_socket_fprintf_33.cpp",
+    "label_cwe": "CWE-134",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE134_Uncontrolled_Format_String__char_connect_socket_fprintf_33.cpp",
+        "lines": [
+          84,
+          84
+        ],
+        "cwe": "CWE-134"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 14.65,
+    "error": null
+  },
+  {
+    "case_id": "CWE-15_CWE15_External_Control_of_System_or_Configuration_Setting__w32_33_9_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE15_External_Control_of_System_or_Configuration_Setting__w32_33.cpp",
+    "label_cwe": "CWE-15",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE15_External_Control_of_System_or_Configuration_Setting__w32_33.cpp",
+        "lines": [
+          64,
+          64
+        ],
+        "cwe": "CWE-15"
+      },
+      {
+        "file": "CWE15_External_Control_of_System_or_Configuration_Setting__w32_33.cpp",
+        "lines": [
+          91,
+          91
+        ],
+        "cwe": "CWE-15"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.69,
+    "error": null
+  },
+  {
+    "case_id": "CWE-15_CWE15_External_Control_of_System_or_Configuration_Setting__w32_33_9_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE15_External_Control_of_System_or_Configuration_Setting__w32_33.cpp",
+    "label_cwe": "CWE-15",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE15_External_Control_of_System_or_Configuration_Setting__w32_33.cpp",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-15"
+      },
+      {
+        "file": "CWE15_External_Control_of_System_or_Configuration_Setting__w32_33.cpp",
+        "lines": [
+          39,
+          39
+        ],
+        "cwe": "CWE-15"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 8.81,
+    "error": null
+  },
+  {
+    "case_id": "CWE-176_CWE176_Improper_Handling_of_Unicode_Encoding__w32_33_10_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE176_Improper_Handling_of_Unicode_Encoding__w32_33.cpp",
+    "label_cwe": "CWE-176",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE176_Improper_Handling_of_Unicode_Encoding__w32_33.cpp",
+        "lines": [
+          42,
+          42
+        ],
+        "cwe": "CWE-176"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 10.99,
+    "error": null
+  },
+  {
+    "case_id": "CWE-176_CWE176_Improper_Handling_of_Unicode_Encoding__w32_33_10_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE176_Improper_Handling_of_Unicode_Encoding__w32_33.cpp",
+    "label_cwe": "CWE-176",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE176_Improper_Handling_of_Unicode_Encoding__w32_33.cpp",
+        "lines": [
+          56,
+          56
+        ],
+        "cwe": "CWE-176"
+      },
+      {
+        "file": "CWE176_Improper_Handling_of_Unicode_Encoding__w32_33.cpp",
+        "lines": [
+          68,
+          68
+        ],
+        "cwe": "CWE-176"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.55,
+    "error": null
+  },
+  {
+    "case_id": "CWE-188_main_11_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-188",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-502"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 0.57,
+    "error": null
+  },
+  {
+    "case_id": "CWE-188_main_11_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-188",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          23,
+          23
+        ],
+        "cwe": "CWE-502"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 25.87,
+    "error": null
+  },
+  {
+    "case_id": "CWE-190_CWE190_Integer_Overflow__char_fscanf_add_33_12_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE190_Integer_Overflow__char_fscanf_add_33.cpp",
+    "label_cwe": "CWE-190",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE190_Integer_Overflow__char_fscanf_add_33.cpp",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-190"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 16.59,
+    "error": null
+  },
+  {
+    "case_id": "CWE-190_CWE190_Integer_Overflow__char_fscanf_add_33_12_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE190_Integer_Overflow__char_fscanf_add_33.cpp",
+    "label_cwe": "CWE-190",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE190_Integer_Overflow__char_fscanf_add_33.cpp",
+        "lines": [
+          34,
+          36
+        ],
+        "cwe": "CWE-190"
+      },
+      {
+        "file": "CWE190_Integer_Overflow__char_fscanf_add_33.cpp",
+        "lines": [
+          53,
+          55
+        ],
+        "cwe": "CWE-190"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 0.86,
+    "error": null
+  },
+  {
+    "case_id": "CWE-191_CWE191_Integer_Underflow__char_fscanf_multiply_33_13_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE191_Integer_Underflow__char_fscanf_multiply_33.cpp",
+    "label_cwe": "CWE-191",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE191_Integer_Underflow__char_fscanf_multiply_33.cpp",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-191"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 16.58,
+    "error": null
+  },
+  {
+    "case_id": "CWE-191_CWE191_Integer_Underflow__char_fscanf_multiply_33_13_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE191_Integer_Underflow__char_fscanf_multiply_33.cpp",
+    "label_cwe": "CWE-191",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE191_Integer_Underflow__char_fscanf_multiply_33.cpp",
+        "lines": [
+          34,
+          36
+        ],
+        "cwe": "CWE-191"
+      },
+      {
+        "file": "CWE191_Integer_Underflow__char_fscanf_multiply_33.cpp",
+        "lines": [
+          64,
+          66
+        ],
+        "cwe": "CWE-191"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 9.79,
+    "error": null
+  },
+  {
+    "case_id": "CWE-194_CWE194_Unexpected_Sign_Extension__connect_socket_malloc_33_14_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE194_Unexpected_Sign_Extension__connect_socket_malloc_33.cpp",
+    "label_cwe": "CWE-194",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE194_Unexpected_Sign_Extension__connect_socket_malloc_33.cpp",
+        "lines": [
+          93,
+          93
+        ],
+        "cwe": "CWE-194"
+      },
+      {
+        "file": "CWE194_Unexpected_Sign_Extension__connect_socket_malloc_33.cpp",
+        "lines": [
+          104,
+          104
+        ],
+        "cwe": "CWE-119"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 5.84,
+    "error": null
+  },
+  {
+    "case_id": "CWE-194_CWE194_Unexpected_Sign_Extension__connect_socket_malloc_33_14_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE194_Unexpected_Sign_Extension__connect_socket_malloc_33.cpp",
+    "label_cwe": "CWE-194",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE194_Unexpected_Sign_Extension__connect_socket_malloc_33.cpp",
+        "lines": [
+          43,
+          43
+        ],
+        "cwe": "CWE-194"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 19.15,
+    "error": null
+  },
+  {
+    "case_id": "CWE-195_CWE195_Signed_to_Unsigned_Conversion_Error__connect_socket_malloc_33_15_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE195_Signed_to_Unsigned_Conversion_Error__connect_socket_malloc_33.cpp",
+    "label_cwe": "CWE-195",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE195_Signed_to_Unsigned_Conversion_Error__connect_socket_malloc_33.cpp",
+        "lines": [
+          74,
+          74
+        ],
+        "cwe": "CWE-195"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 0.52,
+    "error": null
+  },
+  {
+    "case_id": "CWE-195_CWE195_Signed_to_Unsigned_Conversion_Error__connect_socket_malloc_33_15_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE195_Signed_to_Unsigned_Conversion_Error__connect_socket_malloc_33.cpp",
+    "label_cwe": "CWE-195",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE195_Signed_to_Unsigned_Conversion_Error__connect_socket_malloc_33.cpp",
+        "lines": [
+          44,
+          44
+        ],
+        "cwe": "CWE-195"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 10.89,
+    "error": null
+  },
+  {
+    "case_id": "CWE-196_main_16_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-196",
+    "is_vulnerable": true,
+    "n_findings": 9,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          23,
+          23
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          25,
+          25
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          26,
+          26
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          27,
+          27
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          28,
+          28
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          29,
+          29
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          30,
+          30
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          31,
+          31
+        ],
+        "cwe": "CWE-200"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 19.82,
+    "error": null
+  },
+  {
+    "case_id": "CWE-196_main_16_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-196",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          2,
+          2
+        ],
+        "cwe": "CWE-200"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.65,
+    "error": null
+  },
+  {
+    "case_id": "CWE-197_CWE197_Numeric_Truncation_Error__int_connect_socket_to_char_33_17_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE197_Numeric_Truncation_Error__int_connect_socket_to_char_33.cpp",
+    "label_cwe": "CWE-197",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE197_Numeric_Truncation_Error__int_connect_socket_to_char_33.cpp",
+        "lines": [
+          53,
+          53
+        ],
+        "cwe": "CWE-197"
+      },
+      {
+        "file": "CWE197_Numeric_Truncation_Error__int_connect_socket_to_char_33.cpp",
+        "lines": [
+          96,
+          96
+        ],
+        "cwe": "CWE-197"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 20.94,
+    "error": null
+  },
+  {
+    "case_id": "CWE-197_CWE197_Numeric_Truncation_Error__int_connect_socket_to_char_33_17_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE197_Numeric_Truncation_Error__int_connect_socket_to_char_33.cpp",
+    "label_cwe": "CWE-197",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE197_Numeric_Truncation_Error__int_connect_socket_to_char_33.cpp",
+        "lines": [
+          54,
+          54
+        ],
+        "cwe": "CWE-197"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 18.95,
+    "error": null
+  },
+  {
+    "case_id": "CWE-222_main_18_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-222",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          21,
+          21
+        ],
+        "cwe": "CWE-330"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 4.5,
+    "error": null
+  },
+  {
+    "case_id": "CWE-222_main_18_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-222",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          23,
+          23
+        ],
+        "cwe": "CWE-330"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 22.25,
+    "error": null
+  },
+  {
+    "case_id": "CWE-223_main_19_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-223",
+    "is_vulnerable": true,
+    "n_findings": 8,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-502"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          35,
+          35
+        ],
+        "cwe": "CWE-502"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          36,
+          36
+        ],
+        "cwe": "CWE-502"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          37,
+          37
+        ],
+        "cwe": "CWE-502"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          38,
+          38
+        ],
+        "cwe": "CWE-502"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          39,
+          39
+        ],
+        "cwe": "CWE-502"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          40,
+          40
+        ],
+        "cwe": "CWE-502"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          41,
+          41
+        ],
+        "cwe": "CWE-502"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 5.61,
+    "error": null
+  },
+  {
+    "case_id": "CWE-223_main_19_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-223",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          26,
+          26
+        ],
+        "cwe": "CWE-200"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 14.73,
+    "error": null
+  },
+  {
+    "case_id": "CWE-226_main_20_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-226",
+    "is_vulnerable": true,
+    "n_findings": 8,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          23,
+          23
+        ],
+        "cwe": "CWE-502"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-502"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          25,
+          25
+        ],
+        "cwe": "CWE-502"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          26,
+          26
+        ],
+        "cwe": "CWE-502"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          27,
+          27
+        ],
+        "cwe": "CWE-502"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          28,
+          28
+        ],
+        "cwe": "CWE-502"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          29,
+          29
+        ],
+        "cwe": "CWE-502"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          30,
+          30
+        ],
+        "cwe": "CWE-502"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 35.72,
+    "error": null
+  },
+  {
+    "case_id": "CWE-226_main_20_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-226",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          23,
+          23
+        ],
+        "cwe": "CWE-362"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          25,
+          25
+        ],
+        "cwe": "CWE-200"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 33.91,
+    "error": null
+  },
+  {
+    "case_id": "CWE-23_CWE23_Relative_Path_Traversal__char_connect_socket_fopen_01_21_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE23_Relative_Path_Traversal__char_connect_socket_fopen_01.cpp",
+    "label_cwe": "CWE-23",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE23_Relative_Path_Traversal__char_connect_socket_fopen_01.cpp",
+        "lines": [
+          105,
+          105
+        ],
+        "cwe": "CWE-23"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 13.72,
+    "error": null
+  },
+  {
+    "case_id": "CWE-23_CWE23_Relative_Path_Traversal__char_connect_socket_fopen_01_21_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE23_Relative_Path_Traversal__char_connect_socket_fopen_01.cpp",
+    "label_cwe": "CWE-23",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE23_Relative_Path_Traversal__char_connect_socket_fopen_01.cpp",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-23"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 8.7,
+    "error": null
+  },
+  {
+    "case_id": "CWE-242_main_22_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-242",
+    "is_vulnerable": true,
+    "n_findings": 0,
+    "findings_in_file": [],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 1386.09,
+    "error": null
+  },
+  {
+    "case_id": "CWE-242_main_22_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-242",
+    "is_vulnerable": false,
+    "n_findings": 0,
+    "findings_in_file": [],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 1.31,
+    "error": null
+  },
+  {
+    "case_id": "CWE-244_main_23_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-244",
+    "is_vulnerable": true,
+    "n_findings": 0,
+    "findings_in_file": [],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 1.5,
+    "error": null
+  },
+  {
+    "case_id": "CWE-244_main_23_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-244",
+    "is_vulnerable": false,
+    "n_findings": 0,
+    "findings_in_file": [],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 1.49,
+    "error": null
+  },
+  {
+    "case_id": "CWE-247_main_24_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-247",
+    "is_vulnerable": true,
+    "n_findings": 0,
+    "findings_in_file": [],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 1.29,
+    "error": null
+  },
+  {
+    "case_id": "CWE-247_main_24_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-247",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-362"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 2.27,
+    "error": null
+  },
+  {
+    "case_id": "CWE-252_main_25_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-252",
+    "is_vulnerable": true,
+    "n_findings": 11,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-252"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          25,
+          25
+        ],
+        "cwe": "CWE-252"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          26,
+          26
+        ],
+        "cwe": "CWE-252"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          27,
+          27
+        ],
+        "cwe": "CWE-252"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          28,
+          28
+        ],
+        "cwe": "CWE-252"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          29,
+          29
+        ],
+        "cwe": "CWE-252"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          30,
+          30
+        ],
+        "cwe": "CWE-252"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          31,
+          31
+        ],
+        "cwe": "CWE-252"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          32,
+          32
+        ],
+        "cwe": "CWE-252"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          33,
+          33
+        ],
+        "cwe": "CWE-252"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-252"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 1.35,
+    "error": null
+  },
+  {
+    "case_id": "CWE-252_main_25_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-252",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-502"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 34.88,
+    "error": null
+  },
+  {
+    "case_id": "CWE-253_main_26_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-253",
+    "is_vulnerable": true,
+    "n_findings": 10,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          23,
+          23
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          25,
+          25
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          26,
+          26
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          27,
+          27
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          28,
+          28
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          29,
+          29
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          30,
+          30
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          31,
+          31
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          32,
+          32
+        ],
+        "cwe": "CWE-200"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 35.53,
+    "error": null
+  },
+  {
+    "case_id": "CWE-253_main_26_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-253",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          7,
+          8
+        ],
+        "cwe": "CWE-668"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          6,
+          6
+        ],
+        "cwe": "CWE-338"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 85.73,
+    "error": null
+  },
+  {
+    "case_id": "CWE-256_CWE256_Plaintext_Storage_of_Password__w32_char_33_27_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE256_Plaintext_Storage_of_Password__w32_char_33.cpp",
+    "label_cwe": "CWE-256",
+    "is_vulnerable": true,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "CWE256_Plaintext_Storage_of_Password__w32_char_33.cpp",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-256"
+      },
+      {
+        "file": "CWE256_Plaintext_Storage_of_Password__w32_char_33.cpp",
+        "lines": [
+          51,
+          51
+        ],
+        "cwe": "CWE-287"
+      },
+      {
+        "file": "CWE256_Plaintext_Storage_of_Password__w32_char_33.cpp",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-798"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 32.31,
+    "error": null
+  },
+  {
+    "case_id": "CWE-256_CWE256_Plaintext_Storage_of_Password__w32_char_33_27_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE256_Plaintext_Storage_of_Password__w32_char_33.cpp",
+    "label_cwe": "CWE-256",
+    "is_vulnerable": false,
+    "n_findings": 4,
+    "findings_in_file": [
+      {
+        "file": "CWE256_Plaintext_Storage_of_Password__w32_char_33.cpp",
+        "lines": [
+          67,
+          67
+        ],
+        "cwe": "CWE-256"
+      },
+      {
+        "file": "CWE256_Plaintext_Storage_of_Password__w32_char_33.cpp",
+        "lines": [
+          123,
+          123
+        ],
+        "cwe": "CWE-287"
+      },
+      {
+        "file": "CWE256_Plaintext_Storage_of_Password__w32_char_33.cpp",
+        "lines": [
+          14,
+          14
+        ],
+        "cwe": "CWE-798"
+      },
+      {
+        "file": "CWE256_Plaintext_Storage_of_Password__w32_char_33.cpp",
+        "lines": [
+          67,
+          67
+        ],
+        "cwe": "CWE-676"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 13.39,
+    "error": null
+  },
+  {
+    "case_id": "CWE-259_CWE259_Hard_Coded_Password__w32_char_33_28_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE259_Hard_Coded_Password__w32_char_33.cpp",
+    "label_cwe": "CWE-259",
+    "is_vulnerable": true,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "CWE259_Hard_Coded_Password__w32_char_33.cpp",
+        "lines": [
+          21,
+          21
+        ],
+        "cwe": "CWE-259"
+      },
+      {
+        "file": "CWE259_Hard_Coded_Password__w32_char_33.cpp",
+        "lines": [
+          25,
+          25
+        ],
+        "cwe": "CWE-259"
+      },
+      {
+        "file": "CWE259_Hard_Coded_Password__w32_char_33.cpp",
+        "lines": [
+          31,
+          31
+        ],
+        "cwe": "CWE-287"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 21.4,
+    "error": null
+  },
+  {
+    "case_id": "CWE-259_CWE259_Hard_Coded_Password__w32_char_33_28_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE259_Hard_Coded_Password__w32_char_33.cpp",
+    "label_cwe": "CWE-259",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE259_Hard_Coded_Password__w32_char_33.cpp",
+        "lines": [
+          11,
+          11
+        ],
+        "cwe": "CWE-259"
+      },
+      {
+        "file": "CWE259_Hard_Coded_Password__w32_char_33.cpp",
+        "lines": [
+          33,
+          33
+        ],
+        "cwe": "CWE-259"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 21.95,
+    "error": null
+  },
+  {
+    "case_id": "CWE-272_main_29_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-272",
+    "is_vulnerable": true,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          11,
+          11
+        ],
+        "cwe": "CWE-272"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          10,
+          10
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          7,
+          7
+        ],
+        "cwe": "CWE-330"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 25.13,
+    "error": null
+  },
+  {
+    "case_id": "CWE-272_main_29_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-272",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          8,
+          9
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          7,
+          7
+        ],
+        "cwe": "CWE-330"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 17.73,
+    "error": null
+  },
+  {
+    "case_id": "CWE-273_main_30_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-273",
+    "is_vulnerable": true,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          11,
+          64
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          9,
+          9
+        ],
+        "cwe": "CWE-367"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          9,
+          9
+        ],
+        "cwe": "CWE-330"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 35.29,
+    "error": null
+  },
+  {
+    "case_id": "CWE-273_main_30_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-273",
+    "is_vulnerable": false,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          7,
+          7
+        ],
+        "cwe": "CWE-20"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          10,
+          10
+        ],
+        "cwe": "CWE-340"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          1,
+          1
+        ],
+        "cwe": "CWE-614"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 37.55,
+    "error": null
+  },
+  {
+    "case_id": "CWE-284_main_31_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-284",
+    "is_vulnerable": true,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          12,
+          64
+        ],
+        "cwe": "CWE-78"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          11,
+          64
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          9,
+          9
+        ],
+        "cwe": "CWE-338"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 11.49,
+    "error": null
+  },
+  {
+    "case_id": "CWE-284_main_31_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-284",
+    "is_vulnerable": false,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          7,
+          7
+        ],
+        "cwe": "CWE-20"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          10,
+          10
+        ],
+        "cwe": "CWE-332"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          1,
+          1
+        ],
+        "cwe": "CWE-614"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 23.68,
+    "error": null
+  },
+  {
+    "case_id": "CWE-319_CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_33_32_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_33.cpp",
+    "label_cwe": "CWE-319",
+    "is_vulnerable": true,
+    "n_findings": 4,
+    "findings_in_file": [
+      {
+        "file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_33.cpp",
+        "lines": [
+          74,
+          74
+        ],
+        "cwe": "CWE-319"
+      },
+      {
+        "file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_33.cpp",
+        "lines": [
+          23,
+          23
+        ],
+        "cwe": "CWE-798"
+      },
+      {
+        "file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_33.cpp",
+        "lines": [
+          104,
+          104
+        ],
+        "cwe": "CWE-200"
+      },
+      {
+        "file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_33.cpp",
+        "lines": [
+          74,
+          74
+        ],
+        "cwe": "CWE-20"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 25.28,
+    "error": null
+  },
+  {
+    "case_id": "CWE-319_CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_33_32_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_33.cpp",
+    "label_cwe": "CWE-319",
+    "is_vulnerable": false,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_33.cpp",
+        "lines": [
+          121,
+          121
+        ],
+        "cwe": "CWE-319"
+      },
+      {
+        "file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_33.cpp",
+        "lines": [
+          63,
+          63
+        ],
+        "cwe": "CWE-259"
+      },
+      {
+        "file": "CWE319_Cleartext_Tx_Sensitive_Info__w32_char_connect_socket_33.cpp",
+        "lines": [
+          142,
+          142
+        ],
+        "cwe": "CWE-327"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 29.5,
+    "error": null
+  },
+  {
+    "case_id": "CWE-321_CWE321_Hard_Coded_Cryptographic_Key__w32_char_33_33_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE321_Hard_Coded_Cryptographic_Key__w32_char_33.cpp",
+    "label_cwe": "CWE-321",
+    "is_vulnerable": true,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "CWE321_Hard_Coded_Cryptographic_Key__w32_char_33.cpp",
+        "lines": [
+          23,
+          23
+        ],
+        "cwe": "CWE-321"
+      },
+      {
+        "file": "CWE321_Hard_Coded_Cryptographic_Key__w32_char_33.cpp",
+        "lines": [
+          44,
+          44
+        ],
+        "cwe": "CWE-321"
+      },
+      {
+        "file": "CWE321_Hard_Coded_Cryptographic_Key__w32_char_33.cpp",
+        "lines": [
+          73,
+          73
+        ],
+        "cwe": "CWE-321"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 315.44,
+    "error": null
+  },
+  {
+    "case_id": "CWE-321_CWE321_Hard_Coded_Cryptographic_Key__w32_char_33_33_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE321_Hard_Coded_Cryptographic_Key__w32_char_33.cpp",
+    "label_cwe": "CWE-321",
+    "is_vulnerable": false,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "CWE321_Hard_Coded_Cryptographic_Key__w32_char_33.cpp",
+        "lines": [
+          10,
+          10
+        ],
+        "cwe": "CWE-321"
+      },
+      {
+        "file": "CWE321_Hard_Coded_Cryptographic_Key__w32_char_33.cpp",
+        "lines": [
+          74,
+          74
+        ],
+        "cwe": "CWE-321"
+      },
+      {
+        "file": "CWE321_Hard_Coded_Cryptographic_Key__w32_char_33.cpp",
+        "lines": [
+          96,
+          96
+        ],
+        "cwe": "CWE-200"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 7.36,
+    "error": null
+  },
+  {
+    "case_id": "CWE-325_main_34_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-325",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          23,
+          157
+        ],
+        "cwe": "CWE-325"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          13,
+          13
+        ],
+        "cwe": "CWE-340"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.88,
+    "error": null
+  },
+  {
+    "case_id": "CWE-325_main_34_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-325",
+    "is_vulnerable": false,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          5,
+          5
+        ],
+        "cwe": "CWE-20"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          9,
+          9
+        ],
+        "cwe": "CWE-332"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          11,
+          11
+        ],
+        "cwe": "CWE-200"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 7.27,
+    "error": null
+  },
+  {
+    "case_id": "CWE-327_main_35_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-327",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          23,
+          147
+        ],
+        "cwe": "CWE-327"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 9.6,
+    "error": null
+  },
+  {
+    "case_id": "CWE-327_main_35_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-327",
+    "is_vulnerable": false,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          23,
+          183
+        ],
+        "cwe": "CWE-321"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          23,
+          183
+        ],
+        "cwe": "CWE-327"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          10,
+          10
+        ],
+        "cwe": "CWE-330"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 8.52,
+    "error": null
+  },
+  {
+    "case_id": "CWE-328_main_36_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-328",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          15,
+          250
+        ],
+        "cwe": "CWE-328"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          10,
+          10
+        ],
+        "cwe": "CWE-330"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 17.82,
+    "error": null
+  },
+  {
+    "case_id": "CWE-328_main_36_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-328",
+    "is_vulnerable": false,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          15,
+          250
+        ],
+        "cwe": "CWE-327"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          10,
+          10
+        ],
+        "cwe": "CWE-332"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          15,
+          250
+        ],
+        "cwe": "CWE-20"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 16.84,
+    "error": null
+  },
+  {
+    "case_id": "CWE-338_main_37_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-338",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          7,
+          7
+        ],
+        "cwe": "CWE-338"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 3.25,
+    "error": null
+  },
+  {
+    "case_id": "CWE-338_main_37_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-338",
+    "is_vulnerable": false,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          9,
+          9
+        ],
+        "cwe": "CWE-338"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 2.53,
+    "error": null
+  },
+  {
+    "case_id": "CWE-364_main_38_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-364",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          10,
+          10
+        ],
+        "cwe": "CWE-362"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          8,
+          8
+        ],
+        "cwe": "CWE-330"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 4.77,
+    "error": null
+  },
+  {
+    "case_id": "CWE-364_main_38_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-364",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          7,
+          7
+        ],
+        "cwe": "CWE-362"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          10,
+          10
+        ],
+        "cwe": "CWE-200"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 9.84,
+    "error": null
+  },
+  {
+    "case_id": "CWE-366_main_39_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-366",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          15,
+          121
+        ],
+        "cwe": "CWE-366"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          10,
+          10
+        ],
+        "cwe": "CWE-330"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 6.1,
+    "error": null
+  },
+  {
+    "case_id": "CWE-366_main_39_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-366",
+    "is_vulnerable": false,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          15,
+          150
+        ],
+        "cwe": "CWE-366"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          10,
+          10
+        ],
+        "cwe": "CWE-338"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          16,
+          149
+        ],
+        "cwe": "CWE-200"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.31,
+    "error": null
+  },
+  {
+    "case_id": "CWE-367_main_40_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-367",
+    "is_vulnerable": true,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          15,
+          83
+        ],
+        "cwe": "CWE-367"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          10,
+          10
+        ],
+        "cwe": "CWE-20"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          2,
+          2
+        ],
+        "cwe": "CWE-200"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 20.42,
+    "error": null
+  },
+  {
+    "case_id": "CWE-367_main_40_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-367",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          9,
+          9
+        ],
+        "cwe": "CWE-340"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          10,
+          11
+        ],
+        "cwe": "CWE-563"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 18.21,
+    "error": null
+  },
+  {
+    "case_id": "CWE-369_CWE369_Divide_by_Zero__float_connect_socket_33_41_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE369_Divide_by_Zero__float_connect_socket_33.cpp",
+    "label_cwe": "CWE-369",
+    "is_vulnerable": true,
+    "n_findings": 4,
+    "findings_in_file": [
+      {
+        "file": "CWE369_Divide_by_Zero__float_connect_socket_33.cpp",
+        "lines": [
+          104,
+          104
+        ],
+        "cwe": "CWE-369"
+      },
+      {
+        "file": "CWE369_Divide_by_Zero__float_connect_socket_33.cpp",
+        "lines": [
+          74,
+          74
+        ],
+        "cwe": "CWE-20"
+      },
+      {
+        "file": "CWE369_Divide_by_Zero__float_connect_socket_33.cpp",
+        "lines": [
+          69,
+          69
+        ],
+        "cwe": "CWE-121"
+      },
+      {
+        "file": "CWE369_Divide_by_Zero__float_connect_socket_33.cpp",
+        "lines": [
+          85,
+          85
+        ],
+        "cwe": "CWE-703"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 10.87,
+    "error": null
+  },
+  {
+    "case_id": "CWE-369_CWE369_Divide_by_Zero__float_connect_socket_33_41_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE369_Divide_by_Zero__float_connect_socket_33.cpp",
+    "label_cwe": "CWE-369",
+    "is_vulnerable": false,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "CWE369_Divide_by_Zero__float_connect_socket_33.cpp",
+        "lines": [
+          123,
+          123
+        ],
+        "cwe": "CWE-369"
+      },
+      {
+        "file": "CWE369_Divide_by_Zero__float_connect_socket_33.cpp",
+        "lines": [
+          114,
+          114
+        ],
+        "cwe": "CWE-20"
+      },
+      {
+        "file": "CWE369_Divide_by_Zero__float_connect_socket_33.cpp",
+        "lines": [
+          135,
+          135
+        ],
+        "cwe": "CWE-404"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 8.97,
+    "error": null
+  },
+  {
+    "case_id": "CWE-36_CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_01_42_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_01.cpp",
+    "label_cwe": "CWE-36",
+    "is_vulnerable": true,
+    "n_findings": 4,
+    "findings_in_file": [
+      {
+        "file": "CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_01.cpp",
+        "lines": [
+          123,
+          123
+        ],
+        "cwe": "CWE-36"
+      },
+      {
+        "file": "CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_01.cpp",
+        "lines": [
+          93,
+          93
+        ],
+        "cwe": "CWE-20"
+      },
+      {
+        "file": "CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_01.cpp",
+        "lines": [
+          92,
+          92
+        ],
+        "cwe": "CWE-121"
+      },
+      {
+        "file": "CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_01.cpp",
+        "lines": [
+          105,
+          105
+        ],
+        "cwe": "CWE-703"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 10.12,
+    "error": null
+  },
+  {
+    "case_id": "CWE-36_CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_01_42_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_01.cpp",
+    "label_cwe": "CWE-36",
+    "is_vulnerable": false,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_01.cpp",
+        "lines": [
+          73,
+          73
+        ],
+        "cwe": "CWE-36"
+      },
+      {
+        "file": "CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_01.cpp",
+        "lines": [
+          65,
+          65
+        ],
+        "cwe": "CWE-23"
+      },
+      {
+        "file": "CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_01.cpp",
+        "lines": [
+          68,
+          68
+        ],
+        "cwe": "CWE-23"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 20.91,
+    "error": null
+  },
+  {
+    "case_id": "CWE-377_main_43_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-377",
+    "is_vulnerable": true,
+    "n_findings": 4,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          23,
+          104
+        ],
+        "cwe": "CWE-377"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          25,
+          104
+        ],
+        "cwe": "CWE-377"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          27,
+          104
+        ],
+        "cwe": "CWE-377"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          37,
+          104
+        ],
+        "cwe": "CWE-377"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 31.72,
+    "error": null
+  },
+  {
+    "case_id": "CWE-377_main_43_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-377",
+    "is_vulnerable": false,
+    "n_findings": 4,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          23,
+          104
+        ],
+        "cwe": "CWE-377"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          25,
+          104
+        ],
+        "cwe": "CWE-377"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          27,
+          104
+        ],
+        "cwe": "CWE-377"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          31,
+          104
+        ],
+        "cwe": "CWE-377"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 23.49,
+    "error": null
+  },
+  {
+    "case_id": "CWE-390_CWE390_Error_Without_Action__empty_catch_01_44_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE390_Error_Without_Action__empty_catch_01.cpp",
+    "label_cwe": "CWE-390",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE390_Error_Without_Action__empty_catch_01.cpp",
+        "lines": [
+          23,
+          25
+        ],
+        "cwe": "CWE-390"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 7.42,
+    "error": null
+  },
+  {
+    "case_id": "CWE-390_CWE390_Error_Without_Action__empty_catch_01_44_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE390_Error_Without_Action__empty_catch_01.cpp",
+    "label_cwe": "CWE-390",
+    "is_vulnerable": false,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "CWE390_Error_Without_Action__empty_catch_01.cpp",
+        "lines": [
+          20,
+          20
+        ],
+        "cwe": "CWE-476"
+      },
+      {
+        "file": "CWE390_Error_Without_Action__empty_catch_01.cpp",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-390"
+      },
+      {
+        "file": "CWE390_Error_Without_Action__empty_catch_01.cpp",
+        "lines": [
+          19,
+          19
+        ],
+        "cwe": "CWE-330"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 37.83,
+    "error": null
+  },
+  {
+    "case_id": "CWE-391_main_45_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-391",
+    "is_vulnerable": true,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          11,
+          11
+        ],
+        "cwe": "CWE-20"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          14,
+          14
+        ],
+        "cwe": "CWE-332"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          1,
+          3
+        ],
+        "cwe": "CWE-200"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 208.64,
+    "error": null
+  },
+  {
+    "case_id": "CWE-391_main_45_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-391",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          10,
+          10
+        ],
+        "cwe": "CWE-340"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          1,
+          3
+        ],
+        "cwe": "CWE-614"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 50.28,
+    "error": null
+  },
+  {
+    "case_id": "CWE-396_CWE396_Catch_Generic_Exception__dotdotdot_01_46_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE396_Catch_Generic_Exception__dotdotdot_01.cpp",
+    "label_cwe": "CWE-396",
+    "is_vulnerable": true,
+    "n_findings": 1,
+    "findings_in_file": [
+      {
+        "file": "CWE396_Catch_Generic_Exception__dotdotdot_01.cpp",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-396"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 304.54,
+    "error": null
+  },
+  {
+    "case_id": "CWE-396_CWE396_Catch_Generic_Exception__dotdotdot_01_46_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE396_Catch_Generic_Exception__dotdotdot_01.cpp",
+    "label_cwe": "CWE-396",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE396_Catch_Generic_Exception__dotdotdot_01.cpp",
+        "lines": [
+          24,
+          24
+        ],
+        "cwe": "CWE-396"
+      },
+      {
+        "file": "CWE396_Catch_Generic_Exception__dotdotdot_01.cpp",
+        "lines": [
+          29,
+          30
+        ],
+        "cwe": "CWE-397"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 5.34,
+    "error": null
+  },
+  {
+    "case_id": "CWE-397_CWE397_Throw_Generic_Exception__declare_dotdotdot_w32_01_47_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE397_Throw_Generic_Exception__declare_dotdotdot_w32_01.cpp",
+    "label_cwe": "CWE-397",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE397_Throw_Generic_Exception__declare_dotdotdot_w32_01.cpp",
+        "lines": [
+          19,
+          19
+        ],
+        "cwe": "CWE-397"
+      },
+      {
+        "file": "CWE397_Throw_Generic_Exception__declare_dotdotdot_w32_01.cpp",
+        "lines": [
+          20,
+          20
+        ],
+        "cwe": "CWE-477"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 36.34,
+    "error": null
+  },
+  {
+    "case_id": "CWE-397_CWE397_Throw_Generic_Exception__declare_dotdotdot_w32_01_47_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE397_Throw_Generic_Exception__declare_dotdotdot_w32_01.cpp",
+    "label_cwe": "CWE-397",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE397_Throw_Generic_Exception__declare_dotdotdot_w32_01.cpp",
+        "lines": [
+          17,
+          17
+        ],
+        "cwe": "CWE-397"
+      },
+      {
+        "file": "CWE397_Throw_Generic_Exception__declare_dotdotdot_w32_01.cpp",
+        "lines": [
+          14,
+          14
+        ],
+        "cwe": "CWE-397"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 3.76,
+    "error": null
+  },
+  {
+    "case_id": "CWE-398_main_48_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-398",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          10,
+          11
+        ],
+        "cwe": "CWE-668"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          9,
+          9
+        ],
+        "cwe": "CWE-330"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 20.45,
+    "error": null
+  },
+  {
+    "case_id": "CWE-398_main_48_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TN",
+    "label_file": "main.cpp",
+    "label_cwe": "CWE-398",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "main.cpp",
+        "lines": [
+          10,
+          10
+        ],
+        "cwe": "CWE-332"
+      },
+      {
+        "file": "main.cpp",
+        "lines": [
+          1,
+          3
+        ],
+        "cwe": "CWE-200"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 6.47,
+    "error": null
+  },
+  {
+    "case_id": "CWE-400_CWE400_Resource_Exhaustion__connect_socket_for_loop_33_49_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE400_Resource_Exhaustion__connect_socket_for_loop_33.cpp",
+    "label_cwe": "CWE-400",
+    "is_vulnerable": true,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "CWE400_Resource_Exhaustion__connect_socket_for_loop_33.cpp",
+        "lines": [
+          104,
+          107
+        ],
+        "cwe": "CWE-400"
+      },
+      {
+        "file": "CWE400_Resource_Exhaustion__connect_socket_for_loop_33.cpp",
+        "lines": [
+          74,
+          74
+        ],
+        "cwe": "CWE-20"
+      },
+      {
+        "file": "CWE400_Resource_Exhaustion__connect_socket_for_loop_33.cpp",
+        "lines": [
+          56,
+          56
+        ],
+        "cwe": "CWE-404"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 9.51,
+    "error": null
+  },
+  {
+    "case_id": "CWE-400_CWE400_Resource_Exhaustion__connect_socket_for_loop_33_49_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE400_Resource_Exhaustion__connect_socket_for_loop_33.cpp",
+    "label_cwe": "CWE-400",
+    "is_vulnerable": false,
+    "n_findings": 3,
+    "findings_in_file": [
+      {
+        "file": "CWE400_Resource_Exhaustion__connect_socket_for_loop_33.cpp",
+        "lines": [
+          73,
+          73
+        ],
+        "cwe": "CWE-20"
+      },
+      {
+        "file": "CWE400_Resource_Exhaustion__connect_socket_for_loop_33.cpp",
+        "lines": [
+          104,
+          106
+        ],
+        "cwe": "CWE-400"
+      },
+      {
+        "file": "CWE400_Resource_Exhaustion__connect_socket_for_loop_33.cpp",
+        "lines": [
+          83,
+          83
+        ],
+        "cwe": "CWE-400"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 4.54,
+    "error": null
+  },
+  {
+    "case_id": "CWE-401_CWE401_Memory_Leak__char_calloc_33_50_bad",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "TP",
+    "label_file": "CWE401_Memory_Leak__char_calloc_33.cpp",
+    "label_cwe": "CWE-401",
+    "is_vulnerable": true,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE401_Memory_Leak__char_calloc_33.cpp",
+        "lines": [
+          28,
+          28
+        ],
+        "cwe": "CWE-401"
+      },
+      {
+        "file": "CWE401_Memory_Leak__char_calloc_33.cpp",
+        "lines": [
+          34,
+          34
+        ],
+        "cwe": "CWE-401"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 4.85,
+    "error": null
+  },
+  {
+    "case_id": "CWE-401_CWE401_Memory_Leak__char_calloc_33_50_good",
+    "dataset": "juliet",
+    "language": "cpp",
+    "run": 0,
+    "track": "detection",
+    "outcome": "FP",
+    "label_file": "CWE401_Memory_Leak__char_calloc_33.cpp",
+    "label_cwe": "CWE-401",
+    "is_vulnerable": false,
+    "n_findings": 2,
+    "findings_in_file": [
+      {
+        "file": "CWE401_Memory_Leak__char_calloc_33.cpp",
+        "lines": [
+          26,
+          30
+        ],
+        "cwe": "CWE-401"
+      },
+      {
+        "file": "CWE401_Memory_Leak__char_calloc_33.cpp",
+        "lines": [
+          43,
+          47
+        ],
+        "cwe": "CWE-401"
+      }
+    ],
+    "patch_valid_diff": null,
+    "patch_fixes": null,
+    "patch_regresses": null,
+    "duration_sec": 12.82,
+    "error": null
+  }
+]

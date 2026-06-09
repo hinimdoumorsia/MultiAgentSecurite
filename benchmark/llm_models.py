@@ -37,6 +37,16 @@ MODELS = {
 
 INPUT_CHARS = 4000
 
+# ─── Reproductibilité : versions de modèles FIGÉES (gelées au 2026-06) ──────────
+# Les identifiants du dict MODELS sont volontairement pinnés (pas d'alias "latest").
+# Modèles utilisés HORS de cette comparaison (renseignés pour la traçabilité) :
+#   - Détection sémantique Phase 1 : "llama-3.1-8b-instant" (Groq, free-tier)
+#   - PatcherAgent (correction)     : "deepseek-v4-flash"   (provider DeepSeek/OpenRouter)
+# Décodage : temperature=0.2 partout. Les LLM hébergés ne garantissent PAS un
+# décodage déterministe même à seed fixé (cf. rapport, section limites).
+LLM_SEED = 0
+FROZEN_AT = "2026-06"
+
 
 def client_for(slug):
     """Retourne (OpenAI client robuste, model_id, description, max_tokens)."""

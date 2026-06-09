@@ -2,11 +2,19 @@
   "model": "qwen/qwen3-coder",
   "results": {
     "VUL4J-1": "not_fixed",
+    "VUL4J-2": "patch_fail",
+    "VUL4J-3": "patch_fail",
+    "VUL4J-4": "patch_fail",
+    "VUL4J-5": "FIXED",
     "VUL4J-6": "FIXED",
+    "VUL4J-7": "patch_fail",
     "VUL4J-8": "not_fixed",
-    "VUL4J-12": "not_fixed"
+    "VUL4J-9": "build_broken",
+    "VUL4J-10": "not_fixed",
+    "VUL4J-11": "patch_fail",
+    "VUL4J-12": "FIXED"
   },
-  "fixed": 1,
-  "total": 4,
+  "fixed": 3,
+  "total": 12,
   "fix_rate": 0.25
 }

@@ -56,10 +56,14 @@ class AgentRunner:
     name = "agent"
 
     def __init__(self, max_iterations: int = 3, timeout_sec: int = 600,
-                 detection_only: bool = False) -> None:
+                 detection_only: bool = False, skip_semantic: bool = False,
+                 skip_scanner: bool = False, skip_memory: bool = False) -> None:
         self.max_iterations = max_iterations
         self.timeout_sec = timeout_sec
         self.detection_only = detection_only
+        self.skip_semantic = skip_semantic  # ablation : désactive le SemanticAnalystAgent (LLM)
+        self.skip_scanner = skip_scanner    # ablation : désactive le ScannerAgent (SAST)
+        self.skip_memory = skip_memory      # ablation : désactive le MemorySafetyAgent (Rust)
         self._app = None  # construit paresseusement (import lourd)
 
     def _ensure_app(self):
@@ -68,7 +72,10 @@ class AgentRunner:
                 sys.path.insert(0, str(_SRC))
             os.chdir(_REPO_ROOT)  # l'agent ecrit .scan_cache relatif a la racine
             from graph.workflow import build_workflow  # noqa: WPS433
-            self._app = build_workflow(detection_only=self.detection_only)
+            self._app = build_workflow(detection_only=self.detection_only,
+                                       skip_semantic=self.skip_semantic,
+                                       skip_scanner=self.skip_scanner,
+                                       skip_memory=self.skip_memory)
         return self._app
 
     def run(self, label: GroundTruthLabel, run_index: int = 0) -> CaseResult:
