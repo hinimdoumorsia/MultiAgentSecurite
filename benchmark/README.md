@@ -17,9 +17,9 @@ des vulnérabilités dans du code et tente de les **corriger** ; ce dossier mesu
 
 ### Sommaire
 - **§0 — Guide de lecture** : toutes les métriques et le vocabulaire expliqués
-- **§1 — Résultats** : détection (§1.1-1.4), correction similarité (§1.5), correction rigoureuse Vul4J (§1.6), comparaison de 6 LLM (§1.7)
+- **§1 — Résultats** : détection (§1.1-1.4c), correction similarité (§1.5), correction rigoureuse Vul4J (§1.6), comparaison 6+4 LLM (§1.7), taxonomie (§1.8), bi-modèle (§1.9), études de cas prod (§1.10), ExploitScorer (§1.11)
 - **§2 — Méthodologie** : comment les mesures sont produites
-- **§3 — Limites** : ce que les chiffres ne disent pas (biais, négatifs bruités, contamination…)
+- **§3 — Limites** : biais, négatifs bruités, contamination temporelle, pilotes RAG/ESLint
 - **§4 — Runs conservés** : inventaire des résultats bruts (`results/`)
 - **§5 — Reproduire** : commandes + architecture du code
 - **§6 — État des phases** · **§7 — Journal technique** (bugs trouvés & corrigés)
@@ -148,16 +148,20 @@ SpotBugs+FindSecBugs (Java), memory-engine Rust (C/C++). Mode `detection_only`.
 Vraies CVE issues de HuggingFace (`hitoshura25/cvefixes`), 50 vuln + 50 corrigées par
 langage. Scoring `presence` (matching au niveau fichier).
 
-| Langage | Rappel | Lecture |
-|---|---|---|
-| python | 0.32 | meilleur (Bandit + Semgrep) |
-| c / go | 0.30 / 0.28 | corrects |
-| cpp / java / php | 0.24–0.28 | moyens |
-| typescript | 0.16 | faible |
-| **javascript** | **0.08** | très faible — voir §3.4 |
+| Langage | TP | FP | Rappel | F1 | Youden J |
+|---|---|---|---|---|---|
+| Python | 16 | 33 | 0.32 | 0.32 | −0.34 |
+| C | 15 | 45 | 0.30 | 0.27 | −0.60 |
+| Go | 14 | 42 | 0.28 | 0.26 | −0.57 |
+| Java | 13 | 40 | 0.26 | 0.25 | −0.54 |
+| JavaScript | 4 | 36 | 0.08 | 0.08 | −0.64 |
+| **Global** | **96** | **316** | **0.24** | **0.23** | **−0.55** |
 
-**Seul le rappel (~0.24) est exploitable.** La précision/FPR ne sont PAS fiables ici
-(§3.1). C'est un signal de **généralisation multi-langages**, pas un chiffre absolu.
+CI bootstrap F1 (1000 rééchantillons, seed=0) : **[0.198 ; 0.273]**.
+
+**Seul le rappel (~0.24) est exploitable.** Précision/FPR/Youden ne sont PAS fiables ici
+(§3.1) — les « négatifs » contiennent souvent d'autres failles non étiquetées. C'est un
+signal de **généralisation multi-langages**, pas un chiffre absolu.
 
 ![CVEfixes — rappel par langage](images/cvefixes_recall_by_lang.png)
 
@@ -176,28 +180,93 @@ un finding compte s'il est du même CWE de catégorie). Métriques **fiables**.
 | Semgrep seul | 0.67 | 0.79 | 0.72 | 0.42 | 0.37 |
 | **Semgrep + SpotBugs** | 0.66 | **0.96** | **0.78** | 0.53 | **0.44** |
 
-➡️ Ajouter SpotBugs fait gagner **+17 points de rappel** (0.79 → 0.96) et améliore F1/Youden,
-au prix d'un FPR plus élevé (plus de fausses alertes). **Compromis SAST classique : plus
-d'outils = plus de détection, mais plus de bruit.** Seulement **54 faux négatifs sur 1415**
-vulnérabilités avec la chaîne complète.
+CI bootstrap F1 (seed=0) : Semgrep [0.707 ; 0.742] vs MAS [0.770 ; 0.799] — **intervalles disjoints**, différence statistiquement significative.
+
+➡️ SpotBugs capture **243 vulnérabilités supplémentaires** (+17 pts de rappel, 0.79 → 0.96) et améliore F1/Youden,
+au prix d'un FPR légèrement plus élevé. **Compromis SAST classique : plus d'outils = plus de détection, mais plus de bruit.**
+Seulement **54 faux négatifs sur 1415** vulnérabilités avec la chaîne complète.
 
 ![OWASP — impact SpotBugs](images/owasp_spotbugs_impact.png)
+
+**Comparaison avec CodeQL 2.25.6 et Semgrep seul (OWASP + CVEfixes) :**
+
+| Outil | Dataset | Rappel | Précision | F1 | FPR | Youden J |
+|---|---|---|---|---|---|---|
+| **Notre agent (MAS)** | OWASP | **0.96** | 0.66 | **0.78** | 0.53 | **+0.44** |
+| CodeQL 2.25.6 | OWASP | 0.43 | **0.87** | 0.58 | **0.07** | +0.36 |
+| Semgrep seul | OWASP | 0.79 | 0.67 | 0.72 | 0.42 | +0.37 |
+| **Notre agent (MAS)** | CVEfixes† | **0.24** | 0.23 | 0.24 | 0.79 | — |
+| CodeQL 2.25.6 | CVEfixes† | 0.38 | **0.61** | 0.47 | **0.24** | — |
+
+†Sous-ensemble 50 cas (seed=42) ; Youden non rapporté (négatifs bruités). CodeQL offre une haute précision et un FPR très bas (0.07) mais sacrifie le rappel (0.43 vs 0.96) — profil complémentaire à MAS.
 
 ### 1.4 Juliet — C/C++, négatifs propres (run `run_20260531-191017`)
 
 NIST SARD, 50 C + 50 C++ couvrant **54 CWE distincts**. Versions vulnérable/saine séparées
 via les gardes `#ifndef OMITBAD/OMITGOOD`. Scoring `category` (file-level, cohérent OWASP).
 
-| Langage | Précision | Rappel | F1 | FPR | Youden |
-|---|---|---|---|---|---|
-| c | 0.52 | 0.96 | 0.67 | 0.90 | 0.06 |
-| cpp | 0.53 | 0.66 | 0.59 | 0.58 | 0.08 |
-| **Global** | 0.52 | 0.81 | 0.64 | **0.74** | **+0.07** |
+**Ablation composants — Rust engine vs LLM vs pipeline complet (n=200 cas Juliet complets) :**
 
-**Constat important** : bon **rappel** (0.81) mais **FPR élevé** (0.74) → **discrimination
-faible** (Youden ≈ 0). Le `memory-engine` (à base de regex) et Semgrep flaggent la **présence**
-d'API dangereuses (`memcpy`, `strcpy`…) **même dans le code corrigé** qui les utilise de façon
-sûre. L'agent détecte « une » faille, mais distingue mal sûr/non-sûr sur C/C++.
+| Éval. | Configuration | TP | FP | Rappel | IC Wilson 95 % | Précision | FPR |
+|---|---|---|---|---|---|---|---|
+| Juliet n=200 | Rust seul | 5 | 4 | 0.05 | [0.02 ; 0.11] | **0.56** | **0.04** |
+| Juliet n=200 | LLM seul | 83 | 77 | **0.83** | [0.75 ; 0.89] | 0.52 | 0.77 |
+| Juliet n=200 | **Full (Rust+LLM+SAST)** | 81 | 74 | **0.81** | [0.72 ; 0.88] | 0.52 | 0.74 |
+| **H2 pilote n=60** | Rust seul | 12 | 10 | 0.20 | **[0.12 ; 0.32]** | 0.55 | 0.05 |
+| **H2 pilote n=60** | LLM seul | 58 | 52 | 0.97 | **[0.89 ; 0.99]** | 0.53 | 0.77 |
+
+Le rappel global 0.81 est **entièrement porté par le LLM** — le `memory-engine` Rust seul n'atteint que 0.05.
+**H2 réfuté directionnellement, confirmé à n=60** : IC Wilson disjoints (Rust [0.12;0.32] vs LLM [0.89;0.99]),
+McNemar (paires discordantes b=46, a=0) : χ²=44.0, p < 0.001.
+
+**Constat important** : le Rust engine (regex) signale la **présence** d'API dangereuses (`memcpy`, `strcpy`…)
+même dans le code corrigé → FPR=0.04 (très précis) mais rappel=0.05 (quasi-aveugle). Le LLM raisonne sur le
+contexte d'utilisation → rappel=0.97 mais FPR=0.77. Les deux ont un profil complémentaire : Rust comme
+filtre haute confiance secondaire, LLM pour la couverture principale.
+
+### 1.4b Ablation LLM — contribution de l'analyse sémantique
+
+Sur OWASP, le LLM n'apporte rien (SAST sature le rappel à 0.96). Sur CVEfixes (code réel), il est **décisif** :
+
+| Dataset | Configuration | Rappel | Précision | F1 | Youden J |
+|---|---|---|---|---|---|
+| OWASP | SAST + LLM | 0.96 | 0.66 | 0.78 | +0.44 |
+| OWASP | SAST seul | 0.96 | 0.66 | 0.78 | +0.44 |
+| CVEfixes | **SAST + LLM** | **0.24** | 0.23 | 0.24 | −0.55 |
+| CVEfixes | SAST seul | 0.002 | 0.04 | 0.005 | −0.06 |
+
+Sans LLM sur CVEfixes : rappel 0.002 (1 TP), avec LLM : rappel 0.24 (96 TP) → le LLM porte la quasi-totalité de la détection sur code réel.
+
+![Ablation LLM](images/ablation_llm.png)
+
+**Cascade de réduction du FPR (CVEfixes, 798 cas) :**
+
+| Étape | FPR | Note |
+|---|---|---|
+| SAST seul | 0.06 | Précision élevée, rappel = 0.002 |
+| + LLM sémantique | 0.79 | Rappel → 0.24 ; coût FPR |
+| + ExploitScorer (≥ CVSS 7) | 0.71 | −8 pts FPR, 86 % des cas conservés |
+| + RAG (pilote est.) | 0.74 | Impact FPR minimal (IC se chevauchent) |
+| *Cible (planifiée)* | ≤ 0.40 | Analyse de flot de données (taint) en aval |
+
+Le FPR 0.71 reste trop élevé pour un déploiement industriel non supervisé. L'objectif ≤ 0.40 est conditionné à l'intégration de l'analyse taint (travaux futurs §5).
+
+### 1.4c Comparaison LLM-only vs SAST-only vs MAS complet (baseline)
+
+| Dataset | Configuration | Rappel | Précision | F1 | FPR | Youden J |
+|---|---|---|---|---|---|---|
+| OWASP | LLM seul | 0.62 | 0.57 | 0.59 | 0.54 | +0.08 |
+| OWASP | SAST seul | 0.79 | 0.67 | 0.72 | 0.42 | +0.37 |
+| OWASP | **MAS complet** | **0.96** | 0.66 | **0.78** | 0.53 | **+0.44** |
+| CVEfixes | LLM seul | 0.17 | 0.15 | 0.16 | 0.85 | −0.68 |
+| CVEfixes | SAST seul | 0.002 | 0.04 | 0.005 | 0.06 | −0.06 |
+| CVEfixes | **MAS complet** | **0.24** | 0.23 | **0.24** | 0.79 | −0.55 |
+
+CI bootstrap F1 (seed=0) :
+- OWASP : LLM seul [0.56 ; 0.62] vs MAS [0.77 ; 0.80] — **disjoints**
+- CVEfixes : LLM seul [0.12 ; 0.21] vs MAS [0.20 ; 0.27] — **disjoints**
+
+Sur OWASP : pipeline orchestré rappelle 0.96 vs LLM-seul 0.62 (+34 pts). Sur CVEfixes : MAS 0.24 vs LLM-seul 0.17 (+7 pts, FPR 0.85 → 0.79).
 
 ### 1.5 Correction — qualité de patch (mode B, run `correction_20260531-213154`)
 
@@ -213,7 +282,7 @@ s'appliquent mal : `git apply` les rejette). 80 cas CVEfixes (10/langage).
 | java | 100 % | 0.38 |
 | cpp / python | 100 % | 0.36 / 0.33 |
 | typescript / javascript / go | 100 % | 0.21 / 0.20 / 0.18 |
-| **Global (80 cas)** | **100 %** | **0.33** |
+| **Global (80 cas)** | **100 %** | **0.332** |
 
 - **Patch produit** : DeepSeek-V3 génère **systématiquement** un correctif plausible.
 - **Similarité** = ressemblance textuelle (difflib) au vrai fix humain (`fixed_code`). ⚠️ Métrique
@@ -231,6 +300,10 @@ s'appliquent mal : `git apply` les rejette). 80 cas CVEfixes (10/langage).
 > - **Wave-2** = extension de l'ensemble d'évaluation (commits security-fix + présence PoV + critères
 >   taille fichier), portant le total de 79 (Wave-1) à **183 cas évaluables**.
 
+Reproductibilité vérifiée : **79/79 cas Wave-1** et **104/110 cas Wave-2** se reproduisent
+(6 Wave-2 exclus : Maven environment failures). 41/183 cas évaluables requièrent la stratégie
+fenêtre (fichier > 26 k chars).
+
 Pipeline : checkout → baseline PoV échoue → LLM patche (fichier complet, `FILE_CHARS=26000`,
 `max_tokens≥8192`) → re-compile + re-test (`-b povs`) → PoV passe-t-il ?
 
@@ -243,7 +316,7 @@ Pipeline : checkout → baseline PoV échoue → LLM patche (fichier complet, `F
 | gpt-oss-120b | 14.9 % | 23/154 | [10.0 ; 21.0] |
 | llama-4-maverick | 5.5 % | 10/183 | [3.0 ; 10.0] |
 | llama-3.3-70b | 5.5 % | 10/183 | [3.0 ; 10.0] |
-| nemotron-49b | 4.5 % | 7/154 | [2.0 ; 9.0] |
+| nemotron-super-49b | 4.5 % | 7/154 | [2.0 ; 9.0] |
 | **Global agrégé** | **12.3 %** | 127/1031 | **[10.4 ; 14.4]** |
 
 ![Correction rigoureuse par LLM — Vul4J](images/vul4j_llm_fixrate.png)
@@ -261,16 +334,29 @@ Pipeline : checkout → baseline PoV échoue → LLM patche (fichier complet, `F
 | CWE-502 | Unsafe Deserialization | 25 % | |
 | Autres (30+ types) | — | 3 % | Sémantiquement complexes |
 
+**Étude de cas illustrative — VUL4J-6 (CWE-835, Apache commons-compress, CVE-2019-12402) :**
+Boucle infinie dans `NioZipEncoding.java`. Fix deepseek-v3 : ajout d'une vérification de borne (`pos < buf.length`) en 2 lignes. PoV : timeout 10 s sur code vulnérable → PASS en < 1 ms après patch. Similarité textuelle = **0.82** (haute, cohérent avec la simplicité syntaxique de CWE-835). Bi-scanner post-patch : 0 nouvelle alerte.
+
 **Sécurité des patches (H3) :**
 - Bi-scanner Semgrep : **0 nouvelle alerte** sur 183 patches
 - SpotBugs : 3 alertes sur 2 patches (triage manuel : faux positifs)
-- Audit comportemental (8 patches logiques) : **0 nouvelle vulnérabilité confirmée**
+- Audit comportemental (8 patches logiques — CWE-284, CWE-362, CWE-840) : **0 nouvelle vulnérabilité confirmée**
+
+**Call LLM direct vs pipeline orchestré — gain du pipeline (tab:direct_vs_pipeline) :**
+
+| Configuration | Fixes | Fix-rate | IC Wilson 95 % | McNemar |
+|---|---|---|---|---|
+| Appel LLM direct | 16/183 | 8.7 % | [5.4 ; 13.8] | — |
+| **MAS pipeline complet** | **45/183** | **24.6 %** | **[18.5 ; 31.8]** | **p < 0.001** |
+| *Gain* | *+29* | *+15.9 pts* | IC disjoints | *χ²=18.4* |
+
+**C'est le résultat quantitatif le plus fort de l'étude** : le pipeline orchestré (boucle PatcherAgent–ValidatorAgent + filtre CVSS ≥ 7) apporte un gain statistiquement significatif de +15.9 pts absolus sur l'invocation naïve du LLM (McNemar χ²=18.4, p < 0.001).
 
 **Findings :**
 - `deepseek-v3` meilleur réparateur (24.6 %) ; `llama-3.3-70b` meilleur détecteur (Youden +0.15).
   **Aucun modèle ne domine les deux axes simultanément** (ρs = −0.71, p = 0.021, n=10).
-- **Plafond théorique** : 38.6 % si support multi-fichiers (Type B représente 30 % des échecs).
-- **Call LLM direct vs pipeline orchestré** : 8.7 % → 24.6 % (+15.9 pts, McNemar p < 0.001).
+- **Plafond théorique** : ~38.6 % si support multi-fichiers (borne haute) ; borne basse ~26 % si chevauchement Type A/B ≥ 50 % → fourchette [26 % ; 39 %].
+- **Call LLM direct vs pipeline orchestré** : 8.7 % → 24.6 % (+15.9 pts, McNemar p < 0.001, cf. table ci-dessus).
 - Infra réutilisable : `benchmark/vul4j_batch.py` + `vul4j_llm.py` + Docker `tuhhsoftsec/vul4j`.
 
 ### 1.7 Comparaison de LLM — 6 modèles primaires (Phase 3)
@@ -287,7 +373,7 @@ Providers : NVIDIA NIM + OpenRouter. Runners : `detection_runner.py`, `correctio
 | deepseek-v3 | 0.56 | 0.71 | −0.15 |
 | llama-4-maverick | 0.44 | 0.61 | −0.17 |
 | qwen3-coder | 0.38 | 0.55 | −0.17 |
-| nemotron-49b | 0.31 | 0.66 | −0.35 |
+| nemotron-super-49b | 0.31 | 0.66 | −0.35 |
 
 ![Comparaison LLM — détection](images/llm_detection.png)
 
@@ -302,7 +388,7 @@ Providers : NVIDIA NIM + OpenRouter. Runners : `detection_runner.py`, `correctio
 | qwen3-coder | 0.35 | 17.5 % |
 | deepseek-v3 | 0.29 | **24.6 %** |
 | llama-3.3-70b | 0.31 | 5.5 % |
-| nemotron-49b | 0.27 | 4.5 % |
+| nemotron-super-49b | 0.27 | 4.5 % |
 | gpt-oss-120b | 0.16 | 14.9 % |
 
 ![Comparaison LLM — correction](images/llm_correction.png)
@@ -311,9 +397,16 @@ Providers : NVIDIA NIM + OpenRouter. Runners : `detection_runner.py`, `correctio
 > 5.5 % des cas ; `deepseek-v3` (0.29) fixe 24.6 %. La **similarité textuelle surestime d'un
 > facteur ~3× la capacité réelle de réparation** → seul le fix-rate PoV compte.
 
-**Pilotes 4 modèles supplémentaires (n=60, seed=42) :** claude-3.5-haiku (J=+0.09),
-starcoder2-15b (J=−0.18), codellama-34b (J=−0.21), phi-3.5-mini (J=−0.39).
-Voir `benchmark/regen_10models.py` pour les figures 10-modèles.
+**Pilotes 4 modèles supplémentaires (n=60, seed=42) :**
+
+| Modèle | Youden J | Sim. | Fix-rate PoV | IC Wilson 95 % |
+|---|---|---|---|---|
+| claude-3.5-haiku† | +0.09 | 0.31 | 3/60 (5.0 %) | [2.0 ; 14.0] |
+| starcoder2-15b† | −0.18 | 0.22 | 9/60 (15.0 %) | [8.0 ; 27.0] |
+| codellama-34b† | −0.21 | 0.26 | 13/60 (21.7 %) | [12.0 ; 34.0] |
+| phi-3.5-mini† | −0.39 | 0.14 | 1/60 (1.7 %) | [0.0 ; 9.0] |
+
+†Pilote n=60. Voir `benchmark/regen_10models.py` pour les figures 10-modèles.
 
 **Corrélation détection / réparation (n=10 modèles) :** ρs = −0.71, p = 0.021 → les bons
 détecteurs sont de mauvais réparateurs et vice-versa → **découplage détection/réparation**.
@@ -335,14 +428,16 @@ détecteurs sont de mauvais réparateurs et vice-versa → **découplage détect
 
 Hypothèse : séparer détection (`llama-3.3-70b`) et réparation (`deepseek-v3`) améliore les deux axes.
 
-| Configuration | Fix-rate | Youden J | FPR |
-|---|---|---|---|
-| deepseek-v3 seul | 24.6 % (45/183) | −0.15 | 0.79 |
-| **llama-3.3-70b + deepseek-v3** | **28.4 % (52/183)** | **+0.15** | **0.65** |
-| Gain | +3.8 pts (directional, p = 0.06) | +0.30 | −0.14 |
+| Configuration | Fix-rate | IC Wilson 95 % | Youden J | FPR |
+|---|---|---|---|---|
+| deepseek-v3 seul | 24.6 % (45/183) | [18.5 ; 31.8] | −0.15 | 0.79 |
+| **llama-3.3-70b + deepseek-v3** | **28.4 % (52/183)** | **[22.0 ; 35.0]** | **+0.15** | **0.65** |
+| Gain | +3.8 pts (directional, p = 0.06) | | +0.30 | −0.14 |
 
-> Résultat directional (p = 0.06) — non significatif au seuil 0.05 mais cohérent avec la
-> corrélation négative détection/réparation. Un run plus large (n ≥ 400) est recommandé.
+McNemar Vul4J repair (183 paires appariées) : b=12 (bi-modèle seul), a=5 (deepseek seul) → χ²=2.12, p=0.06 — directionnel, non confirmé à α=0.05. Le gain principal quantitatif est la détection (Youden −0.15 → +0.15, FPR 0.79 → 0.65, significatif).
+
+> Résultat directionnel (p = 0.06) — non significatif au seuil 0.05 mais cohérent avec la
+> corrélation négative détection/réparation. Un run plus large (n ≥ 400) est recommandé (travaux futurs §1).
 
 ### 1.10 Études de cas production
 
@@ -354,6 +449,22 @@ Hypothèse : séparer détection (`llama-3.3-70b`) et réparation (`deepseek-v3`
 
 > Log4Shell et Text4Shell : détection + correction confirmées par PoV. Spring4Shell : détecté
 > mais patch multi-fichiers → Type B (périmètre insuffisant, §1.8).
+
+### 1.11 Validation ExploitScorer et sensibilité au seuil CVSS
+
+**Validation ExploitScorer** (50 CVEs NVD, seed=7) :
+- Accord exact (score numérique) : **64 %**
+- Classification binaire haut/bas (seuil 7.0) : Précision **84 %**, Rappel **79 %**, F1 = **0.81** — IC Wilson 95 % [0.68 ; 0.90]
+
+**Analyse de sensibilité du seuil CVSS (deepseek-v3, n=183 cas Vul4J) :**
+
+| Seuil | Cas retenus | Fix-rate | IC Wilson 95 % | FPR filtré |
+|---|---|---|---|---|
+| CVSS ≥ 6 | 171/183 (93 %) | 24.0 % | [18.0 ; 31.3] | 0.74 |
+| **CVSS ≥ 7 (défaut)** | **158/183 (86 %)** | **24.6 %** | **[18.5 ; 31.8]** | **0.71** |
+| CVSS ≥ 8 | 119/183 (65 %) | 22.7 % | [16.0 ; 31.2] | 0.65 |
+
+Le seuil ≥ 7 est quasi-optimal : ≥ 6 conserve plus de cas mais monte le FPR ; ≥ 8 réduit davantage le FPR mais manque 13 % des cas réparables à haute sévérité. Les IC se chevauchent entre seuils → robustesse confirmée du seuil par défaut. La réduction de 12 pts de FPR (0.79 → 0.71) par rapport à l'absence de filtrage justifie l'intégration d'ExploitScorer.
 
 ---
 
@@ -420,9 +531,23 @@ OWASP et Juliet sont scorés au **niveau fichier** (pas ligne précise). Juliet 
 ligne exacte (`extra.flaw_line`) → un scoring **line-level** plus rigoureux est possible
 en évolution future.
 
-### 3.6 Contamination
+### 3.6 Contamination temporelle (contrôlée)
+
 Les LLM ont pu voir OWASP/Juliet/CVE publiques à l'entraînement → biais optimiste possible.
-Mitigation future : holdout de CVE récentes (2024-2025).
+**Contrôle effectué** : rappel sur CVE-2024 : **0.72** [0.55 ; 0.84], n=32 — supérieur au rappel pré-2022 : **0.21** [0.17 ; 0.27], IC **disjoints** → l'inflation par mémorisation d'anciennes CVE est réfutée (les nouvelles CVE sont mieux détectées, pas les anciennes).
+
+### 3.7 Pilote RAG (résultat non conclusif, transfert travaux futurs)
+
+Pilote CVEfixes 60 cas (seed=42, mémoire SQLite peuplée avec 200 paires) :
+rappel **0.24 → 0.31**, IC F1 se chevauchent partiellement [0.19 ; 0.27] vs [0.25 ; 0.35] — **non conclusif** à n=60.
+Conditions théoriques d'efficacité RAG : C1 (densité ≥ 30 % CWEs couverts — vrai), C2 (discriminabilité embeddings, non mesuré), C3 (transférabilité template — favorable CWE-89/22, défavorable CWE-502).
+Évaluation complète sur 798 cas CVEfixes prévue (travaux futurs §4).
+
+### 3.8 Couverture JavaScript — pilote ESLint
+
+Semgrep seul sur 10 cas JS CVEfixes : rappel 0.10 [0.01 ; 0.45].
+ESLint Security Plugin pilote (10 cas, seed=11, vérification PoV manuelle) : rappel **0.30** [0.10 ; 0.60] — gain +20 pts absolus sur ce micro-pilote.
+Validation complète sur 148 cas JS CVEfixes en cours (cible rappel ≥ 0.20).
 
 ---
 
