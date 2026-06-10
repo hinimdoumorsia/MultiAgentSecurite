@@ -378,7 +378,7 @@ Cela signifie que ton système multi-agents est bien lancé et prêt à être ut
 | Nom | Statut | Contributions |
 |---|---|---|
 | **Hinimdou Morsia Guitdam** | Élève ingénieur en IA & Technologie des Données | Architecture, développement, évaluation |
-| **DJERI-ALASSANI OUBENOUPOU** | Élève ingénieur en IA & Technologie des Données | Documentation, analyse des résultats |
-| **Chaibou Saidou Abdoulaye** | Élève ingénieur en IA & Technologie des Données | Support technique, validation des expérimentations |
+| **DJERI-ALASSANI OUBENOUPOU** | Élève ingénieur en IA & Technologie des Données | Support technique, validation des expérimentations  |
+| **Chaibou Saidou Abdoulaye** | Élève ingénieur en IA & Technologie des Données | Documentation, analyse des résultats|
 
 ---
