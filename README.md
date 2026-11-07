@@ -22,6 +22,8 @@ Les agents IA autonomes capables de comprendre, réviser et réparer du code en 
 **Multi-Agent Security** est une architecture d'agent spécialement conçue pour la révision de code orientée sécurité et la correction automatique des vulnérabilités.
 
 ---
+**Ci-joint vous pouvez donc accéder à la documentation complète de notre projet** https://multiagentsecurite.readthedocs.io/en/latest/
+---
 
 ## Résultats clés (MAS-REPORT-2026-V7)
 
