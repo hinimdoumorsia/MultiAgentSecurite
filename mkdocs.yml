@@ -1,0 +1,51 @@
+site_name: Multi-Agent Security
+site_description: Documentation technique du système multi-agents pour la détection et la correction de vulnérabilités.
+site_url: https://multi-agent-security.readthedocs.io/
+repo_url: https://github.com/hinimdoumorsia/MultiAgentSecurite
+repo_name: hinimdoumorsia/MultiAgentSecurite
+
+nav:
+  - Accueil: index.md
+  - Démarrage: getting-started.md
+  - Architecture: architecture.md
+  - Workflow: workflow.md
+  - Agents: agents.md
+  - Outils: tools.md
+  - API: api.md
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - content.code.annotate
+  palette:
+    - scheme: default
+      primary: green
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: green
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+
+plugins:
+  - search
