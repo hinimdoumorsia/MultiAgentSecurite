@@ -26,6 +26,7 @@ from graph.workflow import build_workflow
 from memory.persistent import PersistentMemory
 from llm.client import LLMClient
 from graph.workflow import run_workflow_with_tracing 
+from dotenv import load_dotenv
 
 # ============================================
 # PYDANTIC MODELS
